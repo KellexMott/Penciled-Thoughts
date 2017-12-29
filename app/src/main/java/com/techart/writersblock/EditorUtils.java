@@ -12,8 +12,6 @@ import android.widget.Toast;
 public final class EditorUtils {
 
     private static int lineCount = 10;
-
-
     private EditorUtils()
     {
     }
@@ -33,7 +31,7 @@ public final class EditorUtils {
 
     protected static boolean isEmpty(Context context, String title, String placeHolder)
     {
-        if (title.isEmpty())
+        if (title == null || title.isEmpty())
         {
             Toast.makeText(context,"Type in "+ placeHolder,Toast.LENGTH_LONG).show();
             return false;
@@ -87,6 +85,16 @@ public final class EditorUtils {
         else
         {
             Toast.makeText(context,"Ensure that passwords match",Toast.LENGTH_LONG).show();
+            return false;
+        }
+    }
+
+    protected final static boolean isEmailValid(Context context, String email) {
+        CharSequence target = email;
+        if (android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches()) {
+            return true;
+        } else {
+            Toast.makeText(context, "Email address not valid", Toast.LENGTH_LONG).show();
             return false;
         }
     }

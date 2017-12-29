@@ -37,8 +37,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private ProgressDialog mProgress;
-//    private DatabaseReference mDatabaseUsers;
-
 
     private Button btRegister;
     private int iTemPosition = 0;
@@ -95,26 +93,22 @@ public class RegisterActivity extends AppCompatActivity {
     public void onRadioButtonClicked(View view) {
         ((RadioButton) view).setChecked(((RadioButton) view).isChecked());
         signingInAs = ((RadioButton) view).getText().toString();
-        Toast.makeText(this, "Story marked as " + signingInAs, Toast.LENGTH_LONG).show();
     }
 
     private void startRegister() {
         mProgress.setMessage("Signing Up  ...");
         mProgress.show();
+        final String user_id = mAuth.getCurrentUser().getUid();
+
         mAuth.createUserWithEmailAndPassword(email,firstPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-            if (task.isSuccessful()) {
-                String user_id = mAuth.getCurrentUser().getUid();
-               // DatabaseReference current_user_db = mDatabaseUsers.child(user_id);
+                if (task.isSuccessful()) {
                 Map<String,Object> values = new HashMap<>();
                 values.put("name",name);
                 values.put("imageUrl","default");
                 values.put("signedAs",signingInAs);
-                /*
-                current_user_db.child("name").setValue(name);
-                current_user_db.child("imageUrl").setValue("default");
-                */
+
                 FireBaseUtils.mDatabaseUsers.child(user_id).setValue(values);
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
@@ -164,6 +158,7 @@ public class RegisterActivity extends AppCompatActivity {
         return EditorUtils.dropDownValidator(getApplicationContext(), signingInAs) &&
                 EditorUtils.isEmpty(getApplicationContext(),name,"username") &&
                 EditorUtils.isEmpty(getApplicationContext(),email,"email") &&
+                EditorUtils.isEmailValid(getApplicationContext(), email) &&
                 EditorUtils.isEmpty(getApplicationContext(),firstPassword,"password") &&
                 EditorUtils.doPassWordsMatch(getApplicationContext(),firstPassword,repeatedPassword);
     }

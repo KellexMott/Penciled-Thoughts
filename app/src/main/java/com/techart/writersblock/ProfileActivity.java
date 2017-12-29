@@ -1,16 +1,12 @@
 package com.techart.writersblock;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -60,8 +56,6 @@ public class ProfileActivity extends AppCompatActivity
 
     private String userName = "My Users";
     private ImageView ibProfile;
-    int interatorCounter;
-    int notificationCounter;
 
     private static final int GALLERY_REQUEST = 1;
 
@@ -221,9 +215,9 @@ public class ProfileActivity extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Users users = dataSnapshot.getValue(Users.class);
-                if (users.getImage() != null && users.getImage().length() > 7)
+                if (users.getImageUrl() != null && users.getImageUrl().length() > 7)
                 {
-                    currentPhotoUrl = users.getImage();
+                    currentPhotoUrl = users.getImageUrl();
                     setPicture(currentPhotoUrl);
                 }
                 else
@@ -289,30 +283,16 @@ public class ProfileActivity extends AppCompatActivity
     {
         String user_id = mAuth.getCurrentUser().getUid();
         DatabaseReference current_user_db = FireBaseUtils.mDatabaseUsers.child(user_id);
-        current_user_db.child("image").setValue(downloadImageUrl);
+        current_user_db.child("imageUrl").setValue(downloadImageUrl);
         loadProfilePicture();
-    }
-
-    private void addNofication()
-    {
-        NotificationCompat.Builder builder = new
-        NotificationCompat.Builder(this)
-        .setContentTitle("Chapter added")
-        .setContentText("Chapter 3 added");
-        Intent notificationIntent = new Intent(this,ProfileActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this,0,notificationIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(contentIntent);
-        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(0,builder.build());
     }
 
     @Override
     protected void onActivityResult(int requestCode,int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-
             super.onActivityResult(requestCode, resultCode, data);
-            if (resultCode == RESULT_OK && data != null && data.getData() != null ) {
+            if (data != null && data.getData() != null) {
                 uri = data.getData();
                 String realPath = ImageUtils.getRealPathFromUrl(this, uri);
                 Uri uriFromPath = Uri.fromFile(new File(realPath));

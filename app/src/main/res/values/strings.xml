@@ -96,5 +96,6 @@
     <string name="writer">Writer</string>
     <string name="log_in">Log in</string>
     <string name="logo_content_desc">Logo for Penciled Thoughts</string>
+    <string name="sign_up">Sign Up</string>
 
 </resources>

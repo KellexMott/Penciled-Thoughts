@@ -1,12 +1,13 @@
 package com.techart.writersblock;
 
 /**
+ * User object
  * Created by Kelvin on 11/10/2017.
  */
 
 public class Users {
     private String name;
-    private String image;
+    private String imageUrl;
     private String signedAs;
     public Users(){}
 
@@ -18,12 +19,12 @@ public class Users {
         this.name = name;
     }
 
-    public String getImage() {
-        return image;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getSignedAs() {
