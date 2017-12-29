@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.techart.writersblock.EditorActivity">
+
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textSize="18sp"
+            android:text="Episode: " />
+
+        <EditText
+            android:id="@+id/editTitle"
+            android:layout_width="40dip"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:hint="#"
+            android:inputType="number" />
+    </LinearLayout>
+
+    <include layout="@layout/item_divider" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_below="@+id/layout"
+        style="@style/ButtonEditor"
+        android:hint="Tap to start writing"
+        android:background="@null"
+        android:inputType="textMultiLine|textCapSentences" />
+</LinearLayout>

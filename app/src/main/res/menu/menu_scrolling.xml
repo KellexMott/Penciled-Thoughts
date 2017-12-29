@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.scroll.crystaltechs.scroll.ScrollingActivity">
+    <item
+        android:id="@+id/action_fontsize"
+        android:orderInCategory="101"
+        android:title="@string/action_fontsize"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_background"
+        android:orderInCategory="101"
+        android:title="@string/action_background"
+        app:showAsAction="never" />
+
+</menu>

@@ -1,0 +1,96 @@
+<resources>
+    <string name="app_name">Penciled Thoughts</string>
+    <string name="poem_deleted">Poem deleted</string>
+    <string name="poem_updated">Poem updated</string>
+
+
+    <!--activity login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password </string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!--bottom menu -->
+    <string name="item_home">Home</string>
+    <string name="item_account">Account</string>
+    <string name="item_create">Create</string>
+    <string name="item_library">Library</string>
+    <string name="log_out">Log Out</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="devotion_deleted">Devotion Deleted</string>
+
+    <!--activity register -->
+    <string name="repeat_password">Repeat Password</string>
+    <string name="prompt_username">User Name</string>
+
+    <string name="search_hint">Poem Title</string>
+
+
+    <string name="action_fontsize">Font Size</string>
+    <string name="action_background">Mode</string>
+
+    <string name="help"><![CDATA[<b>How to create a post</b> <br/>
+        <ol>
+            <li>Press the create button</li>
+            <li>On a dialog box select either <i>Poem</i> or <i>Devotion</i>
+            <li>Follow the intructions in the editor</li>
+        </ol>
+
+        <p>
+        <b>How to upload to post</b> <br/>
+        <ol>
+            <li>If in the editor press the <i>POST</i> button in the appbar, else</li>
+            <li>Press account > select <i>My Devotions</i> or <i>Poems</i>
+            <li>Select appropriate item</li>
+            <li>Press <i>POST</i></li>
+        </ol>
+        </p>
+
+        <p>
+        <b>How to delete from MyBlock</b> <br/>
+        <i>Warning, as for now once posted, post can not be deleted</i>
+        <ol>
+            <li>If in the editor press the <i>menu icon</i> in the appbar and then <i>delete</i>, else</li>
+            <li>Press account > select <i>My Devotions</i> or <i>Poems</i></li>
+            <li>Select appropriate item</li>
+            <li>Press <i>delete</i></li>
+        </ol>
+        </p>
+
+        <p>
+        <b>How to update post</b> <br/>
+        <ol>
+            <li>If in the editor press the <i>POST</i> button in the appbar and follow intructions that follow else</li>
+            <li>Press account > select <i>My Devotions</i> or <i>Poems</i></li>
+            <li>Select appropriate item</li>
+            <li>Repeat 1</li>
+        </ol>
+</p>]]>
+    </string>
+    <string name="copyright"><p>@ 2017</p>  The software is provided as is, without warranty
+    of any kind, express or implied, including but not limited to the warranties of merchantability, fitness
+     for a particular purpose and noninfringement, in no event shall the authors or copyright holders be liable
+    for any claim, damages or other liablity, whether in an action or contract, tort or otherwise, arising from,out
+        of or in connection with the software or the use or other dealings in the software.</string>
+    <string name="log_help">Help</string>
+    <string name="item_starred">Notification</string>
+    <string name="chapter_updated">Chapter Updated</string>
+    <string name="chapter_saved">Chapter Saved</string>
+    <string name="chapter_posted">Chapter Posted</string>
+    <string name="chapter_deleted">Chapter Deleted</string>
+    <string name="story_deleted">Story Deleted</string>
+    <string name="delete_all">Delete all</string>
+
+    <string name="chapter_added_notification_title_template">Chapter added: %1$s</string>
+
+    <string name="new_chapter_notification_title">%1$s</string>
+
+    <!-- TODO: remove this placeholder text -->
+    <string name="new_chapter_notification_placeholder">%1$s from %2$s </string>
+
+    <string name="action_share">Share</string>
+    <string name="action_reply">Reply</string>
+
+    <string name="new_message_notification_title_template">New message: %1$s</string>
+    <string name="aim">Thoughts worth Sharing</string>
+
+</resources>

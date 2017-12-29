@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_horizontal"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_profile">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/ib_profile"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/img_circle_placeholder"
+            />
+        <TextView
+            android:id="@+id/tv_setImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_horizontal"
+            android:layout_gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:visibility="invisible"
+            android:text="Set Photo"
+            android:textAllCaps="true"
+            />
+
+        <TextView
+            android:id="@+id/tvMyPosts"
+            style="@style/TextViewProfileHeader"
+            android:text="My Block" />
+
+        <include layout="@layout/item_divider" />
+
+        <RelativeLayout
+            android:id="@+id/mypoems"
+            style="@style/RelativeLayout">
+
+            <TextView
+                android:id="@+id/tv_mypoem"
+                style="@style/TextViewProfileTitle"
+                android:text="Poems" />
+
+            <TextView
+                android:id="@+id/tv_poemcount"
+                style="@style/TextViewVCount" />
+
+            <ImageView
+                android:id="@+id/img_myPoems"
+                app:srcCompat ="@drawable/ic_chevron_right_black_24dp"
+                style="@style/ImageViewChevron"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rv_myspirituals"
+            style="@style/RelativeLayout">
+
+            <TextView
+                android:id="@+id/tv_mydevotions"
+                style="@style/TextViewProfileTitle"
+                android:text="Devotions"/>
+
+            <TextView
+                android:id="@+id/tv_devotioncount"
+                style="@style/TextViewVCount" />
+
+            <ImageView
+                android:id="@+id/img_mySpirituals"
+                app:srcCompat ="@drawable/ic_chevron_right_black_24dp"
+                style="@style/ImageViewChevron" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rv_mystories"
+            style="@style/RelativeLayout">
+
+            <TextView
+                android:id="@+id/tv_mystories"
+                style="@style/TextViewProfileTitle"
+                android:text="Stories"/>
+
+            <TextView
+                android:id="@+id/tv_storiescount"
+                style="@style/TextViewVCount"/>
+
+            <ImageView
+                android:id="@+id/img_mystories"
+                app:srcCompat ="@drawable/ic_chevron_right_black_24dp"
+                style="@style/ImageViewChevron" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_posted"
+            style="@style/TextViewProfileHeader"
+            android:text="Posted" />
+
+        <include layout="@layout/item_divider" />
+
+        <RelativeLayout
+            android:id="@+id/rv_postedpoems"
+            style="@style/RelativeLayout">
+
+            <TextView
+                android:id="@+id/tv_postedpoem"
+                style="@style/TextViewProfileTitle"
+                android:text="Poems"/>
+
+            <TextView
+                android:id="@+id/tv_postedpoemcount"
+                style="@style/TextViewVCount" />
+
+            <ImageView
+                android:id="@+id/img_postedPoems"
+                app:srcCompat ="@drawable/ic_chevron_right_black_24dp"
+                style="@style/ImageViewChevron"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rv_postedspirituals"
+            style="@style/RelativeLayout">
+
+            <TextView
+                android:id="@+id/tv_posteddevotions"
+                style="@style/TextViewProfileTitle"
+                android:text="Devotions" />
+
+            <TextView
+                android:id="@+id/tv_posteddevotioncount"
+                style="@style/TextViewVCount" />
+
+            <ImageView
+                android:id="@+id/img_postedSpirituals"
+                app:srcCompat ="@drawable/ic_chevron_right_black_24dp"
+                style="@style/ImageViewChevron" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rv_postedstories"
+            style="@style/RelativeLayout">
+
+            <TextView
+                android:id="@+id/tv_postedstories"
+                style="@style/TextViewProfileTitle"
+                android:text="Stories" />
+
+            <TextView
+                android:id="@+id/tv_postedstoriescount"
+                style="@style/TextViewVCount" />
+
+            <ImageView
+                android:id="@+id/img_postedstories"
+                app:srcCompat ="@drawable/ic_chevron_right_black_24dp"
+                style="@style/ImageViewChevron" />
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

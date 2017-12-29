@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.crystalstechs.writersblock.ReadActivity">
+<!--
+    <item
+        android:id="@+id/action_aboutUs"
+        android:orderInCategory="100"
+        android:title="About Us"
+        app:showAsAction="never" />
+        -->
+    <item
+        android:id="@+id/action_help"
+        android:orderInCategory="100"
+        android:title="@string/log_help"
+        app:showAsAction="never" />
+</menu>

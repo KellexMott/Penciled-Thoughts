@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.techart.writersblock">
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application
+        android:name=".WritersBlock"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name=".WritersBlockProvider"
+            android:authorities="com.techart.writersblock.writersblockprovider"
+            android:exported="false" />
+
+        <activity
+            android:name=".CommentActivity"
+            android:parentActivityName=".MainActivity" />
+
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.techart.writersblock.MainActivity" />
+
+        <activity
+            android:name=".ViewsActivity"
+            android:parentActivityName=".MainActivity" />
+
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.techart.writersblock.MainActivity" />
+
+        <activity
+            android:name=".DevotionEditorActivity"
+            android:excludeFromRecents="true" />
+        <activity android:name=".RegisterActivity" />
+
+        <activity
+            android:name=".SelectDialogActivity"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@style/dialogTheme" />
+
+        <activity
+            android:name=".StoryDialogActivity"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@style/dialogTheme" />
+
+        <activity
+            android:name=".StoryTitleEditDialog"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@style/dialogTheme" />
+
+        <activity
+            android:name=".StoryEditDialogActivity"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@style/dialogTheme" />
+
+        <activity
+            android:name=".HelpActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".ProfileActivity"
+            android:launchMode="singleTop" />
+
+        <activity
+            android:name=".ActivityReadStory"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".ResetPasswordActivity" />
+        <activity
+            android:name=".LoginActivity"
+            android:excludeFromRecents="true"
+            android:label="@string/title_activity_login" />
+
+        <activity
+            android:name=".LikesActivity"
+            android:excludeFromRecents="true"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".MyPoemsListActivity"
+            android:parentActivityName=".ProfileActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.ProfileActivity" />
+        </activity>
+
+        <activity
+            android:name=".StoryOverViewActivity"
+            android:excludeFromRecents="true"
+            android:parentActivityName=".ProfileActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.ProfileActivity" />
+        </activity>
+
+        <activity
+            android:name=".ChapterEditorActivity"
+            android:excludeFromRecents="true"
+            android:parentActivityName=".ProfileActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.ProfileActivity" />
+        </activity>
+
+        <activity
+            android:name=".ChapterEditorOnlineActivity"
+            android:excludeFromRecents="true"
+            android:parentActivityName=".ProfileStoriesListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.ProfileStoriesListActivity" />
+        </activity>
+
+        <activity
+            android:name=".OnlineChapterListActivity"
+            android:excludeFromRecents="true"
+            android:parentActivityName=".ProfileStoriesListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.ProfileStoriesListActivity" />
+        </activity>
+
+        <activity
+            android:name=".AuthorsProfileActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".AddChapterActivity"
+            android:parentActivityName=".MyChaptersListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.MyPoemsListActivity" />
+        </activity>
+
+        <activity
+            android:name=".AddChapterOnlineActivity"
+            android:parentActivityName=".ProfileStoriesListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.ProfileStoriesListActivity" />
+        </activity>
+
+        <activity
+            android:name=".MyChaptersListActivity"
+            android:parentActivityName=".ProfileActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.MyChaptersListActivity" />
+        </activity>
+        <activity
+            android:name=".MyStoriesListActivity"
+            android:parentActivityName=".ProfileActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.ProfileActivity" />
+        </activity>
+        <activity
+            android:name=".AuthorsPoemsListActivity"
+            android:parentActivityName=".AuthorsProfileActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.AuthorsProfileActivity" />
+        </activity>
+        <activity
+            android:name=".AuthorsDevotionsListActivity"
+            android:parentActivityName=".AuthorsProfileActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.AuthorsProfileActivity" />
+        </activity>
+        <activity
+            android:name=".AuthorsStoriesListActivity"
+            android:parentActivityName=".AuthorsProfileActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.AuthorsProfileActivity" />
+        </activity>
+        <activity
+            android:name=".ProfilePoemsListActivity"
+            android:parentActivityName=".AuthorsProfileActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.AuthorsProfileActivity" />
+        </activity>
+        <activity
+            android:name=".ProfileDevotionsListActivity"
+            android:parentActivityName=".AuthorsProfileActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.AuthorsProfileActivity" />
+        </activity>
+        <activity
+            android:name=".ProfileStoriesListActivity"
+            android:parentActivityName=".AuthorsProfileActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.AuthorsProfileActivity" />
+        </activity>
+        <activity
+            android:name=".StoryEditorActivity"
+            android:excludeFromRecents="true"
+            android:parentActivityName=".ProfileActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.ProfileActivity" />
+        </activity>
+        <activity
+            android:name=".LibraryActivity"
+            android:excludeFromRecents="true"
+            android:parentActivityName=".ProfileActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.ProfileActivity" />
+        </activity>
+        <activity
+            android:name=".MySpiritualsListActivity"
+            android:parentActivityName=".ProfileActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.ProfileActivity" />
+        </activity>
+        <activity
+            android:name=".EditorActivity"
+            android:excludeFromRecents="true"
+            android:parentActivityName=".ProfileActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.ProfileActivity" />
+        </activity>
+        <activity
+            android:name=".ScrollingActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.MainActivity" />
+        </activity>
+    </application>
+
+</manifest>

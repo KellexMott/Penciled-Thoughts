@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/activity_horizontal"
+    android:padding="@dimen/activity_horizontal"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_profile">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/tv_posted"
+            style="@style/TextViewProfileHeader"
+            android:text="Posted" />
+
+        <include layout="@layout/item_divider" />
+
+        <RelativeLayout
+            android:id="@+id/rv_postedpoems"
+            style="@style/RelativeLayout">
+
+            <TextView
+                android:id="@+id/tv_postedpoem"
+                style="@style/TextViewProfileTitle"
+                android:text="Poems"/>
+
+            <TextView
+                style="@style/TextViewVCount"/>
+
+            <ImageView
+                android:id="@+id/img_postedPoems"
+                app:srcCompat ="@drawable/ic_chevron_right_black_24dp"
+                style="@style/ImageViewChevron" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rv_postedspirituals"
+            style="@style/RelativeLayout">
+
+            <TextView
+                android:id="@+id/tv_posteddevotions"
+                style="@style/TextViewProfileTitle"
+                android:text="Devotions" />
+
+            <TextView
+                android:id="@+id/tv_posteddevotioncount"
+                style="@style/TextViewVCount" />
+
+            <ImageView
+                android:id="@+id/img_postedSpirituals"
+                app:srcCompat ="@drawable/ic_chevron_right_black_24dp"
+                style="@style/ImageViewChevron" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rv_postedstories"
+            style="@style/RelativeLayout">
+
+            <TextView
+                android:id="@+id/tv_postedstories"
+                style="@style/TextViewProfileTitle"
+                android:text="Stories" />
+
+            <TextView
+                android:id="@+id/tv_postedstoriescount"
+                style="@style/TextViewVCount" />
+
+            <ImageView
+                android:id="@+id/img_postedstories"
+                app:srcCompat ="@drawable/ic_chevron_right_black_24dp"
+                style="@style/ImageViewChevron" />
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
