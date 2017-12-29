@@ -28,50 +28,76 @@
     <string name="action_fontsize">Font Size</string>
     <string name="action_background">Mode</string>
 
-    <string name="help"><![CDATA[<b>How to create a post</b> <br/>
+    <string name="help"><![CDATA[<b>How to create a post</b>
         <ol>
             <li>Press the create button</li>
-            <li>On a dialog box select either <i>Poem</i> or <i>Devotion</i>
-            <li>Follow the intructions in the editor</li>
+            <li>On a dialog box select either <i>Devotion</i>, <i>Poems</i>  or <i>Stories</i> </li>
+            <li>Follow the instructions in the editor</li>
         </ol>
 
         <p>
-        <b>How to upload to post</b> <br/>
+        <b>How to upload to post</b>
         <ol>
             <li>If in the editor press the <i>POST</i> button in the appbar, else</li>
-            <li>Press account > select <i>My Devotions</i> or <i>Poems</i>
+            <li>Press account > select <i>Devotion</i>, <i>Poems</i>  or <i>Stories</i> </li>
             <li>Select appropriate item</li>
             <li>Press <i>POST</i></li>
         </ol>
         </p>
 
         <p>
-        <b>How to delete from MyBlock</b> <br/>
-        <i>Warning, as for now once posted, post can not be deleted</i>
+        <b>How to delete from My Block</b>
         <ol>
             <li>If in the editor press the <i>menu icon</i> in the appbar and then <i>delete</i>, else</li>
-            <li>Press account > select <i>My Devotions</i> or <i>Poems</i></li>
+            <li>Press account > select <i>Devotion</i>, <i>Poems</i>  or <i>Stories</i> </li>
             <li>Select appropriate item</li>
             <li>Press <i>delete</i></li>
         </ol>
         </p>
+        <b>How to delete Posted items</b>
+        <ol>
+            <li>If in the editor press the <i>menu icon</i> in the appbar and then <i>delete</i>, else</li>
+            <li>Press account > select <i>Devotion</i>, <i>Poems</i>  or <i>Stories</i> from the posted section </li>
+            <li>Select appropriate item</li>
+            <li>Press the <i>delete</i> icon</li>
+        </ol>
+        </p>
 
         <p>
-        <b>How to update post</b> <br/>
+        <b>How to update post from My Block</b>
         <ol>
-            <li>If in the editor press the <i>POST</i> button in the appbar and follow intructions that follow else</li>
-            <li>Press account > select <i>My Devotions</i> or <i>Poems</i></li>
+            <li>If in the editor press the <i>POST</i> button in the appbar and follow instructions else</li>
+            <li>Press account > select <i>Devotion</i>, <i>Poems</i>  or <i>Stories</i> </li>
             <li>Select appropriate item</li>
             <li>Repeat 1</li>
         </ol>
-</p>]]>
+        </p>
+
+        <p>
+        <b>How to update Stories from Posted</b>
+        <ol>
+            <li>If in the editor press the <i>POST</i> button in the appbar and follow instructions else</li>
+            <li>Press account > select <i>Stories</i> </li>
+            <li>Select appropriate story</li>
+            <li>Press button 1 to change category</li>
+            <li>Press button 2 to change story status</li>
+            <li>Press button 3 and to either</li>
+            <ol>
+                <li>Add Chapter</li>
+                <li>Edit Chapter</li>
+                <li>Edit Description</li>
+                <li>Edit Title</li>
+            </ol>
+        </ol>
+        </p>
+]]>
     </string>
     <string name="copyright"><p>@ 2017</p>  The software is provided as is, without warranty
     of any kind, express or implied, including but not limited to the warranties of merchantability, fitness
      for a particular purpose and noninfringement, in no event shall the authors or copyright holders be liable
     for any claim, damages or other liablity, whether in an action or contract, tort or otherwise, arising from,out
         of or in connection with the software or the use or other dealings in the software.</string>
-    <string name="log_help">Help</string>
+    <string name="log_help">How to</string>
     <string name="item_starred">Notification</string>
     <string name="chapter_updated">Chapter Updated</string>
     <string name="chapter_saved">Chapter Saved</string>
@@ -97,5 +123,11 @@
     <string name="log_in">Log in</string>
     <string name="logo_content_desc">Logo for Penciled Thoughts</string>
     <string name="sign_up">Sign Up</string>
+    <string name="post">POST</string>
+    <string name="delete">delete</string>
+    <string name="update">UPDATE</string>
+    <string name="next">Next</string>
+    <string name="photo">Photo</string>
+    <string name="add_post">Add Post</string>
 
 </resources>

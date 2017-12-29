@@ -118,6 +118,7 @@
         <activity
             android:name=".StoryOverViewActivity"
             android:excludeFromRecents="true"
+            android:noHistory="true"
             android:parentActivityName=".ProfileActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

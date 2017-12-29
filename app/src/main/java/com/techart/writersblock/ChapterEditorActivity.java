@@ -232,9 +232,7 @@ public class ChapterEditorActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         finishEditing();
-        Toast.makeText(getApplicationContext(),"Saved", Toast.LENGTH_LONG).show();
     }
-
 
     public String getAuthor() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -244,6 +242,5 @@ public class ChapterEditorActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finishEditing();
-        Toast.makeText(getApplicationContext(),"Saved", Toast.LENGTH_LONG).show();
     }
 }

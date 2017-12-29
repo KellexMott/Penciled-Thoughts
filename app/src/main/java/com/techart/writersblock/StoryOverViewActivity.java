@@ -35,7 +35,7 @@ public class StoryOverViewActivity extends AppCompatActivity {
         final String[] categories = {"Select Category", "Romance ", "Action", "Drama ", "Fiction ",};
         spCategory = (Spinner) findViewById(R.id.categories);
 
-        ArrayAdapter<String> pagesAdapter = new ArrayAdapter<String>(StoryOverViewActivity.this, R.layout.spinnertxt, categories);
+        ArrayAdapter<String> pagesAdapter = new ArrayAdapter<>(StoryOverViewActivity.this, R.layout.spinnertxt, categories);
         pagesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         pagesAdapter.notifyDataSetChanged();
         spCategory.setAdapter(pagesAdapter);
@@ -78,7 +78,7 @@ public class StoryOverViewActivity extends AppCompatActivity {
                     intent.putExtra("Category",category);
                     intent.putExtra("Title",title);
                     intent.putExtra("Description", description);
-                    startActivityForResult(intent,RESULT_OK);
+                    startActivity(intent);
                 }
                 break;
         }
@@ -90,14 +90,6 @@ public class StoryOverViewActivity extends AppCompatActivity {
         title = etStoryTitle.getText().toString().trim();
         description = etStoryDescription.getText().toString().trim();
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            finish();
-        }
-    }
-
 
     @Override
     public void onBackPressed() {

@@ -1,12 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.crystalstechs.writersblock.ReadActivity">
+    tools:context="com.techart.writersblock.ProfileActivity">
 
     <item
         android:id="@+id/action_changedp"
         android:orderInCategory="100"
-        android:title="Change Photo"
+        android:title="@string/photo"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_logout"
