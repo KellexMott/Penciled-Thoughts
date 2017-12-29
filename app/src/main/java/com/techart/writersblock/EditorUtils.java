@@ -1,12 +1,11 @@
 package com.techart.writersblock;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.widget.TextView;
 import android.widget.Toast;
 
 /**
+ * Validates entries on UI components
  * Created by Kelvin on 17/09/2017.
  */
 
@@ -19,7 +18,7 @@ public final class EditorUtils {
     {
     }
 
-    public static boolean validateMainText(Context context,int layOutLineCount) {
+    protected static boolean validateMainText(Context context, int layOutLineCount) {
         if (layOutLineCount <= lineCount) {
             Toast.makeText(context, "Text too short, at least " + lineCount + " lines", Toast.LENGTH_LONG).show();
             return false;
@@ -27,12 +26,12 @@ public final class EditorUtils {
         return true;
     }
 
-    public static boolean compareStrings(String oldText, String newText)
+    protected static boolean compareStrings(String oldText, String newText)
     {
         return oldText.equals(newText);
     }
 
-    public static boolean isEmpty(Context context, String title, String placeHolder)
+    protected static boolean isEmpty(Context context, String title, String placeHolder)
     {
         if (title.isEmpty())
         {
@@ -43,7 +42,7 @@ public final class EditorUtils {
     }
 
 
-    public static boolean validateEntry(Context context, int iTemPosition,String title,TextView tv)
+    protected static boolean validateEntry(Context context, int iTemPosition, String title, TextView tv)
     {
         if (iTemPosition == 0)
         {
@@ -66,11 +65,11 @@ public final class EditorUtils {
         }
     }
 
-    public static boolean dropDownValidater(Context context, int iTemPosition)
+    protected static boolean dropDownValidator(Context context, String signUpAs)
     {
-        if (iTemPosition == 0)
+        if (signUpAs == null)
         {
-            Toast.makeText(context,"Select who you would like to register as",Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Select either Writer or Reader", Toast.LENGTH_LONG).show();
             return false;
         }
         else
@@ -79,7 +78,7 @@ public final class EditorUtils {
         }
     }
 
-    public static boolean doPassWordsMatch(Context context,String first, String second)
+    protected static boolean doPassWordsMatch(Context context, String first, String second)
     {
         if (first.equals(second))
         {

@@ -116,7 +116,6 @@ public class LoginActivity extends AppCompatActivity {
                         {
                             Toast.makeText(getApplicationContext(),"No internet connection, Ensure you are connected and try again", Toast.LENGTH_LONG).show();
                         }
-
                     }
                 }
             });
@@ -145,28 +144,31 @@ public class LoginActivity extends AppCompatActivity {
 
     private void validUsersExistance() {
         final String userId = mAuth.getCurrentUser().getUid();
-        mDatabaseUsers.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild(userId))
-                {
-                    Intent mainIntent = new Intent(LoginActivity.this,MainActivity.class);
-                    mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(mainIntent);
-                }else
-                {
-                    Toast.makeText(getApplicationContext(),"You need to setup an Account", Toast.LENGTH_LONG).show();
-                    Intent registerIntent = new Intent(LoginActivity.this,RegisterActivity.class);
-                    registerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(registerIntent);
+        if (userId != null) {
+            mDatabaseUsers.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.hasChild(userId)) {
+                        Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+                        mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(mainIntent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "You need to setup an Account", Toast.LENGTH_LONG).show();
+                        Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                        registerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(registerIntent);
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        } else {
+            Toast.makeText(LoginActivity.this, "Error encountered, Try again later", Toast.LENGTH_LONG).show();
+        }
+
     }
 
 
@@ -176,21 +178,18 @@ public class LoginActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int button) {
-                        if (button == DialogInterface.BUTTON_POSITIVE)
-                        {
+                        if (button == DialogInterface.BUTTON_POSITIVE) {
                             finishAffinity();
                         }
-                        if (button == DialogInterface.BUTTON_NEGATIVE)
-                        {
+                        if (button == DialogInterface.BUTTON_NEGATIVE) {
                             dialog.dismiss();
                         }
                     }
                 };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Exit application? ")
+        builder.setTitle("Exit application? ")
                 .setPositiveButton("Yes", dialogClickListener)
                 .setNegativeButton("Cancel", dialogClickListener)
                 .show();
     }
 }
-

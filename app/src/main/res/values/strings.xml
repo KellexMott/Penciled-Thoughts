@@ -92,5 +92,9 @@
 
     <string name="new_message_notification_title_template">New message: %1$s</string>
     <string name="aim">Thoughts worth Sharing</string>
+    <string name="reader">Reader</string>
+    <string name="writer">Writer</string>
+    <string name="log_in">Log in</string>
+    <string name="logo_content_desc">Logo for Penciled Thoughts</string>
 
 </resources>
