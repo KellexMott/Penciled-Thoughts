@@ -18,7 +18,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Date;
 
-
+/**
+ * Devotion fragment
+ */
 public class Tab3Devotion extends Fragment {
     private RecyclerView mPoemList;
     private FirebaseRecyclerAdapter<Devotion,Tab1Poems.PoemViewHolder> fireBaseRecyclerAdapter;
@@ -26,15 +28,11 @@ public class Tab3Devotion extends Fragment {
     private String postTitle;
     private String postContent;
     private boolean mProcessView = false;
-
-
     private boolean mProcessLike = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         View rootView = inflater.inflate(R.layout.tabrecyclerviewer, container, false);
         mAuth = FirebaseAuth.getInstance();
         FireBaseUtils.mDatabaseLike.keepSynced(true);
@@ -53,8 +51,7 @@ public class Tab3Devotion extends Fragment {
     @Override
     public String toString()
     {
-        String title="Devotion";
-        return title;
+        return "Devotion";
     }
 
     @Override
@@ -63,6 +60,9 @@ public class Tab3Devotion extends Fragment {
         super.onStart();
     }
 
+    /**
+     * Binds view to recycler view
+     */
     private void bindView()
     {
         fireBaseRecyclerAdapter = new FirebaseRecyclerAdapter<Devotion, Tab1Poems.PoemViewHolder>(
@@ -71,7 +71,7 @@ public class Tab3Devotion extends Fragment {
             protected void populateViewHolder(Tab1Poems.PoemViewHolder viewHolder, final Devotion model, int position) {
                 final String post_key = getRef(position).getKey();
                 viewHolder.post_title.setText(model.getTitle());
-                viewHolder.post_author.setText("By " + model.getAuthor());
+                viewHolder.post_author.setText(getString(R.string.post_author) + model.getAuthor());
                 viewHolder.poemText.setText(model.getDevotionText());
                 if (model.getNumLikes() != null)
                 {
@@ -93,12 +93,10 @@ public class Tab3Devotion extends Fragment {
                     String time = com.techart.writersblock.TimeUtils.timeElapsed(currentTime() - model.getTimeCreated());
                     viewHolder.timeTextView.setText(time);
                 }
-
                 viewHolder.setLikeBtn(post_key);
                 viewHolder.setPostViewed(post_key);
                 postTitle = model.getTitle();
                 postContent = model.getDevotionText();
-
 
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override

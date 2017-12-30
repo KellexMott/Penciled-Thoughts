@@ -3,11 +3,11 @@ package com.techart.writersblock;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
-
 import com.firebase.client.Firebase;
 import com.google.firebase.database.FirebaseDatabase;
 
 /**
+ * Initializes Fire base context
  * Created by Kelvin on 31/05/2017.
  */
 

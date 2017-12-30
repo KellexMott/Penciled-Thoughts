@@ -13,7 +13,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-
+/**
+ * Retrieves and displays list of people who have viewed a particular post
+ */
 public class ViewsActivity extends AppCompatActivity
 {
     String title;
@@ -36,8 +38,13 @@ public class ViewsActivity extends AppCompatActivity
         mPoemList.setLayoutManager(linearLayoutManager);
         bindView();
     }
+
+    /**
+     * Binds the view to a listview
+     */
     private void bindView()
     {
+        //ToDo fully implement class and method
         Query query = FireBaseUtils.mDatabaseViews.orderByChild(Constants.POEM_KEY).equalTo(postKey);
         FirebaseRecyclerAdapter<Notice,ViewsActivity.NoticeViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Notice, ViewsActivity.NoticeViewHolder>(
                 Notice.class,R.layout.list_view,ViewsActivity.NoticeViewHolder.class, query)
@@ -46,7 +53,7 @@ public class ViewsActivity extends AppCompatActivity
             protected void populateViewHolder(ViewsActivity.NoticeViewHolder viewHolder, final Notice model, int position) {
                 final String post_key = getRef(position).getKey();
                 String time = TimeUtils.timeElapsed(TimeUtils.currentTime() - model.getTimeCreated());
-                viewHolder.tvUser.setText(String.format(model.getUser() ));
+                viewHolder.tvUser.setText(model.getUser());
 
                 viewHolder.tvTime.setText(time);
 

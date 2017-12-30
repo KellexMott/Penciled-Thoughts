@@ -38,8 +38,6 @@ public class Tab2Stories extends Fragment {
     private ArrayList<String> chapterTitles;
     private int pageCount;
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -68,7 +66,7 @@ public class Tab2Stories extends Fragment {
                 viewHolder.tvTitle.setText(model.getTitle());
                 viewHolder.tvCategory.setText(model.getCategory());
                 viewHolder.tvStatus.setText(model.getStatus());
-                viewHolder.tvAuthor.setText("By " + model.getAuthor());
+                viewHolder.tvAuthor.setText(getString(R.string.post_author) + model.getAuthor());
                 viewHolder.tvDescription.setText(model.getDescription());
                 if (model.getNumLikes() != null)
                 {
@@ -253,8 +251,7 @@ public class Tab2Stories extends Fragment {
 
     @Override
     public String toString() {
-        String title="Stories";
-        return title;
+        return "Stories";
     }
 
     private void showDescription(String description, final String post_key, final Story model) {
@@ -324,10 +321,10 @@ public class Tab2Stories extends Fragment {
             mDatabaseLike.keepSynced(true);
         }
 
-        public void setLikeBtn(String post_key) {
+        protected void setLikeBtn(String post_key) {
             FireBaseUtils.setLikeBtn(post_key,btnLiked);
         }
-        public void setPostViewed(String post_key) {
+        private void setPostViewed(String post_key) {
             FireBaseUtils.setPostViewed(post_key,btnViews);
         }
     }
