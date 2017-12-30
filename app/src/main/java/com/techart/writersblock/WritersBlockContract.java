@@ -5,6 +5,9 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 /**
+ * Defines constants that help with the Content URIs:
+ * 1. Column names
+ * 2. Table names
  * Created by Kelvin on 30/05/2017.
  */
 
@@ -19,15 +22,22 @@ public class WritersBlockContract {
     protected static final String PATH_STORIES = "stories";
     protected static final String PATH_CHAPTERS = "chapter";
 
+    /**
+     * Defines content URIs for the POEM table
+     */
     public static final class PoemEntry implements BaseColumns
     {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_POEMS).build();
 
-        // These are special type prefixes that specify if a URI returns a list or a specific item
+        /**
+         * Special type prefixes that specify if a URI returns a list or a specific item
+         */
         public static final String CONTENT_TYPE =  CONTENT_URI  + PATH_POEMS;
         public static final String CONTENT_ITEM_TYPE = CONTENT_URI + "/#" + PATH_POEMS;
 
-        //Constants for identifying Poem table and columns
+        /**
+         * Constants for identifying POEM table and columns
+         */
         public static final String TABLE_POEM = "poems";
         public static final String POEM_ID = "_id";
         public static final String POEM_TITLE = "poemTitle";
@@ -53,15 +63,21 @@ public class WritersBlockContract {
         }
     }
 
+
     public static final class SpiritualEntry implements BaseColumns
     {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SPIRITUALS).build();
 
-        // These are special type prefixes that specify if a URI returns a list or a specific item
+        /**
+         * Special type prefixes that specify if a URI returns a list or a specific item
+         */
         public static final String CONTENT_TYPE =  CONTENT_URI  + PATH_SPIRITUALS;
         public static final String CONTENT_ITEM_TYPE = CONTENT_URI + "/#" + PATH_SPIRITUALS;
 
-        //Constants for identifying Poem table and columns
+
+        /**
+         * Constants for identifying DEVOTION table and columns
+         */
         public static final String TABLE_SPIRITUAL = "spirituals";
         public static final String SPIRITUAL_ID = "_id";
         public static final String SPIRITUAL_TITLE = "spiritualTitle";
@@ -91,11 +107,15 @@ public class WritersBlockContract {
     {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_STORIES).build();
 
-        // These are special type prefixes that specify if a URI returns a list or a specific item
+        /**
+         * Special type prefixes that specify if a URI returns a list or a specific item
+         */
         public static final String CONTENT_TYPE = CONTENT_URI  +  PATH_STORIES;
         public static final String CONTENT_ITEM_TYPE = CONTENT_URI + "/#" + PATH_STORIES;
 
-        //Constants for identifying Book table and columns
+        /**
+         * Constants for identifying STORY table and columns
+         */
         public static final String TABLE_STORIES = "stories";
         public static final String STORY_ID = "_id";
         public static final String STORY_REFID = "storyRefId";
@@ -130,11 +150,15 @@ public class WritersBlockContract {
     {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CHAPTERS).build();
 
-        // These are special type prefixes that specify if a URI returns a list or a specific item
+        /**
+         * Special type prefixes that specify if a URI returns a list or a specific item
+         */
         public static final String CONTENT_TYPE = CONTENT_URI  + PATH_CHAPTERS;
         public static final String CONTENT_ITEM_TYPE = CONTENT_URI + "/#" + PATH_CHAPTERS;
 
-        //Constants for identifying Chapter table and columns
+        /**
+         * Constants for identifying CHAPTER table and columns
+         */
         public static final String TABLE_CHAPTER = "chapter";
         public static final String CHAPTER_ID = "_id";
         public static final String CHAPTER_TITLE = "chapterTitle";

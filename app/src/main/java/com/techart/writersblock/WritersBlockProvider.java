@@ -7,16 +7,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
-
 /**
+ * Provides a UI that manages access access to the central repository of data (Local DB)
+ * through a contentResolver, which is accessed using a CursorLoader to run an asynchronous
+ * query in the background
  * Created by Kelvin on 30/05/2017.
  */
 
 public class WritersBlockProvider extends ContentProvider {
-
-
-    // Constant to identify the requested operation
-
+    /** Constants to identify the requested operation
+     *
+     */
     private static final int POEMS = 100;
     private static final int POEM_ID = 101;
     private static final int STORIES = 200;
@@ -29,16 +30,18 @@ public class WritersBlockProvider extends ContentProvider {
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private WritersBlockDBOpenHelper mOpenHelper;
 
-
     /**
-     * Builds a UriMatcher that is used to determine witch database request is being made.
+     * Builds a UriMatcher that is used to determine which database request is being made.
+     * Includes an Authority & Path
+     * @return a matcher
      */
     public static UriMatcher buildUriMatcher() {
 
        UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
        String content = WritersBlockContract.AUTHORITY;
-        // All paths to the UriMatcher have a corresponding code to return
-        // when a match is found (the ints above).
+
+        //All paths to the UriMatcher have a corresponding code to return
+        //when a match is found (the ints above).
         matcher.addURI(content, WritersBlockContract.PATH_POEMS, POEMS);
         matcher.addURI(content, WritersBlockContract.PATH_POEMS + "/#", POEM_ID);
         matcher.addURI(content, WritersBlockContract.PATH_SPIRITUALS, SPIRITUALS);
@@ -55,6 +58,12 @@ public class WritersBlockProvider extends ContentProvider {
         mOpenHelper  = new WritersBlockDBOpenHelper(getContext());
         return true;
     }
+
+    /**
+     * Resolves a content type & a table
+     * @param uri receives a URI from a calling method
+     * @return the matched resolved URI
+     */
     @Override
     public String getType(Uri uri) {
         int match = sUriMatcher.match(uri);
@@ -80,6 +89,70 @@ public class WritersBlockProvider extends ContentProvider {
         }
     }
 
+    /**
+     * Resolves the table data is to be inserted in and calls insert Method
+     * @param uri content URI
+     * @param values Values to be inserted
+     * @return return return null if insert not successful
+     */
+    @Override
+    public Uri insert(Uri uri, ContentValues values) {
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        long _id;
+        Uri returnUri;
+
+        switch(sUriMatcher.match(uri)){
+            case POEMS:
+                _id = db.insert(WritersBlockContract.PoemEntry.TABLE_POEM, null, values);
+                if(_id > 0){
+                    returnUri =  WritersBlockContract.PoemEntry.buildPoemUri(_id);
+                } else{
+                    throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
+                }
+                break;
+            case SPIRITUALS:
+                _id = db.insert(WritersBlockContract.SpiritualEntry.TABLE_SPIRITUAL, null, values);
+                if(_id > 0){
+                    returnUri =  WritersBlockContract.SpiritualEntry.buildPoemUri(_id);
+                } else{
+                    throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
+                }
+                break;
+            case STORIES:
+                _id = db.insert(WritersBlockContract.StoryEntry.TABLE_STORIES, null, values);
+                if(_id > 0){
+                    returnUri = WritersBlockContract.StoryEntry.buildStoryUri(_id);
+                } else{
+                    throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
+                }
+                break;
+            case CHAPTERS:
+                _id = db.insert(WritersBlockContract.ChapterEntry.TABLE_CHAPTER, null, values);
+                if(_id > 0){
+                    returnUri = WritersBlockContract.ChapterEntry.buildChapterUri(_id);
+                } else{
+                   throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
+                }
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+
+        //Uses passed URI to notify about changes
+        getContext().getContentResolver().notifyChange(uri, null);
+        return returnUri;
+    }
+
+    /**
+     * Resolves the table data is to be queried in and calls query Method
+     * @param uri content URI
+     * @param projection the columns to be retrieved
+     * @param selection either null(retrieves all) or a particular element
+     * @param selectionArgs value to compare to
+     * @param sortOrder  The sort order for the retrieved rows
+     * @return returns null(throws exception) when no rows match,
+     */
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
@@ -182,56 +255,13 @@ public class WritersBlockProvider extends ContentProvider {
         return retCursor;
     }
 
-    @Override
-    public Uri insert(Uri uri, ContentValues values) {
-        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        long _id;
-        Uri returnUri;
-
-        switch(sUriMatcher.match(uri)){
-            case POEMS:
-                _id = db.insert(WritersBlockContract.PoemEntry.TABLE_POEM, null, values);
-                if(_id > 0){
-                    returnUri =  WritersBlockContract.PoemEntry.buildPoemUri(_id);
-                } else{
-                    throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
-                }
-                break;
-            case SPIRITUALS:
-                _id = db.insert(WritersBlockContract.SpiritualEntry.TABLE_SPIRITUAL, null, values);
-                if(_id > 0){
-                    returnUri =  WritersBlockContract.SpiritualEntry.buildPoemUri(_id);
-                } else{
-                    throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
-                }
-                break;
-            case STORIES:
-                _id = db.insert(WritersBlockContract.StoryEntry.TABLE_STORIES, null, values);
-                if(_id > 0){
-                    returnUri = WritersBlockContract.StoryEntry.buildStoryUri(_id);
-                } else{
-                    throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
-                }
-                break;
-            case CHAPTERS:
-                _id = db.insert(WritersBlockContract.ChapterEntry.TABLE_CHAPTER, null, values);
-                if(_id > 0){
-                    returnUri = WritersBlockContract.ChapterEntry.buildChapterUri(_id);
-                } else{
-                   throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
-                }
-                break;
-            default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
-        }
-
-        // Use this on the URI passed into the function to notify any observers that the uri has
-        // changed.
-        getContext().getContentResolver().notifyChange(uri, null);
-        return returnUri;
-        //return Uri.parse(PATH_POEMS + "/" + id);
-    }
-
+    /**
+     * Resolves the table data is to be deleted in and calls delete Method
+     * @param uri content URI
+     * @param selection the column to select on
+     * @param selectionArgs value to compare to
+     * @return number of rows deleted
+     */
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
@@ -257,10 +287,17 @@ public class WritersBlockProvider extends ContentProvider {
         if(selection == null || rows != 0){
             getContext().getContentResolver().notifyChange(uri, null);
         }
-
         return rows;
     }
 
+    /**
+     * Resolves the table data is to be updated in and calls update Method
+     * @param uri content URI
+     * @param values columns to update
+     * @param selection column to select on
+     * @param selectionArgs value to compare to
+     * @return returns number of rows updated
+     */
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
