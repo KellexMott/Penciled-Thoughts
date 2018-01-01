@@ -49,7 +49,7 @@ public class PoemEditorActivity extends AppCompatActivity {
             poemTitle = "New";
             poemUrl = "null";
             setTitle(poemTitle);
-            title.setHint("Poem title");
+            title.setHint("Tap to write title");
             editor.setHint("Tap to write poem");
             title.requestFocus();
         } else {
@@ -90,7 +90,7 @@ public class PoemEditorActivity extends AppCompatActivity {
                 determineAction();
                 break;
             case R.id.action_delete:
-                deleteNote();
+                determineDelete();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -103,6 +103,29 @@ public class PoemEditorActivity extends AppCompatActivity {
                 break;
             case Intent.ACTION_EDIT: updatePoem();
         }
+    }
+
+
+    /**
+     * Determines which delete action to do
+     */
+    private void determineDelete() {
+        switch (action)
+        {
+            case Intent.ACTION_INSERT: clearComponents();
+                break;
+            case Intent.ACTION_EDIT:deleteNote();
+                break;
+        }
+    }
+
+
+    /**
+     * Clears EditTexts
+     */
+    private void clearComponents() {
+        title.setText("");
+        editor.setText("");
     }
 
     private void deleteNote() {
@@ -163,14 +186,17 @@ public class PoemEditorActivity extends AppCompatActivity {
     {
         newText = editor.getText().toString().trim();
         newTitle = title.getText().toString().trim();
-        if ( EditorUtils.isEmpty(this,newTitle, "title") && EditorUtils.validateMainText(this,editor.getLayout().getLineCount()))
-        {
+        if(validate()) {
             postPoem();
         }
     }
 
-    private void updatePoem()
-    {
+    private boolean validate(){
+        return EditorUtils.isEmpty(this,newTitle,"poem title") &&
+                EditorUtils.validateMainText(this,editor.getLineCount());
+    }
+
+    private void updatePoem() {
         mProgress.setMessage("Updating poem...");
         mProgress.show();
         Map<String,Object> values = new HashMap<>();
@@ -178,7 +204,7 @@ public class PoemEditorActivity extends AppCompatActivity {
         values.put(Constants.POEM_TITLE,newTitle);
         FireBaseUtils.mDatabasePoems.child(poemUrl).updateChildren(values);
         mProgress.dismiss();
-        Toast.makeText(getApplicationContext(),"Poem posted", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),"Poem updates", Toast.LENGTH_LONG).show();
         finishEditing();
     }
 

@@ -21,12 +21,8 @@ public class ProfilePoemsListActivity extends AppCompatActivity {
     private RecyclerView mPoemList;
     private DatabaseReference mDatabasePoems;
     private DatabaseReference mDatabaseLike;
-    String author;
-    private String postTitle;
-    private String postContent;
-
+    private String author;
     private boolean mProcessLike = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,15 +48,13 @@ public class ProfilePoemsListActivity extends AppCompatActivity {
     private void bindView()
     {
         Query query = mDatabasePoems.orderByChild(Constants.POST_AUTHOR).equalTo(author);
-        FirebaseRecyclerAdapter<Poem,Tab1Poems.PoemViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Poem, Tab1Poems.PoemViewHolder>(
-                Poem.class,R.layout.item_row_del,Tab1Poems.PoemViewHolder.class, query)
+        FirebaseRecyclerAdapter<Poem,ProfileDevotionsListActivity.ArticleEditViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Poem, ProfileDevotionsListActivity.ArticleEditViewHolder>(
+                Poem.class,R.layout.item_row_del,ProfileDevotionsListActivity.ArticleEditViewHolder.class, query)
         {
             @Override
-            protected void populateViewHolder(Tab1Poems.PoemViewHolder viewHolder, final Poem model, int position) {
+            protected void populateViewHolder(ProfileDevotionsListActivity.ArticleEditViewHolder viewHolder, final Poem model, int position) {
                 final String post_key = getRef(position).getKey();
                 viewHolder.post_title.setText(model.getTitle());
-                viewHolder.post_author.setText("By " + model.getAuthor());
-                viewHolder.poemText.setText(model.getPoemText());
                 if (model.getNumLikes() != null)
                 {
                     viewHolder.numLikes.setText(model.getNumLikes().toString());
@@ -72,11 +66,9 @@ public class ProfilePoemsListActivity extends AppCompatActivity {
                 if (model.getTimeCreated() != null)
                 {
                     String time = TimeUtils.timeElapsed(TimeUtils.currentTime() - model.getTimeCreated());
-                    viewHolder.timeTextView.setText(time);
+                    viewHolder.tvTimeCreated.setText(time);
                 }
                 viewHolder.setLikeBtn(post_key);
-                postContent = model.getPoemText();
-                postTitle = model.getTitle();
 
                 viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -87,13 +79,14 @@ public class ProfilePoemsListActivity extends AppCompatActivity {
                     }
                 });
 
-                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                viewHolder.btEdit.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        Intent readPoemIntent = new Intent(ProfilePoemsListActivity.this,ScrollingActivity.class);
-                        readPoemIntent.putExtra(Constants.POST_CONTENT, postContent);
-                        readPoemIntent.putExtra(Constants.POST_TITLE, postTitle);
-                        startActivity(readPoemIntent);
+                    public void onClick(View view) {
+                        Intent readIntent = new Intent(ProfilePoemsListActivity.this,PoemEditorOnlineActivity.class);
+                        readIntent.putExtra(Constants.POST_KEY,post_key);
+                        readIntent.putExtra(Constants.POEM_TITLE,model.getTitle());
+                        readIntent.putExtra(Constants.POEM,model.getPoemText());
+                        startActivity(readIntent);
                     }
                 });
 

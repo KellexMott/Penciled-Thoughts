@@ -27,17 +27,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/item_row"
-            android:text="Author"
             android:textSize="12sp" />
-
 
         <TextView
             android:id="@+id/poemText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="5"
+            android:maxLines="3"
             android:paddingBottom="@dimen/item_row"
-            android:text="Description"
             android:textSize="@dimen/description_size"
             android:typeface="sans" />
 
@@ -56,11 +53,12 @@
                     android:id="@+id/likeBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:contentDescription="@string/like_button"
                     android:background="@android:color/transparent"
                     android:paddingBottom="7dp"
                     android:paddingTop="7dp"
                     android:paddingRight="7dp"
+                    android:paddingEnd="7dp"
                     app:srcCompat="@drawable/ic_thumb_up_grey_24dp" />
 
                 <TextView
@@ -70,7 +68,7 @@
                     android:layout_marginRight="7dp"
                     android:layout_marginLeft="7dp"
                     android:padding="7dp"
-                    android:text="0"
+                    android:text="@string/initial_count"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -80,6 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/like_layout"
+                android:layout_toEndOf="@+id/like_layout"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -87,6 +86,7 @@
                     android:id="@+id/commentBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="@string/comment_icon"
                     android:background="@android:color/transparent"
                     android:padding="7dp"
                     app:srcCompat="@drawable/ic_comment_white_24dp" />
@@ -96,7 +96,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="7dp"
-                    android:text="0"
+                    android:layout_marginEnd="7dp"
+                    android:text="@string/initial_count"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -106,12 +107,14 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:layout_toRightOf="@+id/comment_layout">
+                android:layout_toRightOf="@+id/comment_layout"
+                android:layout_toEndOf="@+id/comment_layout">
                 <ImageButton
                     android:id="@+id/bt_views"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
+                    android:contentDescription="@string/view_icon"
                     android:padding="7dp"
                     app:srcCompat="@drawable/ic_visibility_grey_24px" />
                 <TextView
@@ -119,7 +122,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="7dp"
-                    android:text="0"
+                    android:layout_marginEnd="7dp"
+                    android:text="@string/initial_count"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -129,9 +133,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:paddingTop="7dp"
                 android:textColor="@color/colorText"
-                android:text="just now"
+                android:text="@string/just_now"
                 android:textSize="12sp" />
         </RelativeLayout>
     </LinearLayout>

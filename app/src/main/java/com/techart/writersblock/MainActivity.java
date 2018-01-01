@@ -26,16 +26,11 @@ import com.google.firebase.database.ValueEventListener;
  * Landing page.
  * The {@link android.support.v4.view.PagerAdapter} that will provide
  * fragments for each of the sections. We use a
- * {@link FragmentPagerAdapter} derivative, which will keep every
  * loaded fragment in memory. If this becomes too memory intensive, it
  * may be best to switch to a
  * {@link android.support.v4.app.FragmentStatePagerAdapter}.
- */
-
-/**
  * The {@link ViewPager} that will host the section contents.
  */
-
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener,ViewPager.OnPageChangeListener
 {
     private FirebaseAuth mAuth;
@@ -223,24 +218,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     @Override
     public void onBackPressed()
     {
-        DialogInterface.OnClickListener dialogClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int button) {
-                        if (button == DialogInterface.BUTTON_POSITIVE)
-                        {
-                            finish();
-                        }
-                        if (button == DialogInterface.BUTTON_NEGATIVE)
-                        {
-                            dialog.dismiss();
-                        }
-                    }
-                };
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Exit application? ")
-                .setPositiveButton("Yes", dialogClickListener)
-                .setNegativeButton("Cancel", dialogClickListener)
-                .show();
+        finish();
     }
 }

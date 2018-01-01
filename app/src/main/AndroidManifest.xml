@@ -153,6 +153,15 @@
         </activity>
 
         <activity
+            android:name=".PoemEditorOnlineActivity"
+            android:excludeFromRecents="true"
+            android:parentActivityName=".ProfileStoriesListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.ProfileDevotionsListActivity" />
+        </activity>
+
+        <activity
             android:name=".OnlineChapterListActivity"
             android:excludeFromRecents="true"
             android:parentActivityName=".ProfileStoriesListActivity">
