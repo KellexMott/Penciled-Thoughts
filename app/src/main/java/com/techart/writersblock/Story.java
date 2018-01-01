@@ -1,6 +1,7 @@
 package com.techart.writersblock;
 
 /**
+ * Object for a Story
  * Created by Kelvin on 05/06/2017.
  */
 

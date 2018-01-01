@@ -2,26 +2,25 @@ package com.techart.writersblock;
 
 import android.app.ProgressDialog;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ServerValue;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Handles devotion user actions as writing and posting
+ */
 public class DevotionEditorActivity extends AppCompatActivity {
 
     private ProgressDialog mProgress;
@@ -41,11 +40,8 @@ public class DevotionEditorActivity extends AppCompatActivity {
 
     private Boolean isPostEdited;
 
-
-
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
         mAuth = FirebaseAuth.getInstance();
@@ -64,7 +60,7 @@ public class DevotionEditorActivity extends AppCompatActivity {
             isPostEdited = false;
             action = Intent.ACTION_INSERT;
             setTitle(oldTitle);
-            title.setHint("Devotion title");
+            title.setHint("Tap to write devotion title");
             editor.setHint("Tap to write devotion");
             title.requestFocus();
         } else {
@@ -82,6 +78,7 @@ public class DevotionEditorActivity extends AppCompatActivity {
             editor.setText(oldText);
             title.setText(oldTitle);
             title.requestFocus();
+            cursor.close();
         }
     }
 
@@ -92,21 +89,22 @@ public class DevotionEditorActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Handles action bar item clicks
+     * @param item item that has been clicked
+     * @return true if it was handled
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
        newText = editor.getText().toString().trim();
        newTitle = title.getText().toString().trim();
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_post:
                 determineAction();
                 break;
             case R.id.action_delete:
-                deleteNote();
+                determineDelete();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -118,25 +116,47 @@ public class DevotionEditorActivity extends AppCompatActivity {
         {
             case Intent.ACTION_INSERT: startPosting();
                 break;
-            case Intent.ACTION_EDIT: exitsDialog();
+            case Intent.ACTION_EDIT: startUpdating();
+                break;
         }
     }
 
-    private void updatePoem()
-    {
+    private void updatePoem() {
         mProgress.setMessage("Updating devotion...");
         mProgress.show();
-
         Map<String,Object> values = new HashMap<>();
         values.put(Constants.DEVOTION,newText);
         values.put(Constants.DEVOTION_TITLE,newTitle);
-        FireBaseUtils.mDatabasePoems.child(devotionUrl).updateChildren(values);
+        FireBaseUtils.mDatabaseDevotions.child(devotionUrl).updateChildren(values);
         mProgress.dismiss();
-        Toast.makeText(getApplicationContext(),"Poem Updated", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),"Devotion Updated", Toast.LENGTH_LONG).show();
         finishEditing();
     }
 
+    /**
+     * Determines which delete action to do
+     */
+    private void determineDelete() {
+        switch (action)
+        {
+            case Intent.ACTION_INSERT: clearComponents();
+                break;
+            case Intent.ACTION_EDIT:deleteNote();
+                break;
+        }
+    }
 
+    /**
+     * Clears EditTexts
+     */
+    private void clearComponents() {
+        title.setText("");
+        editor.setText("");
+    }
+
+    /**
+     * Deletes Devotion from Database
+     */
     private void deleteNote() {
         getContentResolver().delete(WritersBlockContract.SpiritualEntry.CONTENT_URI,
                 noteFilter, null);
@@ -186,90 +206,32 @@ public class DevotionEditorActivity extends AppCompatActivity {
         values.put(WritersBlockContract.SpiritualEntry.SPIRITUAL_TEXT, newText);
         values.put(WritersBlockContract.SpiritualEntry.SPIRITUAL_FIREBASE_URL, devotionUrl);
         getContentResolver().insert(WritersBlockContract.SpiritualEntry.CONTENT_URI, values);
+        Toast.makeText(getApplicationContext(), oldTitle + " saved", Toast.LENGTH_LONG).show();
         setResult(RESULT_OK);
     }
 
     private void startPosting() {
         newText = editor.getText().toString().trim();
         newTitle = title.getText().toString().trim();
-        if(!isEditorEmpty())
-        {
-            showErrorDialog("Error...! You have not written anything");
-        }
-        else if ( EditorUtils.isEmpty(this,newTitle, "title") && EditorUtils.validateMainText(this,editor.getLayout().getLineCount()))
-        {
+        if(validate()) {
             postPoem();
         }
+    }
+
+    private boolean validate(){
+        return EditorUtils.isEmpty(this,newTitle,"devotion title") &&
+                EditorUtils.validateMainText(this,editor.getLineCount());
     }
 
     private void startUpdating() {
         newText = editor.getText().toString().trim();
         newTitle = title.getText().toString().trim();
-        if(!isEditorEmpty())
-        {
-            showErrorDialog("Error...! You have not written anything");
-        }
-        else if ( EditorUtils.compareStrings(oldText,newText) || EditorUtils.compareStrings(oldTitle, newTitle))
-        {
+        if(validate()) {
             updatePoem();
         }
-        else
-        {
-            showErrorDialog("No changes detected");
-        }
     }
 
-    private boolean isEditorEmpty()
-    {
-        return TextUtils.isEmpty(newText) && !TextUtils.isEmpty(newTitle);
-    }
-
-    private void exitsDialog()
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Would you like to update existing post?")
-                .setTitle("Devotion already exist");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                startUpdating();
-            }
-        })
-        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                finish();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    private void showErrorDialog(String errorMsg)
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(errorMsg);
-        builder.setPositiveButton("Stay in editor", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-            }
-        })
-                .setNegativeButton("Exit editor", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                        finish();
-                    }
-                });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    private void postPoem()
-    {
+    private void postPoem() {
         mProgress.setMessage("Posting devotion...");
         mProgress.show();
         devotionUrl = FireBaseUtils.mDatabaseDevotions.push().getKey();
@@ -281,25 +243,16 @@ public class DevotionEditorActivity extends AppCompatActivity {
         values.put(Constants.NUM_COMMENTS,0);
         values.put(Constants.NUM_VIEWS,0);
         values.put(Constants.AUTHOR_URL,mAuth.getCurrentUser().getUid());
-        values.put(Constants.POST_AUTHOR,getAuthor());
+        values.put(Constants.POST_AUTHOR,FireBaseUtils.getAuthor());
         values.put(Constants.TIME_CREATED,ServerValue.TIMESTAMP);
         FireBaseUtils.mDatabaseDevotions.child(devotionUrl).setValue(values);
-
         mProgress.dismiss();
         Toast.makeText(getApplicationContext(),"Devotion posted", Toast.LENGTH_LONG).show();
-    }
-
-
-    public String getAuthor()
-    {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        return user.getDisplayName();
+        finishEditing();
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         finishEditing();
-        Toast.makeText(getApplicationContext(), oldTitle + " saved", Toast.LENGTH_LONG).show();
     }
 }

@@ -2,12 +2,13 @@ package com.techart.writersblock;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+/**
+ * Presents the view for reading items
+ */
 public class ScrollingActivity extends AppCompatActivity {
-
     TextView tvPoem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,17 +19,17 @@ public class ScrollingActivity extends AppCompatActivity {
         setTitle(postTitle);
         tvPoem = (TextView)findViewById(R.id.tvPoem);
         tvPoem.setText(postContent);
-
-
     }
 
+    /**
+     * Handles action bar item clicks.
+     * @param item item clicked by user
+     * @return returns true if item exits
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // Handles action bar item clicks here.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         /*if (id == R.id.action_settings) {
             return true;

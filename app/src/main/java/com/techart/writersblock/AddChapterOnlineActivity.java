@@ -1,7 +1,6 @@
 package com.techart.writersblock;
 
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,7 +37,7 @@ public class AddChapterOnlineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_editor);
+        setContentView(R.layout.activity_storyeditor);
         editor = (EditText) findViewById(R.id.editText);
         title = (EditText)findViewById(R.id.editTitle);
         mProgress = new ProgressDialog(this);

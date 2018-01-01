@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Activity for editing title of posted story
+ * Uses Story URL to map each story during an update
  * Created by Kelvin on 30/07/2017.
  */
 

@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Has constants for Fire base variable names
  * Created by Kelvin on 11/09/2017.
  */
 
@@ -42,6 +43,14 @@ public final class FireBaseUtils {
     {
 
     }
+    /*
+    private static FirebaseAuth getAuth(){
+        if (mAuth.getCurrentUser() != null){
+            return mAuth;
+        }else {
+            //ToDo logout
+        }
+    }*/
 
     public static String getAuthor()
     {

@@ -1,23 +1,17 @@
 package com.techart.writersblock;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +22,19 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
+/**
+ * Landing page.
+ * The {@link android.support.v4.view.PagerAdapter} that will provide
+ * fragments for each of the sections. We use a
+ * {@link FragmentPagerAdapter} derivative, which will keep every
+ * loaded fragment in memory. If this becomes too memory intensive, it
+ * may be best to switch to a
+ * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+ */
+
+/**
+ * The {@link ViewPager} that will host the section contents.
+ */
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener,ViewPager.OnPageChangeListener
 {
@@ -39,18 +45,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private BottomNavigationView bottomNavigationView;
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
     private ViewPager mViewPager;
 
     private ViewPager vp;
@@ -99,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                         //createNotification("Story", "Chapter added");
                         break;
                     case R.id.navigation_create:
-                        Intent dialogIntent = new Intent(MainActivity.this,  SelectDialogActivity.class);
+                        Intent dialogIntent = new Intent(MainActivity.this,  PostTypeDialog.class);
                         startActivity(dialogIntent);
                         break;
                     case R.id.navigation_profile:
@@ -213,22 +207,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         });
     }
 
-    private void createNotification(String title, String message)
-    {
-        PendingIntent pendingIntent = PendingIntent.getActivity(getBaseContext(),NOT_USED,emptyIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Builder notificationBuilder = new
-        NotificationCompat.Builder(this)
-        .setSmallIcon(R.drawable.logo)
-        .setContentTitle(title)
-        .setContentText(message)
-        .setContentIntent(pendingIntent);
-
-        notificationBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(1,notificationBuilder.build());
-    }
-
-    private boolean haveNetworkConnection() {
+    private void haveNetworkConnection() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm != null)
         {
@@ -236,11 +215,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             if (netWorkInfo != null && netWorkInfo.getState() == NetworkInfo.State.CONNECTED)
             {
                 Toast.makeText(getApplicationContext(),"Connected", Toast.LENGTH_LONG).show();
-                return true;
             }
         }
         Toast.makeText(getApplicationContext(),"No internet Connection", Toast.LENGTH_LONG).show();
-        return false;
     }
 
     @Override

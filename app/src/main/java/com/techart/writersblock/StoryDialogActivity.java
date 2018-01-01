@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 /**
+ * Presents Story Edit options
  * Created by Kelvin on 30/07/2017.
  */
 
@@ -28,7 +29,7 @@ public class StoryDialogActivity extends AppCompatActivity {
         setContentView(R.layout.dialog_selectaction);
         ListView list = (ListView) findViewById(R.id.list);
         final String[] options = new String[] { "Add Chapter", "Edit Chapter", "Edit Description", "Edit Title" };
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, options);
         list.setAdapter(adapter);
         list.setStackFromBottom(true);
@@ -66,7 +67,7 @@ public class StoryDialogActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                     Story story = dataSnapshot.getValue(Story.class);
-                    Intent readIntent = new Intent(StoryDialogActivity.this,StoryEditDialogActivity.class);
+                    Intent readIntent = new Intent(StoryDialogActivity.this,StoryDescriptionEditDialog.class);
                     readIntent.putExtra(Constants.STORY_REFID,postKey);
                     readIntent.putExtra(Constants.STORY_DESCRIPTION,story.getDescription());
                     startActivity(readIntent);

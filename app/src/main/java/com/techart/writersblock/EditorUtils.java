@@ -16,6 +16,12 @@ public final class EditorUtils {
     {
     }
 
+    /**
+     * Inspects if the line count is not less than 10
+     * @param context The context of the invoking method
+     * @param layOutLineCount The number of lines written in a particular editText component
+     * @return true if it confines to the condition
+     */
     protected static boolean validateMainText(Context context, int layOutLineCount) {
         if (layOutLineCount <= lineCount) {
             Toast.makeText(context, "Text too short, at least " + lineCount + " lines", Toast.LENGTH_LONG).show();
@@ -31,7 +37,7 @@ public final class EditorUtils {
 
     protected static boolean isEmpty(Context context, String title, String placeHolder)
     {
-        if (title == null || title.isEmpty())
+        if (title.isEmpty())
         {
             Toast.makeText(context,"Type in "+ placeHolder,Toast.LENGTH_LONG).show();
             return false;
@@ -89,9 +95,9 @@ public final class EditorUtils {
         }
     }
 
-    protected final static boolean isEmailValid(Context context, String email) {
-        CharSequence target = email;
-        if (android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches()) {
+    protected static boolean isEmailValid(Context context, String email) {
+        //CharSequence target = email;
+        if (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             return true;
         } else {
             Toast.makeText(context, "Email address not valid", Toast.LENGTH_LONG).show();

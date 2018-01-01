@@ -10,12 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
+ * Maps columns from the Cursor to the widgets on views
+ * View icon is blue if story is not posted.
  * Created by Kelvin on 30/05/2017.
  */
 
 public class StoryCursorAdapter extends CursorAdapter {
     Context context;
-    LayoutInflater inflater;
     public StoryCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         this.context = context;
@@ -30,7 +31,6 @@ public class StoryCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-
         String storyTitle = cursor.getString(
                 cursor.getColumnIndex(WritersBlockContract.StoryEntry.STORY_TITLE));
 
@@ -40,7 +40,6 @@ public class StoryCursorAdapter extends CursorAdapter {
         String hasUrl = cursor.getString(
                 cursor.getColumnIndex(WritersBlockContract.StoryEntry.STORY_REFID));
 
-
         TextView tvStoryTitle = (TextView) view.findViewById(R.id.tvTitle);
         tvStoryTitle.setText(storyTitle);
 
@@ -48,17 +47,11 @@ public class StoryCursorAdapter extends CursorAdapter {
         time.setText(timeCreated);
         ImageView im = (ImageView) view.findViewById(R.id.ivFile);
 
-
-
-        if (hasUrl.length() > 5)
-        {
-
+        if (hasUrl.length() > 5) {
              im.setImageResource(R.drawable.ic_book_blue);
         }
-        else
-        {
+        else {
              im.setImageResource(R.drawable.ic_book_grey);
         }
-
     }
 }

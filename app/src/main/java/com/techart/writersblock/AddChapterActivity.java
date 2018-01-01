@@ -40,7 +40,7 @@ public class AddChapterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_editor);
+        setContentView(R.layout.activity_storyeditor);
         editor = (EditText) findViewById(R.id.editText);
         title = (EditText)findViewById(R.id.editTitle);
         mProgress = new ProgressDialog(this);

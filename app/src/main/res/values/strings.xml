@@ -130,4 +130,13 @@
     <string name="photo">Photo</string>
     <string name="add_post">Add Post</string>
     <string name="post_author">By</string>
+    <string name="tap_to_write">Tap to start writing</string>
+    <string name="delete_icon">Delete Icon</string>
+    <string name="edit_devotion">Edit Devotion</string>
+    <string name="like_button">Like button</string>
+    <string name="initial_count">0</string>
+    <string name="comment_icon">Comment icon</string>
+    <string name="view_icon">View icon</string>
+    <string name="just_now">just now</string>
+    <string name="episode">Episode:</string>
 </resources>

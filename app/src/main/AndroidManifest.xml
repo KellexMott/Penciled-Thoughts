@@ -57,7 +57,7 @@
         <activity android:name=".RegisterActivity" />
 
         <activity
-            android:name=".SelectDialogActivity"
+            android:name=".PostTypeDialog"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/dialogTheme" />
@@ -75,7 +75,7 @@
             android:theme="@style/dialogTheme" />
 
         <activity
-            android:name=".StoryEditDialogActivity"
+            android:name=".StoryDescriptionEditDialog"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/dialogTheme" />
@@ -141,6 +141,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techart.writersblock.ProfileStoriesListActivity" />
+        </activity>
+
+        <activity
+            android:name=".DevotionEditorOnlineActivity"
+            android:excludeFromRecents="true"
+            android:parentActivityName=".ProfileStoriesListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techart.writersblock.ProfileDevotionsListActivity" />
         </activity>
 
         <activity
@@ -256,7 +265,7 @@
                 android:value="com.techart.writersblock.ProfileActivity" />
         </activity>
         <activity
-            android:name=".EditorActivity"
+            android:name=".PoemEditorActivity"
             android:excludeFromRecents="true"
             android:parentActivityName=".ProfileActivity">
             <meta-data

@@ -20,9 +20,6 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/post_title"
                 android:layout_width="match_parent"
@@ -37,31 +34,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:contentDescription="@string/delete_icon"
                 android:background="@android:color/transparent"
                 android:padding="7dp"
                 app:srcCompat="@drawable/ic_delete_white_24px"  />
-        </RelativeLayout>
-
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/post_author"
+        <Button
+            android:id="@+id/bt_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/item_row"
             android:paddingBottom="@dimen/item_row"
-            android:text="Author"
-            android:textSize="12sp" />
-
-
-        <TextView
-            android:id="@+id/poemText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="5"
-            android:paddingBottom="@dimen/item_row"
-            android:text="Description"
-            android:textSize="@dimen/text_size"
-            android:typeface="sans" />
+            android:text="@string/edit_devotion"
+            android:textSize="14sp"
+            android:textColor="@color/colorPrimary"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -79,6 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:contentDescription="@string/like_button"
                     android:background="@android:color/transparent"
                     android:padding="7dp"
                     app:srcCompat="@drawable/ic_delete_white_24px" />
@@ -90,7 +78,7 @@
                     android:layout_marginRight="7dp"
                     android:layout_marginLeft="7dp"
                     android:padding="7dp"
-                    android:text="0"
+                    android:text="@string/initial_count"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -107,6 +95,7 @@
                     android:id="@+id/commentBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="@string/comment_icon"
                     android:background="@android:color/transparent"
                     android:padding="7dp"
                     app:srcCompat="@drawable/ic_comment_white_24dp" />
@@ -116,7 +105,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="7dp"
-                    android:text="0"
+                    android:text="@string/initial_count"
                     android:textSize="16sp" />
             </LinearLayout>
             <LinearLayout
@@ -131,6 +120,7 @@
                     android:id="@+id/bt_views"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="@string/view_icon"
                     android:background="@android:color/transparent"
                     android:padding="7dp"
                     app:srcCompat="@drawable/ic_visibility_grey_24px" />
@@ -139,7 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="7dp"
-                    android:text="0"
+                    android:text="@string/initial_count"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -151,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:padding="7dp"
-                android:text="just now"
+                android:text="@string/just_now"
                 android:textSize="12sp" />
         </RelativeLayout>
     </LinearLayout>

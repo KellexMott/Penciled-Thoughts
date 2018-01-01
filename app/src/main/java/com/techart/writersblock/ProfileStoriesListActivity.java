@@ -10,8 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -33,10 +31,8 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseStory;
 
     private DatabaseReference mDatabaseLike;
-
     private String author;
-
-    AlertDialog updateDialog;
+    private AlertDialog updateDialog;
     private ArrayList<String> contents = new ArrayList<>(Arrays.asList("Romance", "Action", "Drama", "Fiction"));
 
     String[] categories = {"Romance", "Action", "Drama", "Fiction"};

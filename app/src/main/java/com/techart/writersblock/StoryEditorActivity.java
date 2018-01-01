@@ -21,6 +21,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Provides the ability to write a Story, Store in a local db and/or post
+ * to Server. Only called once per Story.
+ * Invoked by StoryOverViewActivity
+ */
 public class StoryEditorActivity extends AppCompatActivity {
 
     private ProgressDialog mProgress;
@@ -46,7 +51,7 @@ public class StoryEditorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editor);
+        setContentView(R.layout.activity_storyeditor);
         chapterTitle = (EditText) findViewById(R.id.editTitle);
         editor = (EditText) findViewById(R.id.editText);
         mAuth = FirebaseAuth.getInstance();

@@ -13,6 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+/**
+ * Presents a provision for adding Story Title, Category and Description
+ * Invokes StoryEditorActivity
+ */
 public class StoryOverViewActivity extends AppCompatActivity {
 
     private Spinner spCategory;

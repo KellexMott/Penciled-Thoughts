@@ -22,24 +22,21 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Handles registration process
+ */
 public class RegisterActivity extends AppCompatActivity {
-
     private EditText etUsername;
     private EditText etLogin;
     private EditText etPassword;
     private EditText etRepeatedPassword;
-
     private String firstPassword;
     private String repeatedPassword;
     private String name;
     private String email;
-
-
     private FirebaseAuth mAuth;
     private ProgressDialog mProgress;
-
     private Button btRegister;
-    private int iTemPosition = 0;
     private String signingInAs;
 
     @Override
@@ -67,34 +64,20 @@ public class RegisterActivity extends AppCompatActivity {
             }
             }
         });
-
-        /*final String[] options = new String[] {"Click me", "Reader", "Writer"};
-
-        Spinner signUpAs = (Spinner) findViewById(R.id.spinner);
-
-        ArrayAdapter<String> pagesAdapter = new ArrayAdapter<String>(RegisterActivity.this, R.layout.tv_dropdown, options);
-        pagesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        pagesAdapter.notifyDataSetChanged();
-
-        signUpAs.setAdapter(pagesAdapter);
-        signUpAs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                iTemPosition = position;
-                signingInAs = options[position];
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });*/
     }
 
+    /**
+     * Handles radio button clicks
+     * @param view sends the radio button view
+     */
     public void onRadioButtonClicked(View view) {
         ((RadioButton) view).setChecked(((RadioButton) view).isChecked());
         signingInAs = ((RadioButton) view).getText().toString();
     }
 
+    /**
+     * implementation of the registration
+     */
     private void startRegister() {
         mProgress.setMessage("Signing Up  ...");
         mProgress.show();
@@ -149,6 +132,10 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Validates the entries
+     * @return true if they all true
+     */
     private boolean validateCredentials()
     {
         firstPassword =  etPassword.getText().toString().trim();

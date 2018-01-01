@@ -38,7 +38,7 @@ public class MyPoemsListActivity extends AppCompatActivity
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent editorIntent = new Intent(MyPoemsListActivity.this, EditorActivity.class);
+                    Intent editorIntent = new Intent(MyPoemsListActivity.this, PoemEditorActivity.class);
                         Uri uri = Uri.parse(WritersBlockContract.PoemEntry.CONTENT_URI + "/" + id);
                         editorIntent.putExtra(WritersBlockContract.PoemEntry.CONTENT_ITEM_TYPE, uri);
                         startActivityForResult(editorIntent,EDITOR_REQUEST_CODE);
@@ -63,7 +63,7 @@ public class MyPoemsListActivity extends AppCompatActivity
         int id = item.getItemId();
         switch (id) {
             case R.id.action_add:
-                Intent editorIntent = new Intent(MyPoemsListActivity.this, EditorActivity.class);
+                Intent editorIntent = new Intent(MyPoemsListActivity.this, PoemEditorActivity.class);
                 startActivityForResult(editorIntent,EDITOR_REQUEST_CODE);
                 break;
         }

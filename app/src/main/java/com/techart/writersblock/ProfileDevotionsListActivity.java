@@ -6,8 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,7 +23,7 @@ public class ProfileDevotionsListActivity extends AppCompatActivity {
     private RecyclerView mPoemList;
     private DatabaseReference mDatabaseDevotions;
     private DatabaseReference mDatabaseLike;
-    private FirebaseRecyclerAdapter<Devotion,Tab1Poems.PoemViewHolder> firebaseRecyclerAdapter;
+    private FirebaseRecyclerAdapter<Devotion,ArticleEditViewHolder> firebaseRecyclerAdapter;
     private String postTitle;
     private String postContent;
     private String author;
@@ -49,14 +53,14 @@ public class ProfileDevotionsListActivity extends AppCompatActivity {
     private void bindView()
     {
         Query query = mDatabaseDevotions.orderByChild(Constants.POST_AUTHOR).equalTo(author);
-        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Devotion, Tab1Poems.PoemViewHolder>(
-                Devotion.class,R.layout.item_row_del,Tab1Poems.PoemViewHolder.class, query) {
+        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Devotion, ArticleEditViewHolder>(
+                Devotion.class,R.layout.item_row_del,ArticleEditViewHolder.class, query) {
             @Override
-            protected void populateViewHolder(Tab1Poems.PoemViewHolder viewHolder, final Devotion model, int position) {
+            protected void populateViewHolder(ArticleEditViewHolder viewHolder, final Devotion model, int position) {
                 final String post_key = getRef(position).getKey();
+                postTitle = model.getTitle();
+                postContent = model.getDevotionText();
                 viewHolder.post_title.setText(model.getTitle());
-                viewHolder.post_author.setText("By " + model.getAuthor());
-                viewHolder.poemText.setText(model.getDevotionText());
                 if (model.getNumLikes() != null)
                 {
                     viewHolder.numLikes.setText(model.getNumLikes().toString());
@@ -68,12 +72,21 @@ public class ProfileDevotionsListActivity extends AppCompatActivity {
                 if (model.getTimeCreated() != null)
                 {
                     String time = TimeUtils.timeElapsed(TimeUtils.currentTime() - model.getTimeCreated());
-                    viewHolder.timeTextView.setText(time);
+                    viewHolder.tvTimeCreated.setText(time);
                 }
 
                 viewHolder.setLikeBtn(post_key);
-                postTitle = model.getTitle();
-                postContent = model.getDevotionText();
+
+                viewHolder.btEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent readIntent = new Intent(ProfileDevotionsListActivity.this,DevotionEditorOnlineActivity.class);
+                        readIntent.putExtra(Constants.POST_KEY,post_key);
+                        readIntent.putExtra(Constants.DEVOTION_TITLE,model.getTitle());
+                        readIntent.putExtra(Constants.DEVOTION,model.getDevotionText());
+                        startActivity(readIntent);
+                    }
+                });
 
 
                 viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -82,24 +95,6 @@ public class ProfileDevotionsListActivity extends AppCompatActivity {
                         FireBaseUtils.deleteDevotion(post_key);
                         FireBaseUtils.deleteComment(post_key);
                         FireBaseUtils.deleteLike(post_key);
-                    }
-                });
-                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent readPoemIntent = new Intent(ProfileDevotionsListActivity.this,ScrollingActivity.class);
-                        readPoemIntent.putExtra(Constants.POST_CONTENT, postContent);
-                        readPoemIntent.putExtra(Constants.POST_TITLE, postTitle);
-                        startActivity(readPoemIntent);
-                    }
-                });
-
-                viewHolder.post_author.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent readPoemIntent = new Intent(ProfileDevotionsListActivity.this,AuthorsProfileActivity.class);
-                        readPoemIntent.putExtra(Constants.POST_AUTHOR, model.getAuthor());
-                        startActivity(readPoemIntent);
                     }
                 });
 
@@ -153,5 +148,51 @@ public class ProfileDevotionsListActivity extends AppCompatActivity {
         mPoemList.setAdapter(firebaseRecyclerAdapter);
         firebaseRecyclerAdapter.notifyDataSetChanged();
     }
+
+
+    public static class ArticleEditViewHolder extends RecyclerView.ViewHolder
+    {
+        TextView post_title;
+        TextView numLikes;
+        TextView numComments;
+        TextView tvNumViews;
+        TextView tvTimeCreated;
+
+        View mView;
+
+        DatabaseReference mDatabaseLike;
+        FirebaseAuth mAUth;
+
+        Button btEdit;
+        ImageButton btnLiked;
+        ImageButton btnDelete;
+        ImageButton btnComment;
+        ImageButton btnViews;
+
+        public ArticleEditViewHolder(View itemView) {
+            super(itemView);
+            post_title = (TextView)itemView.findViewById(R.id.post_title);
+            btnLiked = (ImageButton)itemView.findViewById(R.id.likeBtn);
+            btnDelete = (ImageButton)itemView.findViewById(R.id.im_del);
+            btnComment = (ImageButton)itemView.findViewById(R.id.commentBtn);
+            tvNumViews = (TextView) itemView.findViewById(R.id.tv_numviews);
+            btnViews = (ImageButton)itemView.findViewById(R.id.bt_views);
+            numLikes = (TextView) itemView.findViewById(R.id.tv_likes);
+            numComments = (TextView) itemView.findViewById(R.id.tv_comments);
+
+            tvTimeCreated = (TextView) itemView.findViewById(R.id.tvTime);
+            btEdit = (Button) itemView.findViewById(R.id.bt_edit);
+
+            this.mView = itemView;
+            mDatabaseLike =FireBaseUtils.mDatabaseLike;
+            mAUth = FirebaseAuth.getInstance();
+            mDatabaseLike.keepSynced(true);
+        }
+
+        protected void setLikeBtn(String post_key) {
+            FireBaseUtils.setLikeBtn(post_key,btnLiked);
+        }
+    }
+
 }
 
