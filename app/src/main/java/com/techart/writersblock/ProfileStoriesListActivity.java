@@ -197,7 +197,7 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
         builder.setSingleChoiceItems(categories, contents.indexOf(category), new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int item) {
-                FireBaseUtils.updateStatus(contents.get(item),post_key);
+                FireBaseUtils.updateCategory(contents.get(item),post_key);
                 updateDialog.dismiss();
                 Toast.makeText(getBaseContext(),"Story Updated",Toast.LENGTH_LONG).show();
             }
@@ -234,12 +234,6 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
                 .setNegativeButton("Cancel", dialogClickListener)
                 .show();
     }
-
-    private int getIndex(String current) {
-        Toast.makeText(this,current,Toast.LENGTH_LONG).show();
-        return contents.indexOf(current);
-    }
-
 
     public static class StoryViewHolder extends RecyclerView.ViewHolder
     {

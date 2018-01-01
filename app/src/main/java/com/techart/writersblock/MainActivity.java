@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private final Intent emptyIntent = new Intent();
     private int NOT_USED;
 
     private BottomNavigationView bottomNavigationView;
@@ -211,8 +210,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             {
                 Toast.makeText(getApplicationContext(),"Connected", Toast.LENGTH_LONG).show();
             }
+            else {
+                Toast.makeText(getApplicationContext(),"No internet Connection", Toast.LENGTH_LONG).show();
+            }
         }
-        Toast.makeText(getApplicationContext(),"No internet Connection", Toast.LENGTH_LONG).show();
     }
 
     @Override
