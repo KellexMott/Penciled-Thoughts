@@ -95,8 +95,6 @@ public class Tab3Devotion extends Fragment {
                 }
                 viewHolder.setLikeBtn(post_key);
                 viewHolder.setPostViewed(post_key);
-                postTitle = model.getTitle();
-                postContent = model.getDevotionText();
 
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -120,8 +118,8 @@ public class Tab3Devotion extends Fragment {
                             }
                         });
                         Intent readPoemIntent = new Intent(getContext(),ScrollingActivity.class);
-                        readPoemIntent.putExtra(Constants.POST_CONTENT, postContent);
-                        readPoemIntent.putExtra(Constants.POST_TITLE, postTitle);
+                        readPoemIntent.putExtra(Constants.POST_CONTENT, model.getDevotionText());
+                        readPoemIntent.putExtra(Constants.POST_TITLE, model.getTitle());
                         startActivity(readPoemIntent);
                     }
                 });

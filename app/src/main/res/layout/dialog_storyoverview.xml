@@ -4,28 +4,24 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10dp"
     tools:context="com.techart.writersblock.StoryOverViewActivity">
 
      <Spinner
         android:id="@+id/categories"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
-        android:padding="7dp"/>
+        android:layout_height="wrap_content"/>
 
     <EditText
         android:id="@+id/editStoryTitle"
-        android:layout_below="@+id/chapters"
         style="@style/ButtonEditor"
-        android:hint="Story Title"
+        android:hint="@string/story_title"
         />
 
     <EditText
         android:id="@+id/editStoryDescription"
         style="@style/ButtonEditor"
         android:maxLines="5"
-        android:hint="Story Description (3 to 5 lines)"
+        android:hint="@string/story_overview"
         />
 </LinearLayout>

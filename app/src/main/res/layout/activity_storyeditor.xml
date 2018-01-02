@@ -5,10 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="10dp"
-    android:layout_marginTop="10dp"
+    android:layout_margin="10dp"
     tools:context="com.techart.writersblock.PoemEditorActivity">
-
 
     <LinearLayout
         android:id="@+id/layout"
@@ -20,15 +18,15 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:textSize="18sp"
+            android:textColor="@color/colorText"
             android:text="@string/episode" />
 
         <EditText
             android:id="@+id/editTitle"
             android:layout_width="40dip"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:textAlignment="center"
             android:hint="#"
             android:inputType="number" />
     </LinearLayout>

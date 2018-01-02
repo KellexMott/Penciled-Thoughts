@@ -139,4 +139,7 @@
     <string name="view_icon">View icon</string>
     <string name="just_now">just now</string>
     <string name="episode">Episode:</string>
+    <string name="document_image">Document image</string>
+    <string name="story_overview">Story Overview</string>
+    <string name="story_title">Story Title</string>
 </resources>

@@ -13,11 +13,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,6 +33,13 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
+/**
+ * Displays users private content. Such as
+ * 1. Posted items
+ * 2. Locally stored Articles
+ * 3. Action such as changing and setting of dps
+ *
+ */
 public class ProfileActivity extends AppCompatActivity
 {
     TextView btSetPhoto;
@@ -55,7 +62,6 @@ public class ProfileActivity extends AppCompatActivity
     String currentPhotoUrl;
 
     private String userName = "My Users";
-    private ImageView ibProfile;
 
     private static final int GALLERY_REQUEST = 1;
 
@@ -86,22 +92,22 @@ public class ProfileActivity extends AppCompatActivity
         mypoems = (RelativeLayout)findViewById(R.id.mypoems);
         myspirituals = (RelativeLayout)findViewById(R.id.rv_myspirituals);
         mystories = (RelativeLayout)findViewById(R.id.rv_mystories);
-       // ibProfile = (ImageView)findViewById(R.id.ibProfile);
         postedPoems = (RelativeLayout) findViewById(R.id.rv_postedpoems);
         postedSpirituals = (RelativeLayout) findViewById(R.id.rv_postedspirituals);
         postedStories = (RelativeLayout) findViewById(R.id.rv_postedstories);
 
+        //Sets new DP buy first deleting existing one
         btSetPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 deletePrompt();
-
             }
         });
+        //Handles on clicks which brings up a larger image than that displayed
         imProfilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //ToDo handle on image button clicks
             }
         });
         mypoems.setOnClickListener(new View.OnClickListener() {
@@ -242,7 +248,7 @@ public class ProfileActivity extends AppCompatActivity
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 String downloadImageUrl = taskSnapshot.getDownloadUrl().toString();
-                setPhoto(downloadImageUrl);
+                uploadDp(downloadImageUrl);
                 btSetPhoto.setVisibility(View.INVISIBLE);
                 mProgress.dismiss();
             }
@@ -250,11 +256,14 @@ public class ProfileActivity extends AppCompatActivity
         });
     }
 
-    private void setPicture(String image)
+
+    private void setPicture(String url)
     {
-        ImageButton postImage = (ImageButton) findViewById(R.id.ib_profile);
-        Picasso.with(getApplicationContext()).load(image).into(postImage);
+        Glide.with(this)
+                .load(url)
+                .into(imProfilePicture);
     }
+
 
     private void deletePrompt()
     {
@@ -279,7 +288,7 @@ public class ProfileActivity extends AppCompatActivity
                 .setNegativeButton("Cancel", dialogClickListener)
                 .show();
     }
-    private void setPhoto(String downloadImageUrl)
+    private void uploadDp(String downloadImageUrl)
     {
         String user_id = mAuth.getCurrentUser().getUid();
         DatabaseReference current_user_db = FireBaseUtils.mDatabaseUsers.child(user_id);
@@ -296,12 +305,12 @@ public class ProfileActivity extends AppCompatActivity
                 uri = data.getData();
                 String realPath = ImageUtils.getRealPathFromUrl(this, uri);
                 Uri uriFromPath = Uri.fromFile(new File(realPath));
-                setImage(imProfilePicture,uriFromPath);
+                displaySelectedDp(imProfilePicture,uriFromPath);
             }
         }
     }
 
-    private void setImage(ImageButton image,Uri uriFromPath)
+    private void displaySelectedDp(ImageButton image, Uri uriFromPath)
     {
         Picasso.with(this)
                 .load(uriFromPath)
@@ -318,6 +327,7 @@ public class ProfileActivity extends AppCompatActivity
         photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                Toast.makeText(getBaseContext(),"Dp successfully changed",Toast.LENGTH_LONG).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -341,7 +351,7 @@ public class ProfileActivity extends AppCompatActivity
             }
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(getString(R.string.are_you_sure))
+        builder.setTitle(getString(R.string.are_you_sure))
             .setPositiveButton(getString(android.R.string.yes), dialogClickListener)
             .setNegativeButton(getString(android.R.string.no), dialogClickListener)
             .show();

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -62,8 +61,7 @@ public class Tab1Poems extends Fragment {
     @Override
     public String toString()
     {
-        String title="Poems";
-        return title;
+        return "Poems";
     }
 
     private void bindView(RecyclerView mPoemList)
@@ -99,8 +97,6 @@ public class Tab1Poems extends Fragment {
                 }
                 viewHolder.setLikeBtn(post_key);
                 viewHolder.setPostViewed(post_key);
-                postContent = model.getPoemText();
-                postTitle = model.getTitle();
 
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -125,8 +121,8 @@ public class Tab1Poems extends Fragment {
                         });
 
                         Intent readPoemIntent = new Intent(getContext(),ScrollingActivity.class);
-                        readPoemIntent.putExtra(Constants.POST_CONTENT, postContent);
-                        readPoemIntent.putExtra(Constants.POST_TITLE, postTitle);
+                        readPoemIntent.putExtra(Constants.POST_CONTENT, model.getPoemText());
+                        readPoemIntent.putExtra(Constants.POST_TITLE, model.getTitle());
                         startActivity(readPoemIntent);
                     }
                 });
