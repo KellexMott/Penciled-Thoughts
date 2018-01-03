@@ -46,7 +46,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        mProgress = new ProgressDialog(this);
         etUsername = (EditText) findViewById(R.id.et_username);
         etLogin = (EditText) findViewById(R.id.et_login);
         etPassword = (EditText) findViewById(R.id.et_password);
@@ -79,20 +78,21 @@ public class RegisterActivity extends AppCompatActivity {
      * implementation of the registration
      */
     private void startRegister() {
+        mProgress = new ProgressDialog(this);
         mProgress.setMessage("Signing Up  ...");
         mProgress.show();
-        final String user_id = mAuth.getCurrentUser().getUid();
 
         mAuth.createUserWithEmailAndPassword(email,firstPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+                String userId = mAuth.getCurrentUser().getUid();
                 if (task.isSuccessful()) {
                 Map<String,Object> values = new HashMap<>();
                 values.put("name",name);
                 values.put("imageUrl","default");
                 values.put("signedAs",signingInAs);
 
-                FireBaseUtils.mDatabaseUsers.child(user_id).setValue(values);
+                FireBaseUtils.mDatabaseUsers.child(userId).setValue(values);
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                         .setDisplayName(name)
@@ -107,14 +107,11 @@ public class RegisterActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-                    mProgress.dismiss();
                     Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
                     mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(mainIntent);
                 } else {
-                    mProgress.dismiss();
                     Toast.makeText(RegisterActivity.this, "Error encountered, Try again later", Toast.LENGTH_LONG).show();
-
                 }
             }
             else
@@ -128,6 +125,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this,"Ensure that your internet is working",Toast.LENGTH_LONG ).show();
                 }
             }
+            mProgress.dismiss();
             }
         });
     }
