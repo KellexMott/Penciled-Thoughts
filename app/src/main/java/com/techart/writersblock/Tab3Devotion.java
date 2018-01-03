@@ -71,7 +71,7 @@ public class Tab3Devotion extends Fragment {
             protected void populateViewHolder(Tab1Poems.PoemViewHolder viewHolder, final Devotion model, int position) {
                 final String post_key = getRef(position).getKey();
                 viewHolder.post_title.setText(model.getTitle());
-                viewHolder.post_author.setText(getString(R.string.post_author) + model.getAuthor());
+                viewHolder.post_author.setText(getString(R.string.post_author,model.getAuthor()));
                 viewHolder.poemText.setText(model.getDevotionText());
                 if (model.getNumLikes() != null)
                 {

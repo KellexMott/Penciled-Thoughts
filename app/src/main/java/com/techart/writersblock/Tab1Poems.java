@@ -28,9 +28,6 @@ public class Tab1Poems extends Fragment {
     private DatabaseReference mDatabaseLike;
     private FirebaseAuth mAuth;
 
-    private String postTitle;
-    private String postContent;
-
     private boolean mProcessView = false;
 
     private boolean mProcessLike = false;
@@ -73,7 +70,7 @@ public class Tab1Poems extends Fragment {
             protected void populateViewHolder(PoemViewHolder viewHolder, final Poem model, int position) {
                 final String post_key = getRef(position).getKey();
                 viewHolder.post_title.setText(model.getTitle());
-                viewHolder.post_author.setText("By " + model.getAuthor());
+                viewHolder.post_author.setText(getString(R.string.post_author,model.getAuthor()));
                 viewHolder.poemText.setText(model.getPoemText());
                 if (model.getNumLikes() != null)
                 {

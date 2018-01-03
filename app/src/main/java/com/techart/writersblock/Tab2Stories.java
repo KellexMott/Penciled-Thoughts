@@ -66,18 +66,18 @@ public class Tab2Stories extends Fragment {
                 viewHolder.tvTitle.setText(model.getTitle());
                 viewHolder.tvCategory.setText(model.getCategory());
                 viewHolder.tvStatus.setText(model.getStatus());
-                viewHolder.tvAuthor.setText(getString(R.string.post_author) + model.getAuthor());
+                viewHolder.tvAuthor.setText(getString(R.string.post_author,model.getAuthor()));
                 viewHolder.tvDescription.setText(model.getDescription());
                 if (model.getNumLikes() != null)
                 {
-                    viewHolder.tvNumLikes.setText(model.getNumLikes().toString());
+                    viewHolder.tvNumLikes.setText(String.format("%s",model.getNumLikes().toString()));
                 }
                 if (model.getNumComments() != null)
                 {
-                    viewHolder.tvNumComments.setText(model.getNumComments().toString());
+                    viewHolder.tvNumComments.setText(String.format("%s",model.getNumComments().toString()));
                 }if (model.getNumViews() != null)
                 {
-                    viewHolder.tvNumViews.setText(model.getNumViews().toString());
+                    viewHolder.tvNumViews.setText(String.format("%s",model.getNumViews().toString()));
                 }
                 if (model.getTimeCreated() != null)
                 {

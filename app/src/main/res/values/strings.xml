@@ -108,15 +108,6 @@
 
     <string name="chapter_added_notification_title_template">Chapter added: %1$s</string>
 
-    <string name="new_chapter_notification_title">%1$s</string>
-
-    <!-- TODO: remove this placeholder text -->
-    <string name="new_chapter_notification_placeholder">%1$s from %2$s </string>
-
-    <string name="action_share">Share</string>
-    <string name="action_reply">Reply</string>
-
-    <string name="new_message_notification_title_template">New message: %1$s</string>
     <string name="aim">Thoughts worth Sharing</string>
     <string name="reader">Reader</string>
     <string name="writer">Writer</string>
@@ -129,7 +120,7 @@
     <string name="next">Next</string>
     <string name="photo">Photo</string>
     <string name="add_post">Add Post</string>
-    <string name="post_author">By</string>
+    <string name="post_author">By %1$s</string>
     <string name="tap_to_write">Tap to start writing</string>
     <string name="delete_icon">Delete Icon</string>
     <string name="edit_devotion">Edit Devotion</string>

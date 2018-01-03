@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,7 +31,6 @@ import com.google.firebase.database.ValueEventListener;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity {
-
     // UI references.
     private ProgressDialog mProgress;
 
@@ -85,21 +83,21 @@ public class LoginActivity extends AppCompatActivity {
 
     private void validUserCredentials() {
         mProgress = new ProgressDialog(LoginActivity.this);
-        mProgress.setMessage("Logging in ...");
-        mProgress.show();
         String email = mUsername.getText().toString().trim();
         String password = mPassWord.getText().toString().trim();
-        if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty((password)))
+        if (validate(email,password))
         {
+            mProgress.setMessage("Logging in ...");
+            mProgress.show();
             mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    mProgress.dismiss();
                     if(task.isSuccessful())
                     {
                         validUsersExistance();
                     }else
                     {
+                        mProgress.dismiss();
                         if (task.getException() instanceof FirebaseAuthInvalidUserException)
                         {
                             Toast.makeText(getApplicationContext(),"Invalid email, enter the email you registered with", Toast.LENGTH_LONG).show();
@@ -120,13 +118,13 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         }
-        else
-        {
-            mProgress.dismiss();
-            Toast.makeText(getApplicationContext(),"Text or Email field empty", Toast.LENGTH_LONG).show();
-        }
-
     }
+
+    private boolean validate(String email,String password){
+        return EditorUtils.isEmailValid(this,email) &&
+                EditorUtils.isEmpty(this,password,"password");
+    }
+
 
     private boolean haveNetworkConnection() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -143,6 +141,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void validUsersExistance() {
+        mProgress.dismiss();
         final String userId = mAuth.getCurrentUser().getUid();
         if (userId != null) {
             mDatabaseUsers.addValueEventListener(new ValueEventListener() {

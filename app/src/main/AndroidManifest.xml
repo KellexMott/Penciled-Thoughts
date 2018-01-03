@@ -55,31 +55,26 @@
             android:name=".DevotionEditorActivity"
             android:excludeFromRecents="true" />
         <activity android:name=".RegisterActivity" />
-
         <activity
             android:name=".PostTypeDialog"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/dialogTheme" />
-
         <activity
             android:name=".StoryDialogActivity"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/dialogTheme" />
-
         <activity
             android:name=".StoryTitleEditDialog"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/dialogTheme" />
-
         <activity
             android:name=".StoryDescriptionEditDialog"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/dialogTheme" />
-
         <activity
             android:name=".HelpActivity"
             android:parentActivityName=".MainActivity">
@@ -87,26 +82,21 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techart.writersblock.MainActivity" />
         </activity>
-
         <activity
             android:name=".ProfileActivity"
             android:launchMode="singleTop" />
-
         <activity
             android:name=".ActivityReadStory"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity android:name=".ResetPasswordActivity" />
         <activity
             android:name=".LoginActivity"
             android:excludeFromRecents="true"
             android:label="@string/title_activity_login" />
-
         <activity
             android:name=".LikesActivity"
             android:excludeFromRecents="true"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".MyPoemsListActivity"
             android:parentActivityName=".ProfileActivity">
@@ -114,7 +104,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techart.writersblock.ProfileActivity" />
         </activity>
-
         <activity
             android:name=".StoryOverViewActivity"
             android:excludeFromRecents="true"
@@ -124,7 +113,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techart.writersblock.ProfileActivity" />
         </activity>
-
         <activity
             android:name=".ChapterEditorActivity"
             android:excludeFromRecents="true"
@@ -133,7 +121,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techart.writersblock.ProfileActivity" />
         </activity>
-
         <activity
             android:name=".ChapterEditorOnlineActivity"
             android:excludeFromRecents="true"
@@ -142,7 +129,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techart.writersblock.ProfileStoriesListActivity" />
         </activity>
-
         <activity
             android:name=".DevotionEditorOnlineActivity"
             android:excludeFromRecents="true"
@@ -151,7 +137,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techart.writersblock.ProfileDevotionsListActivity" />
         </activity>
-
         <activity
             android:name=".PoemEditorOnlineActivity"
             android:excludeFromRecents="true"
@@ -160,7 +145,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techart.writersblock.ProfileDevotionsListActivity" />
         </activity>
-
         <activity
             android:name=".OnlineChapterListActivity"
             android:excludeFromRecents="true"
@@ -169,7 +153,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techart.writersblock.ProfileStoriesListActivity" />
         </activity>
-
         <activity
             android:name=".AuthorsProfileActivity"
             android:parentActivityName=".MainActivity">
@@ -177,7 +160,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techart.writersblock.MainActivity" />
         </activity>
-
         <activity
             android:name=".AddChapterActivity"
             android:parentActivityName=".MyChaptersListActivity">
@@ -185,7 +167,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techart.writersblock.MyPoemsListActivity" />
         </activity>
-
         <activity
             android:name=".AddChapterOnlineActivity"
             android:parentActivityName=".ProfileStoriesListActivity">
@@ -193,7 +174,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techart.writersblock.ProfileStoriesListActivity" />
         </activity>
-
         <activity
             android:name=".MyChaptersListActivity"
             android:parentActivityName=".ProfileActivity">
