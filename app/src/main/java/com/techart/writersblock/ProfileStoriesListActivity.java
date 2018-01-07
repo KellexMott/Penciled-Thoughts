@@ -33,9 +33,9 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseLike;
     private String author;
     private AlertDialog updateDialog;
-    private ArrayList<String> contents = new ArrayList<>(Arrays.asList("Romance", "Action", "Drama", "Fiction"));
+    private ArrayList<String> contents = new ArrayList<>(Arrays.asList("Action", "Drama", "Fiction","Romance"));
 
-    String[] categories = {"Romance", "Action", "Drama", "Fiction"};
+    String[] categories = {"Action", "Drama", "Fiction","Romance"};
 
     private boolean mProcessLike = false;
 

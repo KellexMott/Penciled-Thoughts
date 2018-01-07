@@ -85,12 +85,12 @@ public class RegisterActivity extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(email,firstPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                String userId = mAuth.getCurrentUser().getUid();
                 if (task.isSuccessful()) {
-                Map<String,Object> values = new HashMap<>();
-                values.put("name",name);
-                values.put("imageUrl","default");
-                values.put("signedAs",signingInAs);
+                    String userId = mAuth.getCurrentUser().getUid();
+                    Map<String,Object> values = new HashMap<>();
+                    values.put("name",name);
+                    values.put("imageUrl","default");
+                    values.put("signedAs",signingInAs);
 
                 FireBaseUtils.mDatabaseUsers.child(userId).setValue(values);
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

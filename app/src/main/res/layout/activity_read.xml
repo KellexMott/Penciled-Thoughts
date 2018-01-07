@@ -14,30 +14,32 @@
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
-            <!--<TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/more"
-                android:textColor="#ffffff"
-                android:textSize="@dimen/text_size"
-                android:layout_gravity="left"/> -->
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:toolbarId="@+id/toolbar">
 
-            <Spinner
-                android:id="@+id/pages"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="7dp"
-                android:layout_gravity="left"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
 
-        </android.support.v7.widget.Toolbar>
+                <Spinner
+                    android:id="@+id/pages"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="7dp"
+                    android:layout_gravity="start"
+                    app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+            </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager

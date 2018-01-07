@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 
 /**
+ * Class for working with images
  * Created by Kelvin on 17/09/2017.
  */
 

@@ -1,7 +1,6 @@
 package com.techart.writersblock;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -10,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -64,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         haveNetworkConnection();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+       /* CollapsingToolbarLayout collapsingToolbarLayout =(CollapsingToolbarLayout)findViewById(R.id.toolbar_layout);
+        collapsingToolbarLayout.setTitleEnabled(false);*/
 
         //VIEWPAGER
         vp= (ViewPager) findViewById(R.id.container);

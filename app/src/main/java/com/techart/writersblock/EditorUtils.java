@@ -1,6 +1,8 @@
 package com.techart.writersblock;
 
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.Typeface;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +16,15 @@ public final class EditorUtils {
     private static int lineCount = 10;
     private EditorUtils()
     {
+    }
+
+    protected static Typeface getTypeFace(Context context){
+        return Typeface.createFromAsset(getAssets(context),"fonts/time-new-roman.ttf");
+    }
+
+    protected static AssetManager getAssets(Context context) {
+
+        return context.getAssets();
     }
 
     /**

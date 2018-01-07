@@ -29,6 +29,7 @@ public class ActivityReadStory extends AppCompatActivity {
     private Spinner pages;
     private TextView tvTitle;
 
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -62,7 +63,6 @@ public class ActivityReadStory extends AppCompatActivity {
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
-//        tvTitle = (TextView) findViewById(R.id.more);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -91,7 +91,7 @@ public class ActivityReadStory extends AppCompatActivity {
         {
             pageNumbers.add("Episode " + i);//String.valueOf(i));//You should add items from db here (first spinner)
         }
-        ArrayAdapter<String> pagesAdapter = new ArrayAdapter<String>(ActivityReadStory.this, R.layout.chapter, pageNumbers);
+        ArrayAdapter<String> pagesAdapter = new ArrayAdapter<>(ActivityReadStory.this, R.layout.chapter, pageNumbers);
         pagesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         pagesAdapter.notifyDataSetChanged();
         pages.setAdapter(pagesAdapter);
@@ -108,31 +108,6 @@ public class ActivityReadStory extends AppCompatActivity {
             }
         });
     }
-
-
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_scrolling, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-     /*   if (id == R.id.action_settings) {
-            return true;
-        }*/
-/*
-        return super.onOptionsItemSelected(item);
-    }
-*/
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -142,6 +117,7 @@ public class ActivityReadStory extends AppCompatActivity {
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
+
 
         public PlaceholderFragment() {
         }
@@ -163,6 +139,8 @@ public class ActivityReadStory extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_pagescroll, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            textView.setTypeface(EditorUtils.getTypeFace(getContext()));
+
             textView.setText(getArguments().getString(ARG_SECTION_NUMBER));
             return rootView;
         }

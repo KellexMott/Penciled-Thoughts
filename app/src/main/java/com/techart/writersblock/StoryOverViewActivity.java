@@ -36,7 +36,7 @@ public class StoryOverViewActivity extends AppCompatActivity {
         setContentView(R.layout.dialog_storyoverview);
         setTitle(Constants.CREATE_STORY);
 
-        final String[] categories = {"Select Category", "Romance ", "Action", "Drama ", "Fiction ",};
+        final String[] categories = {"Select Category", "Action", "Drama ", "Fiction ","Romance "};
         spCategory = (Spinner) findViewById(R.id.categories);
 
         ArrayAdapter<String> pagesAdapter = new ArrayAdapter<>(StoryOverViewActivity.this, R.layout.spinnertxt, categories);
