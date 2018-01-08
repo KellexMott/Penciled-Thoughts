@@ -10,59 +10,68 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="8dp">
-
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+
+            <ImageView
+                android:id="@+id/iv_news"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:paddingBottom="@dimen/item_row"
-                android:textColor="@color/colorTitle"
-                android:typeface="sans" />
-            <TextView
-                android:id="@+id/tv_category"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:textColor="@color/colorText"
-                android:paddingBottom="@dimen/item_row"
-                android:textSize="12sp" />
+                android:layout_marginLeft="18dp"
+                android:layout_marginTop="55dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorText"
+                    android:padding="5dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorText"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    android:padding="5dp"
+                    android:textSize="20sp" />
+
+
+                 <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/tv_author"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorText"
+                        android:padding="5dp"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tv_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorText"
+                        android:padding="5dp"
+                        android:textSize="18sp" />
+                </LinearLayout>
+            </LinearLayout>
         </RelativeLayout>
 
-
-        <TextView
-            android:id="@+id/tv_author"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Author"
-            android:paddingBottom="@dimen/item_row"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/tv_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="On Going"
-            android:paddingBottom="@dimen/item_row"
-            android:textSize="12sp" />
-
-
-        <TextView
-            android:id="@+id/tv_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/item_row"
-            android:textSize="@dimen/description_size"
-            android:maxLines="2"
-            android:typeface="sans"
-            android:text="Description"
-            />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -78,7 +87,6 @@
                     android:id="@+id/likeBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
                     android:background="@android:color/transparent"
                     android:padding="7dp"
                     app:srcCompat="@drawable/ic_thumb_up_grey_24dp" />
@@ -92,7 +100,8 @@
                     android:paddingBottom="7dp"
                     android:paddingTop="7dp"
                     android:paddingRight="7dp"
-                    android:text="0"
+                    android:paddingEnd="7dp"
+                    android:text="@string/initial_count"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -104,10 +113,12 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:layout_toRightOf="@+id/like_layout">
+                android:layout_toEndOf="@+id/like_layout">
                 <ImageButton
                     android:id="@+id/commentBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="@string/comment_icon"
                     android:background="@android:color/transparent"
                     android:padding="7dp"
                     app:srcCompat="@drawable/ic_comment_white_24dp" />
@@ -116,7 +127,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="7dp"
-                    android:text="0"
+                    android:layout_marginEnd="7dp"
+                    android:text="@string/initial_count"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -127,10 +139,12 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:layout_toRightOf="@+id/comment_layout">
+                android:layout_toEndOf="@+id/comment_layout">
                 <ImageButton
                     android:id="@+id/bt_views"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="@string/view_icon"
                     android:background="@android:color/transparent"
                     android:padding="7dp"
                     app:srcCompat="@drawable/ic_visibility_grey_24px" />
@@ -139,7 +153,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="7dp"
-                    android:text="0"
+                    android:layout_marginEnd="7dp"
+                    android:text="@string/initial_count"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -149,9 +164,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="just now"
+                android:layout_alignParentEnd="true"
+                android:text="@string/just_now"
                 android:textColor="@color/colorText"
                 android:paddingTop="7dp"
+                android:paddingRight="7dp"
+                android:paddingEnd="7dp"
                 android:textSize="12sp" />
         </RelativeLayout>
     </LinearLayout>

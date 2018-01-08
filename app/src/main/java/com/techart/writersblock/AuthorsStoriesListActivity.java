@@ -1,30 +1,20 @@
 package com.techart.writersblock;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 
 public class AuthorsStoriesListActivity extends AppCompatActivity {
@@ -68,7 +58,6 @@ public class AuthorsStoriesListActivity extends AppCompatActivity {
                 viewHolder.tvCategory.setText(model.getCategory());
                 viewHolder.tvStatus.setText(model.getStatus());
                 viewHolder.tvAuthor.setText("By " + model.getAuthor());
-                viewHolder.tvDescription.setText(model.getDescription());
                 if (model.getNumLikes() != null)
                 {
                     viewHolder.tvNumLikes.setText(model.getNumLikes().toString());

@@ -120,7 +120,7 @@
     <string name="next">Next</string>
     <string name="photo">Photo</string>
     <string name="add_post">Add Post</string>
-    <string name="post_author">By %1$s</string>
+    <string name="post_author">%1$s * </string>
     <string name="tap_to_write">Tap to start writing</string>
     <string name="delete_icon">Delete Icon</string>
     <string name="edit_devotion">Edit Devotion</string>

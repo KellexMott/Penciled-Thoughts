@@ -3,7 +3,7 @@ package com.techart.writersblock;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,14 +28,14 @@ public class Tab1Poems extends Fragment {
     private DatabaseReference mDatabaseLike;
     private FirebaseAuth mAuth;
 
+    RecyclerView.LayoutManager recyclerViewLayoutManager;
+
     private boolean mProcessView = false;
 
     private boolean mProcessLike = false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         View rootView = inflater.inflate(R.layout.tabrecyclerviewer, container, false);
         mDatabasePoems = FireBaseUtils.mDatabasePoems;
         mDatabaseLike = FireBaseUtils.mDatabaseLike;
@@ -46,11 +46,8 @@ public class Tab1Poems extends Fragment {
         mPoemList = (RecyclerView) rootView.findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(true);
-        mPoemList.setLayoutManager(linearLayoutManager);
-
+        recyclerViewLayoutManager = new GridLayoutManager(getContext(),2);
+        mPoemList.setLayoutManager(recyclerViewLayoutManager);
         bindView(mPoemList);
         return rootView;
     }

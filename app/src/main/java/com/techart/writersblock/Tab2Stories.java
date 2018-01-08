@@ -1,6 +1,7 @@
 package com.techart.writersblock;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,9 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -41,11 +44,11 @@ public class Tab2Stories extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.tabrecyclerviewer, container, false);
+        View rootView = inflater.inflate(R.layout.storyrecyclerviewer, container, false);
 
         FireBaseUtils.mDatabaseLike.keepSynced(true);
         FireBaseUtils.mDatabaseStory.keepSynced(true);
-        mStoryList = (RecyclerView) rootView.findViewById(R.id.poem_list);
+        mStoryList = (RecyclerView) rootView.findViewById(R.id.rv_story);
         mStoryList.setHasFixedSize(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -66,8 +69,8 @@ public class Tab2Stories extends Fragment {
                 viewHolder.tvTitle.setText(model.getTitle());
                 viewHolder.tvCategory.setText(model.getCategory());
                 viewHolder.tvStatus.setText(model.getStatus());
+                viewHolder.setIvImage(getContext(),model.getCategory());
                 viewHolder.tvAuthor.setText(getString(R.string.post_author,model.getAuthor()));
-                viewHolder.tvDescription.setText(model.getDescription());
                 if (model.getNumLikes() != null)
                 {
                     viewHolder.tvNumLikes.setText(String.format("%s",model.getNumLikes().toString()));
@@ -282,13 +285,14 @@ public class Tab2Stories extends Fragment {
     {
         TextView tvTitle;
         TextView tvAuthor;
-        TextView tvDescription;
         TextView tvCategory;
         TextView tvStatus;
         TextView tvNumLikes;
         TextView tvNumComments;
         TextView tvNumViews;
         TextView tvTime;
+
+        ImageView ivStory;
         View mView;
 
         DatabaseReference mDatabaseLike;
@@ -305,7 +309,7 @@ public class Tab2Stories extends Fragment {
             tvAuthor = (TextView)itemView.findViewById(R.id.tv_author);
             tvStatus = (TextView)itemView.findViewById(R.id.tv_status);
             tvCategory = (TextView)itemView.findViewById(R.id.tv_category);
-            tvDescription = (TextView)itemView.findViewById(R.id.tv_description);
+            ivStory = (ImageView)itemView.findViewById(R.id.iv_news);
 
             btnDelete = (ImageButton)itemView.findViewById(R.id.im_delete);
             btnLiked = (ImageButton)itemView.findViewById(R.id.likeBtn);
@@ -321,6 +325,13 @@ public class Tab2Stories extends Fragment {
             mDatabaseLike.keepSynced(true);
         }
 
+
+        public void setIvImage(Context context, String image)
+        {
+            Glide.with(context)
+                    .load(R.drawable.romance)
+                    .into(ivStory);
+        }
         protected void setLikeBtn(String post_key) {
             FireBaseUtils.setLikeBtn(post_key,btnLiked);
         }
