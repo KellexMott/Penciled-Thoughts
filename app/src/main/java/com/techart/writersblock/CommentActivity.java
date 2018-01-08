@@ -1,6 +1,8 @@
 package com.techart.writersblock;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -72,6 +74,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
             protected void populateViewHolder(CommentHolder viewHolder, final Comment model, int position) {
                 viewHolder.authorTextView.setText(model.getAuthor());
                 viewHolder.commentTextView.setText(model.getCommentText());
+                viewHolder.setTypeFace(CommentActivity.this);
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d, HH:mm:ss");
                 String time = simpleDateFormat.format(model.getTimeCreated());
                 viewHolder.timeTextView.setText(time);
@@ -231,5 +234,13 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
             timeTextView = (TextView) itemView.findViewById(R.id.tvTime);
             commentTextView = (TextView) itemView.findViewById(R.id.tvComment);
         }
+
+        protected void setTypeFace(Context context){
+            Typeface typeface =  EditorUtils.getTypeFace(context);
+            authorTextView.setTypeface(typeface);
+            commentTextView.setTypeface(typeface);
+            timeTextView.setTypeface(typeface);
+        }
     }
+
 }
