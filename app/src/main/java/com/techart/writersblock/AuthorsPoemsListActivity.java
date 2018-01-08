@@ -14,6 +14,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Date;
+
 
 public class AuthorsPoemsListActivity extends AppCompatActivity {
     private RecyclerView mPoemList;
@@ -57,21 +59,31 @@ public class AuthorsPoemsListActivity extends AppCompatActivity {
             protected void populateViewHolder(Tab1Poems.PoemViewHolder viewHolder, final Poem model, int position) {
                 final String post_key = getRef(position).getKey();
                 viewHolder.post_title.setText(model.getTitle());
-                viewHolder.post_author.setText("By " + model.getAuthor());
-                viewHolder.poemText.setText(model.getPoemText());
+
+                viewHolder.post_author.setText(getString(R.string.article_author,model.getAuthor()));
+                viewHolder.setIvImage(AuthorsPoemsListActivity.this,ImageUtils.getPoemUrl(NumberUtils.setPlurality(position)));
+                viewHolder.setTypeFace(AuthorsPoemsListActivity.this);
                 if (model.getNumLikes() != null)
                 {
-                    viewHolder.numLikes.setText(model.getNumLikes().toString());
+                    String count = NumberUtils.shortenDigit(model.getNumLikes());
+                    viewHolder.numLikes.setText(count);
                 }
                 if (model.getNumComments() != null)
                 {
-                    viewHolder.numComments.setText(model.getNumComments().toString());
+                    String count = NumberUtils.shortenDigit(model.getNumComments());
+                    viewHolder.numComments.setText(count);
+                }
+                if (model.getNumViews() != null)
+                {
+                    String count = NumberUtils.shortenDigit(model.getNumViews());
+                    viewHolder.tvNumViews.setText(getString(R.string.viewers,count));
                 }
                 if (model.getTimeCreated() != null)
                 {
-                    String time = com.techart.writersblock.TimeUtils.timeElapsed(TimeUtils.currentTime() - model.getTimeCreated());
+                    String time = TimeUtils.timeElapsed(currentTime() - model.getTimeCreated());
                     viewHolder.timeTextView.setText(time);
                 }
+
                 viewHolder.setLikeBtn(post_key);
                 postContent = model.getPoemText();
                 postTitle = model.getTitle();
@@ -96,7 +108,7 @@ public class AuthorsPoemsListActivity extends AppCompatActivity {
 
                                 if (mProcessLike) {
                                     if (dataSnapshot.child(post_key).hasChild(Constants.AUTHOR_URL)) {
-                                        mDatabaseLike.child(post_key).removeValue();
+                                        mDatabaseLike.child(post_key).child(FireBaseUtils.mAuth.getCurrentUser().getUid()).removeValue();
                                         FireBaseUtils.onPoemDisliked(post_key);
                                         mProcessLike = false;
                                     } else {
@@ -138,6 +150,12 @@ public class AuthorsPoemsListActivity extends AppCompatActivity {
 
         mPoemList.setAdapter(firebaseRecyclerAdapter);
         firebaseRecyclerAdapter.notifyDataSetChanged();
+    }
+
+    private long currentTime()
+    {
+        Date date = new Date();
+        return date.getTime();
     }
 
     @Override

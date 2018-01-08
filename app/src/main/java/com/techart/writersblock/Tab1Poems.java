@@ -1,6 +1,8 @@
 package com.techart.writersblock;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,8 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -67,11 +71,10 @@ public class Tab1Poems extends Fragment {
             protected void populateViewHolder(PoemViewHolder viewHolder, final Poem model, int position) {
                 final String post_key = getRef(position).getKey();
                 viewHolder.post_title.setText(model.getTitle());
-                viewHolder.post_title.setText(model.getTitle());
-                viewHolder.post_title.setText(model.getTitle());
 
-                viewHolder.post_author.setText(getString(R.string.post_author,model.getAuthor()));
-                viewHolder.poemText.setText(model.getPoemText());
+                viewHolder.post_author.setText(getString(R.string.article_author,model.getAuthor()));
+                viewHolder.setIvImage(getContext(),ImageUtils.getPoemUrl(NumberUtils.setPlurality(position)));
+                viewHolder.setTypeFace(getContext());
                 if (model.getNumLikes() != null)
                 {
                     String count = NumberUtils.shortenDigit(model.getNumLikes());
@@ -85,7 +88,7 @@ public class Tab1Poems extends Fragment {
                 if (model.getNumViews() != null)
                 {
                     String count = NumberUtils.shortenDigit(model.getNumViews());
-                    viewHolder.tvNumViews.setText(count);
+                    viewHolder.tvNumViews.setText(getString(R.string.viewers,count));
                 }
                 if (model.getTimeCreated() != null)
                 {
@@ -143,7 +146,7 @@ public class Tab1Poems extends Fragment {
                                 if (mProcessLike) {
                                     if (dataSnapshot.hasChild(FireBaseUtils.mAuth.getCurrentUser().getUid()))
                                     {
-                                        mDatabaseLike.child(post_key).removeValue();
+                                        mDatabaseLike.child(post_key).child(FireBaseUtils.mAuth.getCurrentUser().getUid()).removeValue();
                                         FireBaseUtils.onPoemDisliked(post_key);
                                         mProcessLike = false;
                                     } else {
@@ -209,14 +212,13 @@ public class Tab1Poems extends Fragment {
         return date.getTime();
     }
 
-
     public static class PoemViewHolder extends RecyclerView.ViewHolder
     {
         TextView post_title;
-        TextView poemText;
         TextView numLikes;
         TextView numComments;
         TextView tvNumViews;
+        ImageView ivArticle;
 
         TextView timeTextView;
         View mView;
@@ -233,8 +235,9 @@ public class Tab1Poems extends Fragment {
         public PoemViewHolder(View itemView) {
             super(itemView);
             post_title = (TextView)itemView.findViewById(R.id.post_title);
-            poemText = (TextView)itemView.findViewById(R.id.poemText);
             post_author = (TextView)itemView.findViewById(R.id.post_author) ;
+
+            ivArticle = (ImageView)itemView.findViewById(R.id.iv_news);
 
             timeTextView = (TextView) itemView.findViewById(R.id.tvTime);
             btnLiked = (ImageButton)itemView.findViewById(R.id.likeBtn);
@@ -251,6 +254,21 @@ public class Tab1Poems extends Fragment {
             mDatabaseLike.keepSynced(true);
         }
 
+
+        protected void setTypeFace(Context context) {
+            Typeface typeface = EditorUtils.getTypeFace(context);
+            post_author.setTypeface(typeface);
+            post_title.setTypeface(typeface);
+            timeTextView.setTypeface(typeface);
+            tvNumViews.setTypeface(typeface);
+        }
+
+        public void setIvImage(Context context, int image)
+        {
+            Glide.with(context)
+                    .load(image)
+                    .into(ivArticle);
+        }
         protected void setLikeBtn(String post_key) {
             FireBaseUtils.setLikeBtn(post_key,btnLiked);
         }

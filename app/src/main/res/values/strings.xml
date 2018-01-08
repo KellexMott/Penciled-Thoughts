@@ -120,7 +120,11 @@
     <string name="next">Next</string>
     <string name="photo">Photo</string>
     <string name="add_post">Add Post</string>
-    <string name="post_author">%1$s * </string>
+    <string name="liked">%1$s liked %2$s</string>
+    <string name="post_category">%1$s  *  </string>
+    <string name="post_author">%1$s</string>
+    <string name="article_author">By %1$s</string>
+    <string name="viewers">%1$s views</string>
     <string name="tap_to_write">Tap to start writing</string>
     <string name="delete_icon">Delete Icon</string>
     <string name="edit_devotion">Edit Devotion</string>
@@ -133,4 +137,19 @@
     <string name="document_image">Document image</string>
     <string name="story_overview">Story Overview</string>
     <string name="story_title">Story Title</string>
+    <string name="background_image">background image</string>
+    <string name="profile_picture">profile picture</string>
+    <string name="set_photo">Set Photo</string>
+    <string name="my_block">My Block</string>
+    <string name="_poems">Poems</string>
+    <string name="chevron">chevron</string>
+    <string name="devotions">Devotions</string>
+    <string name="posted">Posted</string>
+    <string name="tvstories">Stories</string>
+    <string name="complete">Complete</string>
+    <string name="ongoing">Ongoing</string>
+    <string name="edit_chapters">Edit Chapters</string>
+    <string name="stories">Stories</string>
+    <string name="type_comment">Type comment &#230;</string>
+    <string name="send_icon">send icon</string>
 </resources>

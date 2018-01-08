@@ -22,27 +22,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:adjustViewBounds="true"
+                android:contentDescription="@string/background_image"
                 android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="18dp"
+                android:layout_marginStart="18dp"
                 android:layout_marginTop="55dp"
                 android:orientation="vertical">
-                <TextView
-                    android:id="@+id/tv_category"
+
+
+                <Button
+                    android:id="@+id/bt_author"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorText"
-                    android:padding="5dp"
-                    android:textSize="16sp" />
+                    android:textColor="@color/colorText" />
 
                 <TextView
                     android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorText"
+                    android:textColor="@color/colorWhite"
                     android:textStyle="bold"
                     android:textAllCaps="true"
                     android:padding="5dp"
@@ -53,19 +55,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/tv_author"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorText"
-                        android:padding="5dp"
-                        android:textSize="18sp" />
+
+                     <TextView
+                         android:id="@+id/tv_category"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:textColor="@color/colorWhite"
+                         android:padding="5dp"
+                         android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/tv_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/colorText"
+                        android:textColor="@color/colorWhite"
                         android:padding="5dp"
                         android:textSize="18sp" />
                 </LinearLayout>
@@ -88,6 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
+                    android:contentDescription="@string/like_button"
                     android:padding="7dp"
                     app:srcCompat="@drawable/ic_thumb_up_grey_24dp" />
 
@@ -112,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:layout_toRightOf="@+id/like_layout">
+                android:layout_toRightOf="@+id/like_layout"
                 android:layout_toEndOf="@+id/like_layout">
                 <ImageButton
                     android:id="@+id/commentBtn"
@@ -121,7 +125,7 @@
                     android:contentDescription="@string/comment_icon"
                     android:background="@android:color/transparent"
                     android:padding="7dp"
-                    app:srcCompat="@drawable/ic_comment_white_24dp" />
+                    app:srcCompat="@drawable/ic_comment_grey_24px" />
                 <TextView
                     android:id="@+id/tv_numcomments"
                     android:layout_width="wrap_content"
@@ -138,7 +142,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:layout_toRightOf="@+id/comment_layout">
+                android:layout_toRightOf="@+id/comment_layout"
                 android:layout_toEndOf="@+id/comment_layout">
                 <ImageButton
                     android:id="@+id/bt_views"

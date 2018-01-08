@@ -18,7 +18,7 @@
         <TextView
             android:id="@+id/tv_posted"
             style="@style/TextViewProfileHeader"
-            android:text="Posted" />
+            android:text="@string/posted" />
 
         <include layout="@layout/item_divider" />
 
@@ -29,14 +29,15 @@
             <TextView
                 android:id="@+id/tv_postedpoem"
                 style="@style/TextViewProfileTitle"
-                android:text="Poems"/>
+                android:text="@string/_poems"/>
 
             <TextView
                 style="@style/TextViewVCount"/>
 
             <ImageView
                 android:id="@+id/img_postedPoems"
-                app:srcCompat ="@drawable/ic_chevron_right_black_24dp"
+                android:contentDescription="@string/chevron"
+                app:srcCompat ="@drawable/ic_chevron_right_grey_24px"
                 style="@style/ImageViewChevron" />
         </RelativeLayout>
 
@@ -47,7 +48,7 @@
             <TextView
                 android:id="@+id/tv_posteddevotions"
                 style="@style/TextViewProfileTitle"
-                android:text="Devotions" />
+                android:text="@string/devotions" />
 
             <TextView
                 android:id="@+id/tv_posteddevotioncount"
@@ -55,7 +56,8 @@
 
             <ImageView
                 android:id="@+id/img_postedSpirituals"
-                app:srcCompat ="@drawable/ic_chevron_right_black_24dp"
+                android:contentDescription="@string/chevron"
+                app:srcCompat ="@drawable/ic_chevron_right_grey_24px"
                 style="@style/ImageViewChevron" />
         </RelativeLayout>
 
@@ -66,7 +68,7 @@
             <TextView
                 android:id="@+id/tv_postedstories"
                 style="@style/TextViewProfileTitle"
-                android:text="Stories" />
+                android:text="@string/stories" />
 
             <TextView
                 android:id="@+id/tv_postedstoriescount"
@@ -74,7 +76,8 @@
 
             <ImageView
                 android:id="@+id/img_postedstories"
-                app:srcCompat ="@drawable/ic_chevron_right_black_24dp"
+                android:contentDescription="@string/chevron"
+                app:srcCompat ="@drawable/ic_chevron_right_grey_24px"
                 style="@style/ImageViewChevron" />
         </RelativeLayout>
     </LinearLayout>

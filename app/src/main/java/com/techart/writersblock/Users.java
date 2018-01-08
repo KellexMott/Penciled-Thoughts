@@ -9,7 +9,10 @@ public class Users {
     private String name;
     private String imageUrl;
     private String signedAs;
-    public Users(){}
+    private Long timeCreated;
+
+    public Users(){
+    }
 
     public String getName() {
         return name;
@@ -33,5 +36,13 @@ public class Users {
 
     public void setSignedAs(String signedAs) {
         this.signedAs = signedAs;
+    }
+
+    public Long getTimeCreated() {
+        return timeCreated;
+    }
+
+    public void setTimeCreated(Long timeCreated) {
+        this.timeCreated = timeCreated;
     }
 }

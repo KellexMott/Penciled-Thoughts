@@ -20,9 +20,6 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="match_parent"
@@ -36,11 +33,10 @@
                 android:id="@+id/im_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:contentDescription="@string/delete"
                 android:background="@android:color/transparent"
                 android:padding="7dp"
                 app:srcCompat="@drawable/ic_delete_white_24px"  />
-        </RelativeLayout>
     </LinearLayout>
 
         <Button
@@ -52,14 +48,12 @@
             android:textSize="14sp"
             android:textColor="@color/colorPrimary"/>
 
-        <!--<include layout="@layout/radio_group" /> -->
-
         <ToggleButton
             android:id="@+id/tb_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textOn="Complete"
-            android:textOff="Ongoing"
+            android:textOn="@string/complete"
+            android:textOff="@string/ongoing"
             android:textColor="@color/colorPrimary"/>
 
         <Button
@@ -68,7 +62,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/item_row"
             android:paddingBottom="@dimen/item_row"
-            android:text="Edit Chapters"
+            android:text="@string/edit_chapters"
             android:textSize="14sp"
             android:textColor="@color/colorPrimary"/>
 
@@ -86,7 +80,7 @@
                     android:id="@+id/likeBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:contentDescription="@string/like_button"
                     android:background="@android:color/transparent"
                     android:padding="7dp"
                     app:srcCompat="@drawable/ic_thumb_up_grey_24dp" />
@@ -98,7 +92,7 @@
                     android:layout_marginRight="7dp"
                     android:layout_marginLeft="7dp"
                     android:padding="7dp"
-                    android:text="0"
+                    android:text="@string/initial_count"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -109,20 +103,23 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:layout_toRightOf="@+id/like_layout">
+                android:layout_toRightOf="@+id/like_layout"
+                android:layout_toEndOf="@+id/like_layout">
                 <ImageButton
                     android:id="@+id/commentBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="@string/comment_icon"
                     android:background="@android:color/transparent"
                     android:padding="7dp"
-                    app:srcCompat="@drawable/ic_comment_white_24dp" />
+                    app:srcCompat="@drawable/ic_comment_grey_24px" />
                 <TextView
                     android:id="@+id/tv_numcomments"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="7dp"
-                    android:text="0"
+                    android:layout_marginEnd="7dp"
+                    android:text="@string/initial_count"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -132,7 +129,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="just now"
+                android:layout_alignParentEnd="true"
+                android:text="@string/just_now"
                 android:padding="7dp"
                 android:textSize="12sp" />
         </RelativeLayout>

@@ -3,7 +3,7 @@ package com.techart.writersblock;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,8 +25,7 @@ public class Tab3Devotion extends Fragment {
     private RecyclerView mPoemList;
     private FirebaseRecyclerAdapter<Devotion,Tab1Poems.PoemViewHolder> fireBaseRecyclerAdapter;
     private FirebaseAuth mAuth;
-    private String postTitle;
-    private String postContent;
+    RecyclerView.LayoutManager recyclerViewLayoutManager;
     private boolean mProcessView = false;
     private boolean mProcessLike = false;
 
@@ -40,10 +39,11 @@ public class Tab3Devotion extends Fragment {
 
         mPoemList = (RecyclerView) rootView.findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(true);
-        mPoemList.setLayoutManager(linearLayoutManager);
+
+        recyclerViewLayoutManager = new GridLayoutManager(getContext(),2);
+        mPoemList.setLayoutManager(recyclerViewLayoutManager);
+
+        mPoemList.setLayoutManager(recyclerViewLayoutManager);
         bindView();
         return rootView;
     }
@@ -71,8 +71,9 @@ public class Tab3Devotion extends Fragment {
             protected void populateViewHolder(Tab1Poems.PoemViewHolder viewHolder, final Devotion model, int position) {
                 final String post_key = getRef(position).getKey();
                 viewHolder.post_title.setText(model.getTitle());
-                viewHolder.post_author.setText(getString(R.string.post_author,model.getAuthor()));
-                viewHolder.poemText.setText(model.getDevotionText());
+                viewHolder.post_author.setText(getString(R.string.article_author,model.getAuthor()));
+                viewHolder.setIvImage(getContext(),ImageUtils.getDevotionUrl(NumberUtils.setPlurality(position)));
+                viewHolder.setTypeFace(getContext());
                 if (model.getNumLikes() != null)
                 {
                     String count = NumberUtils.shortenDigit(model.getNumLikes());
@@ -86,7 +87,7 @@ public class Tab3Devotion extends Fragment {
                 if (model.getNumViews() != null)
                 {
                     String count = NumberUtils.shortenDigit(model.getNumViews());
-                    viewHolder.tvNumViews.setText(count);
+                    viewHolder.tvNumViews.setText(getString(R.string.viewers,count));
                 }
                 if (model.getTimeCreated() != null)
                 {

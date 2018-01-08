@@ -11,7 +11,6 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 
 /**
  * Retrieves and displays list of people who have viewed a particular post
@@ -29,7 +28,7 @@ public class ViewsActivity extends AppCompatActivity
         setContentView(R.layout.activity_like);
         postKey = getIntent().getStringExtra(Constants.POST_KEY);
         mAuth = FirebaseAuth.getInstance();
-
+        setTitle("Viewers");
         mPoemList = (RecyclerView) findViewById(R.id.lv_notice);
         mPoemList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -45,9 +44,8 @@ public class ViewsActivity extends AppCompatActivity
     private void bindView()
     {
         //ToDo fully implement class and method
-        Query query = FireBaseUtils.mDatabaseViews.orderByChild(Constants.POEM_KEY).equalTo(postKey);
         FirebaseRecyclerAdapter<Notice,ViewsActivity.NoticeViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Notice, ViewsActivity.NoticeViewHolder>(
-                Notice.class,R.layout.list_view,ViewsActivity.NoticeViewHolder.class, query)
+                Notice.class,R.layout.list_view,ViewsActivity.NoticeViewHolder.class, FireBaseUtils.mDatabaseViews.child(postKey))
         {
             @Override
             protected void populateViewHolder(ViewsActivity.NoticeViewHolder viewHolder, final Notice model, int position) {

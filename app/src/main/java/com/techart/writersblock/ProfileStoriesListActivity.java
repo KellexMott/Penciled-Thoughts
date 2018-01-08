@@ -130,7 +130,7 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (mProcessLike) {
                                     if (dataSnapshot.child(post_key).hasChild(Constants.AUTHOR_URL))  {
-                                        mDatabaseLike.child(post_key).removeValue();
+                                        mDatabaseLike.child(post_key).child(FireBaseUtils.mAuth.getCurrentUser().getUid()).removeValue();
                                         FireBaseUtils.onStoryDisliked(post_key);
                                         mProcessLike = false;
                                     } else {
@@ -260,7 +260,7 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
         public StoryViewHolder(View itemView) {
             super(itemView);
             tvTitle = (TextView)itemView.findViewById(R.id.tv_title);
-            tvAuthor = (TextView)itemView.findViewById(R.id.tv_author);
+            // = (TextView)itemView.findViewById(R.id.tv_author);
             tbStatus = (ToggleButton)itemView.findViewById(R.id.tb_status);
             tvCategory = (Button)itemView.findViewById(R.id.tv_category);
             btEdit = (Button)itemView.findViewById(R.id.bt_edit);

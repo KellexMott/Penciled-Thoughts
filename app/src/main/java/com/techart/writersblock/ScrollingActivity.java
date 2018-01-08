@@ -1,7 +1,5 @@
 package com.techart.writersblock;
 
-import android.content.res.AssetManager;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -19,9 +17,7 @@ public class ScrollingActivity extends AppCompatActivity {
         String postTitle = getIntent().getStringExtra(Constants.POST_TITLE);
         String postContent = getIntent().getStringExtra(Constants.POST_CONTENT);
         setTitle(postTitle);
-        AssetManager assetManager = this.getAssets();
 
-        Typeface roboto = Typeface.createFromAsset(assetManager,"fonts/RobotoCondensed-Light.ttf");
         tvPoem = (TextView)findViewById(R.id.tvPoem);
         tvPoem.setTypeface(EditorUtils.getTypeFace(this));
         tvPoem.setText(postContent);

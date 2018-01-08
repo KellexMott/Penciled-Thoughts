@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -46,6 +47,7 @@ public class Tab2Stories extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.storyrecyclerviewer, container, false);
 
+
         FireBaseUtils.mDatabaseLike.keepSynced(true);
         FireBaseUtils.mDatabaseStory.keepSynced(true);
         mStoryList = (RecyclerView) rootView.findViewById(R.id.rv_story);
@@ -67,9 +69,10 @@ public class Tab2Stories extends Fragment {
             protected void populateViewHolder(Tab2Stories.StoryViewHolder viewHolder, final Story model, int position) {
                 final String post_key = getRef(position).getKey();
                 viewHolder.tvTitle.setText(model.getTitle());
-                viewHolder.tvCategory.setText(model.getCategory());
+                viewHolder.tvCategory.setText(getString(R.string.post_category,model.getCategory()));
                 viewHolder.tvStatus.setText(model.getStatus());
-                viewHolder.setIvImage(getContext(),model.getCategory());
+                viewHolder.setIvImage(getContext(), ImageUtils.getStoryUrl(model.getCategory().trim()));
+                viewHolder.setTypeFace(getContext());
                 viewHolder.tvAuthor.setText(getString(R.string.post_author,model.getAuthor()));
                 if (model.getNumLikes() != null)
                 {
@@ -117,7 +120,7 @@ public class Tab2Stories extends Fragment {
                                 if (mProcessLike) {
                                     if (dataSnapshot.hasChild(FireBaseUtils.mAuth.getCurrentUser().getUid()))
                                     {
-                                        FireBaseUtils.mDatabaseLike.child(post_key).removeValue();
+                                        FireBaseUtils.mDatabaseLike.child(post_key).child(FireBaseUtils.mAuth.getCurrentUser().getUid()).removeValue();
                                         FireBaseUtils.onStoryDisliked(post_key);
                                         mProcessLike = false;
                                     } else {
@@ -280,10 +283,10 @@ public class Tab2Stories extends Fragment {
                 .show();
     }
 
-
     public static class StoryViewHolder extends RecyclerView.ViewHolder
     {
         TextView tvTitle;
+        //TextView tvAuthor;
         TextView tvAuthor;
         TextView tvCategory;
         TextView tvStatus;
@@ -306,7 +309,8 @@ public class Tab2Stories extends Fragment {
         public StoryViewHolder(View itemView) {
             super(itemView);
             tvTitle = (TextView)itemView.findViewById(R.id.tv_title);
-            tvAuthor = (TextView)itemView.findViewById(R.id.tv_author);
+           // tvAuthor = (TextView)itemView.findViewById(R.id.tv_author);
+            tvAuthor = (TextView)itemView.findViewById(R.id.bt_author);
             tvStatus = (TextView)itemView.findViewById(R.id.tv_status);
             tvCategory = (TextView)itemView.findViewById(R.id.tv_category);
             ivStory = (ImageView)itemView.findViewById(R.id.iv_news);
@@ -325,11 +329,19 @@ public class Tab2Stories extends Fragment {
             mDatabaseLike.keepSynced(true);
         }
 
+        protected void setTypeFace(Context context) {
+            Typeface typeface = EditorUtils.getTypeFace(context);
+            tvAuthor.setTypeface(typeface);
+            tvTitle.setTypeface(typeface);
+            tvStatus.setTypeface(typeface);
+            tvCategory.setTypeface(typeface);
+        }
 
-        public void setIvImage(Context context, String image)
+
+        public void setIvImage(Context context, int resourceValue)
         {
             Glide.with(context)
-                    .load(R.drawable.romance)
+                    .load(resourceValue)
                     .into(ivStory);
         }
         protected void setLikeBtn(String post_key) {

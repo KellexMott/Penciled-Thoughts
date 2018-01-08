@@ -1,5 +1,7 @@
 package com.techart.writersblock;
 
+import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,7 +11,6 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.Query;
 
 
 public class LikesActivity extends AppCompatActivity
@@ -25,7 +26,6 @@ public class LikesActivity extends AppCompatActivity
         setContentView(R.layout.activity_like);
         postKey = getIntent().getStringExtra(Constants.POST_KEY);
         mAuth = FirebaseAuth.getInstance();
-        FireBaseUtils.mDatabaseLike.keepSynced(true);
 
         mLikeList = (RecyclerView) findViewById(R.id.lv_notice);
         mLikeList.setHasFixedSize(true);
@@ -37,18 +37,16 @@ public class LikesActivity extends AppCompatActivity
     }
     private void bindView()
     {
-        Query query = FireBaseUtils.mDatabaseLike.orderByChild(Constants.POEM_KEY).equalTo(postKey);
         FirebaseRecyclerAdapter<Notice,LikesActivity.NoticeViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Notice, LikesActivity.NoticeViewHolder>(
                 Notice.class,R.layout.list_view,LikesActivity.NoticeViewHolder.class, FireBaseUtils.mDatabaseLike.child(postKey))
         {
             @Override
             protected void populateViewHolder(LikesActivity.NoticeViewHolder viewHolder, final Notice model, int position) {
-                final String post_key = getRef(position).getKey();
                 String time = com.techart.writersblock.TimeUtils.timeElapsed(TimeUtils.currentTime() - model.getTimeCreated());
-                viewHolder.tvUser.setText(String.format(model.getUser().toUpperCase() ) + " liked " + model.getPostTitle());
+                viewHolder.tvUser.setText(getString(R.string.liked,model.getUser(),model.getPostTitle()));
 
                 viewHolder.tvTime.setText(time);
-
+                viewHolder.setTypeFace(LikesActivity.this);
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -77,6 +75,13 @@ public class LikesActivity extends AppCompatActivity
             this.mView = itemView;
             mAUth = FirebaseAuth.getInstance();
         }
+
+        public void setTypeFace(Context context){
+           Typeface typeface =  EditorUtils.getTypeFace(context);
+           tvUser.setTypeface(typeface);
+           tvTime.setTypeface(typeface);
+        }
+
     }
 }
 

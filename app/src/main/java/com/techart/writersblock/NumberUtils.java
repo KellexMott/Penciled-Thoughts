@@ -35,4 +35,15 @@ public final class NumberUtils {
             return String.format(("%.1f"),((double)count)/BILLION )  + "G";
         }
     }
+
+
+    /**
+     * Determines the sets the plurality of a word
+     * @param value count
+     * @return return a string
+     */
+    public static int setPlurality(int value)
+    {
+        return value % 10;
+    }
 }

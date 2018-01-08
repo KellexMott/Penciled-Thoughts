@@ -1,10 +1,12 @@
 package com.techart.writersblock;
 
 /**
+ * Object for notice
  * Created by Kelvin on 27/08/2017.
  */
 
 public class Notice {
+    private String Poems;
     private String user;
     private String postTitle;
     private String authorUrl;
@@ -46,5 +48,13 @@ public class Notice {
 
     public void setPostTitle(String postTitle) {
         this.postTitle = postTitle;
+    }
+
+    public String getPoems() {
+        return Poems;
+    }
+
+    public void setPoems(String poems) {
+        Poems = poems;
     }
 }

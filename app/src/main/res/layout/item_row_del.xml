@@ -97,7 +97,7 @@
                     android:contentDescription="@string/comment_icon"
                     android:background="@android:color/transparent"
                     android:padding="7dp"
-                    app:srcCompat="@drawable/ic_comment_white_24dp" />
+                    app:srcCompat="@drawable/ic_comment_grey_24px" />
 
                 <TextView
                     android:id="@+id/tv_comments"

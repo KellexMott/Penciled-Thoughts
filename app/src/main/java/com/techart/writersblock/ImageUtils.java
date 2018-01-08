@@ -9,6 +9,8 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import java.util.HashMap;
+
 /**
  * Class for working with images
  * Created by Kelvin on 17/09/2017.
@@ -16,10 +18,68 @@ import android.provider.MediaStore;
 
 public final class ImageUtils {
 
+    static  HashMap<String, Integer> images;
+
+
     private ImageUtils()
     {
 
     }
+
+    protected static int getStoryUrl(String category) {
+        switch (category)
+        {
+            case "Action":
+                return R.drawable.action;
+            case "Drama":
+                return R.drawable.drama;
+            case "Fiction":
+                return R.drawable.fiction;
+            case "Romance":
+                return R.drawable.romance;
+            default: return R.drawable.fiction;
+        }
+    }
+
+    protected static int getPoemUrl(int category) {
+        switch (category)
+        {
+            case 0:
+                return R.drawable.poem1;
+            case 1:
+                return R.drawable.poem2;
+            case 2:
+                return R.drawable.poem3;
+            case 3:
+                return R.drawable.poem4;
+            case 4:
+                return R.drawable.poem5;
+            default: return R.drawable.poem6;
+        }
+    }
+
+    protected static int getDevotionUrl(int category) {
+        switch (category)
+        {
+            case 0:
+                return R.drawable.devotion;
+            case 1:
+                return R.drawable.devotion1;
+            case 2:
+                return R.drawable.devotion2;
+            default: return R.drawable.devotion3;
+        }
+    }
+
+/*
+    private int getImage(String image) {
+        return images.get(image);
+        images= new HashMap<>();
+        images.put("action",R.drawable.action);
+        images.put("drama",R.drawable.drama);
+        images.put("fiction",R.drawable.fiction);
+        images.put("romance",R.drawable.romance);
+    }*/
 
 
     public static String getRealPathFromUrl(Context context, Uri imageUrl)

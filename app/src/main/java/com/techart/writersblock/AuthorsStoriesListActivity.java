@@ -55,22 +55,37 @@ public class AuthorsStoriesListActivity extends AppCompatActivity {
             protected void populateViewHolder(Tab2Stories.StoryViewHolder viewHolder, final Story model, int position) {
                 final String post_key = getRef(position).getKey();
                 viewHolder.tvTitle.setText(model.getTitle());
-                viewHolder.tvCategory.setText(model.getCategory());
+                viewHolder.tvCategory.setText(getString(R.string.post_category,model.getCategory()));
                 viewHolder.tvStatus.setText(model.getStatus());
-                viewHolder.tvAuthor.setText("By " + model.getAuthor());
+                viewHolder.setIvImage(AuthorsStoriesListActivity.this, ImageUtils.getStoryUrl(model.getCategory().trim()));
+                viewHolder.setTypeFace(AuthorsStoriesListActivity.this);
+                viewHolder.tvAuthor.setText(getString(R.string.post_author,model.getAuthor()));
                 if (model.getNumLikes() != null)
                 {
-                    viewHolder.tvNumLikes.setText(model.getNumLikes().toString());
+                    viewHolder.tvNumLikes.setText(String.format("%s",model.getNumLikes().toString()));
                 }
                 if (model.getNumComments() != null)
                 {
-                    viewHolder.tvNumComments.setText(model.getNumComments().toString());
+                    viewHolder.tvNumComments.setText(String.format("%s",model.getNumComments().toString()));
+                }if (model.getNumViews() != null)
+                {
+                    viewHolder.tvNumViews.setText(String.format("%s",model.getNumViews().toString()));
                 }
                 if (model.getTimeCreated() != null)
                 {
                     String time = com.techart.writersblock.TimeUtils.timeElapsed(TimeUtils.currentTime() - model.getTimeCreated());
                     viewHolder.tvTime.setText(time);
                 }
+
+                viewHolder.tvAuthor.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent readPoemIntent = new Intent(AuthorsStoriesListActivity.this,AuthorsProfileActivity.class);
+                        readPoemIntent.putExtra(Constants.POST_AUTHOR, model.getAuthor());
+                        startActivity(readPoemIntent);
+                    }
+                });
+
                 viewHolder.setLikeBtn(post_key);
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -90,7 +105,7 @@ public class AuthorsStoriesListActivity extends AppCompatActivity {
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (mProcessLike) {
                                     if (dataSnapshot.child(post_key).hasChild(Constants.AUTHOR_URL))  {
-                                        FireBaseUtils.mDatabaseChapters.child(post_key).child(post_key).removeValue();
+                                        FireBaseUtils.mDatabaseChapters.child(post_key).child(FireBaseUtils.mAuth.getCurrentUser().getUid()).removeValue();
                                         FireBaseUtils.onStoryDisliked(post_key);
                                         mProcessLike = false;
                                     } else {
