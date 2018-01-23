@@ -25,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -280,6 +281,7 @@ public class Tab2Stories extends Fragment {
                     public void onClick(DialogInterface dialog, int button) {
                         if (button == DialogInterface.BUTTON_POSITIVE)
                         {
+                            FirebaseMessaging.getInstance().subscribeToTopic(post_key);
                             addToViews(post_key, model);
                             initializeChapters(post_key, model);
                         }

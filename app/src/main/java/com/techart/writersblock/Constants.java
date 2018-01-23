@@ -42,6 +42,8 @@ public class Constants {
     public static final String COMMENT_TEXT = "commentText";
 
 
+    public static final String SUBSCRIPTIONS_KEY  = "Subscriptions";
+
     //Comments
     public static final String COMMENTS_KEY = "Comments";
     public static final String DEVOTION_TITLE = "title";

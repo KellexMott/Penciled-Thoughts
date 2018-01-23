@@ -45,6 +45,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/prompt_username"
             android:inputType="text"
+            android:capitalize="words"
             android:maxLines="1" />
     </android.support.design.widget.TextInputLayout>
 
