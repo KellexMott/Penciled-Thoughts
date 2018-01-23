@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
+    android:layout_margin="16dp"
     android:orientation="vertical"
     tools:context="com.techart.writersblock.PoemEditorActivity">
 
@@ -16,6 +16,7 @@
     <EditText
         android:id="@+id/editText"
         style="@style/ButtonEditor"
+        android:lineSpacingMultiplier="1.2"
         android:hint="@string/tap_to_write"
         android:background="@null"
         android:inputType="textMultiLine|textCapSentences" />

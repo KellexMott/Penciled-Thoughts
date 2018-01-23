@@ -12,6 +12,7 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -33,9 +34,7 @@ public final class FireBaseUtils {
    public static DatabaseReference mDatabaseComment = FirebaseDatabase.getInstance().getReference().child(Constants.COMMENTS_KEY);
    public static DatabaseReference mDatabaseViews = FirebaseDatabase.getInstance().getReference().child(Constants.VIEWS_KEY);
    public static DatabaseReference mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child(Constants.USERS);
-   public static DatabaseReference mDatabaseLibrary = FirebaseDatabase.getInstance().getReference().child(Constants.LIBRARY);
-    public static FirebaseAuth mAuth  = FirebaseAuth.getInstance();
-
+   public static DatabaseReference mDatabaseLibrary = FirebaseDatabase.getInstance().getReference().child(Constants.LIBRARY);public static FirebaseAuth mAuth  = FirebaseAuth.getInstance();
     public static StorageReference mStoragePhotos = FirebaseStorage.getInstance().getReference();
 
 
@@ -43,14 +42,85 @@ public final class FireBaseUtils {
     {
 
     }
-    /*
-    private static FirebaseAuth getAuth(){
-        if (mAuth.getCurrentUser() != null){
-            return mAuth;
-        }else {
-            //ToDo logout
-        }
-    }*/
+
+   //ToDo to be analysed for usefullness
+    public  void updateLibrary(String storyUrl) {
+        FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.mAuth.getCurrentUser().getUid()).child(storyUrl).runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Library library = mutableData.getValue(Library.class);
+                if (library == null) {
+                    return Transaction.success(mutableData);
+                }
+                library.setChaptersAdded(library.getChaptersAdded() + 1 );
+                // Set value and report transaction success
+                mutableData.setValue(library);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+            }
+        });
+    }
+
+
+
+
+    protected static void subscribeToNewPostNotification(){
+        FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.mAuth.getCurrentUser().getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        if (!dataSnapshot.hasChild(Constants.NEW_POST_SUBSCRIPTION))
+                        {
+                            FirebaseMessaging.getInstance().subscribeToTopic(Constants.NEW_POST_SUBSCRIPTION);
+                            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                            if (firebaseUser != null) {
+                                FireBaseUtils.mDatabaseUsers.child(firebaseUser.getUid())
+                                        .child(Constants.NEW_POST_SUBSCRIPTION)
+                                        .setValue(true);
+                            }
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    protected static void subscribeTopic(final String postKey) {
+        FirebaseMessaging.getInstance().subscribeToTopic(postKey);
+    }
+
+    protected static void countUpdatedStories()
+    {
+        FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int chapterCounter = 0;
+                int storyCounter = 0;
+                for (DataSnapshot chapterSnapShot: dataSnapshot.getChildren()) {
+                    Library library = chapterSnapShot.getValue(Library.class);
+                    if (library.getChaptersAdded() != 0)
+                    {
+                        storyCounter++;
+                        chapterCounter+=library.getChaptersAdded();
+                    }
+                }
+                String chapter = NumberUtils.setPlurality(chapterCounter," new chapter");
+                String tale = NumberUtils.setPlurality(storyCounter,"tale");
+                // NewChapterNotification.notify(getApplication(),chapter + " added", chapter,tale);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
 
     public static String getAuthor()
     {

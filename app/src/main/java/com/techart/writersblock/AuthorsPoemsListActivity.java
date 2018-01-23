@@ -61,7 +61,7 @@ public class AuthorsPoemsListActivity extends AppCompatActivity {
                 viewHolder.post_title.setText(model.getTitle());
 
                 viewHolder.post_author.setText(getString(R.string.article_author,model.getAuthor()));
-                viewHolder.setIvImage(AuthorsPoemsListActivity.this,ImageUtils.getPoemUrl(NumberUtils.setPlurality(position)));
+                viewHolder.setIvImage(AuthorsPoemsListActivity.this,ImageUtils.getPoemUrl(NumberUtils.getModuleOfTen(position)));
                 viewHolder.setTypeFace(AuthorsPoemsListActivity.this);
                 if (model.getNumLikes() != null)
                 {

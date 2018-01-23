@@ -16,7 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
             <ImageView
                 android:id="@+id/iv_news"
                 android:layout_width="match_parent"
@@ -34,11 +33,27 @@
                 android:orientation="vertical">
 
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
                 <Button
                     android:id="@+id/bt_author"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorText" />
+
+                <TextView
+                    android:id="@+id/tv_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#da1212"
+                    android:textAllCaps="true"
+                    android:text="@string/updated"
+                    android:visibility="invisible"
+                    android:padding="5dp"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_title"
@@ -66,6 +81,14 @@
 
                     <TextView
                         android:id="@+id/tv_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorWhite"
+                        android:padding="5dp"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tv_chapters"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorWhite"

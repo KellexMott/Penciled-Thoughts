@@ -1,9 +1,9 @@
 package com.techart.writersblock;
 
 /**
+ * Class is working with numbers
  * Created by Kelvin on 06/08/2017.
  */
-
 
 
 public final class NumberUtils {
@@ -38,12 +38,27 @@ public final class NumberUtils {
 
 
     /**
-     * Determines the sets the plurality of a word
+     * Calculates the module of a given number
      * @param value count
      * @return return a string
      */
-    public static int setPlurality(int value)
+    protected static int getModuleOfTen(int value)
     {
         return value % 10;
+    }
+
+    /**
+     * Determines the sets the plurality of a word
+     * @param value count
+     * @param word distinction
+     * @return return a string
+     */
+    protected static  String setPlurality(long value, String word)
+    {
+        if(value == 1)
+        {
+            return "a " + word;
+        }
+        return value + " " + word + "s";
     }
 }

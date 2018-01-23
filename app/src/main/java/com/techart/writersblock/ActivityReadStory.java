@@ -30,6 +30,7 @@ public class ActivityReadStory extends AppCompatActivity {
     private TextView tvTitle;
 
 
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -56,7 +57,6 @@ public class ActivityReadStory extends AppCompatActivity {
         contents = getIntent().getStringArrayListExtra(Constants.POST_CONTENT);
         chapterTitles = getIntent().getStringArrayListExtra(Constants.POST_TITLE);
         pageCount = contents.size();
-
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -86,10 +86,9 @@ public class ActivityReadStory extends AppCompatActivity {
 
         pageNumbers = new ArrayList<>();
 
-
         for(int i = 1; i <= pageCount; i++)
         {
-            pageNumbers.add("Episode " + i);//String.valueOf(i));//You should add items from db here (first spinner)
+            pageNumbers.add("Chapter " + i);//String.valueOf(i));//You should add items from db here (first spinner)
         }
         ArrayAdapter<String> pagesAdapter = new ArrayAdapter<>(ActivityReadStory.this, R.layout.chapter, pageNumbers);
         pagesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -108,6 +107,8 @@ public class ActivityReadStory extends AppCompatActivity {
             }
         });
     }
+
+
     /**
      * A placeholder fragment containing a simple view.
      */

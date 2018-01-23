@@ -222,6 +222,7 @@ public class PoemEditorActivity extends AppCompatActivity {
         values.put(Constants.POST_AUTHOR,FireBaseUtils.getAuthor());
         values.put(Constants.TIME_CREATED,ServerValue.TIMESTAMP);
         FireBaseUtils.mDatabasePoems.child(poemUrl).setValue(values);
+        FireBaseUtils.subscribeTopic(poemUrl);
         mProgress.dismiss();
         Toast.makeText(getApplicationContext(),"Poem posted", Toast.LENGTH_LONG).show();
         finishEditing();

@@ -89,7 +89,6 @@
         <activity
             android:name=".ActivityReadStory"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ResetPasswordActivity" />
         <activity
             android:name=".LoginActivity"
             android:excludeFromRecents="true"

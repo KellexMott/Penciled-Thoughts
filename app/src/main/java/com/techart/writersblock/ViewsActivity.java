@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.Query;
 
 /**
  * Retrieves and displays list of people who have viewed a particular post
@@ -26,9 +27,10 @@ public class ViewsActivity extends AppCompatActivity
         postKey = getIntent().getStringExtra(Constants.POST_KEY);
         mAuth = FirebaseAuth.getInstance();
         setTitle("Viewers");
+        FireBaseUtils.mDatabaseViews.child(postKey).keepSynced(true);
         mPoemList = (RecyclerView) findViewById(R.id.lv_notice);
         mPoemList.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ViewsActivity.this);
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
         mPoemList.setLayoutManager(linearLayoutManager);
@@ -40,13 +42,14 @@ public class ViewsActivity extends AppCompatActivity
      */
     private void bindView()
     {
+        Query viewQuery = FireBaseUtils.mDatabaseViews.child(postKey).orderByChild(Constants.TIME_CREATED);
         //ToDo fully implement class and method
         FirebaseRecyclerAdapter<Notice,LikesActivity.NoticeViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Notice, LikesActivity.NoticeViewHolder>(
-                Notice.class,R.layout.list_view,LikesActivity.NoticeViewHolder.class, FireBaseUtils.mDatabaseViews.child(postKey))
+                Notice.class,R.layout.list_view,LikesActivity.NoticeViewHolder.class, viewQuery)
         {
             @Override
             protected void populateViewHolder(LikesActivity.NoticeViewHolder viewHolder, final Notice model, int position) {
-                String time = TimeUtils.timeElapsed(TimeUtils.currentTime() - model.getTimeCreated());
+                String time = TimeUtils.timeElapsed(model.getTimeCreated());
                 viewHolder.tvUser.setText(model.getUser());
                 viewHolder.setTypeFace(ViewsActivity.this);
                 viewHolder.tvTime.setText(time);

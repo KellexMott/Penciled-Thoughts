@@ -16,8 +16,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Date;
-
 /**
  * Devotion fragment
  */
@@ -72,7 +70,7 @@ public class Tab3Devotion extends Fragment {
                 final String post_key = getRef(position).getKey();
                 viewHolder.post_title.setText(model.getTitle());
                 viewHolder.post_author.setText(getString(R.string.article_author,model.getAuthor()));
-                viewHolder.setIvImage(getContext(),ImageUtils.getDevotionUrl(NumberUtils.setPlurality(position)));
+                viewHolder.setIvImage(getContext(),ImageUtils.getDevotionUrl(NumberUtils.getModuleOfTen(position)));
                 viewHolder.setTypeFace(getContext());
                 if (model.getNumLikes() != null)
                 {
@@ -91,7 +89,7 @@ public class Tab3Devotion extends Fragment {
                 }
                 if (model.getTimeCreated() != null)
                 {
-                    String time = com.techart.writersblock.TimeUtils.timeElapsed(currentTime() - model.getTimeCreated());
+                    String time = com.techart.writersblock.TimeUtils.timeElapsed(model.getTimeCreated());
                     viewHolder.timeTextView.setText(time);
                 }
                 viewHolder.setLikeBtn(post_key);
@@ -121,6 +119,7 @@ public class Tab3Devotion extends Fragment {
                         Intent readPoemIntent = new Intent(getContext(),ScrollingActivity.class);
                         readPoemIntent.putExtra(Constants.POST_CONTENT, model.getDevotionText());
                         readPoemIntent.putExtra(Constants.POST_TITLE, model.getTitle());
+                        readPoemIntent.putExtra(Constants.POST_KEY, post_key);
                         startActivity(readPoemIntent);
                     }
                 });
@@ -193,12 +192,6 @@ public class Tab3Devotion extends Fragment {
         };
         mPoemList.setAdapter(fireBaseRecyclerAdapter);
         fireBaseRecyclerAdapter.notifyDataSetChanged();
-    }
-
-    private long currentTime()
-    {
-        Date date = new Date();
-        return date.getTime();
     }
 
     public String getAuthor()

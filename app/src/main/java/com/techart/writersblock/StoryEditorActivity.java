@@ -154,14 +154,15 @@ public class StoryEditorActivity extends AppCompatActivity {
         values.put(Constants.STORY_CATEGORY,storyCategory);
         values.put(Constants.STORY_STATUS,status);
         values.put(Constants.STORY_CHAPTERCOUNT,0);
+        values.put(Constants.LAST_UPDATE,0);
         values.put(Constants.NUM_LIKES,0);
         values.put(Constants.NUM_COMMENTS,0);
         values.put(Constants.NUM_VIEWS,0);
         values.put(Constants.AUTHOR_URL,mAuth.getCurrentUser().getUid());
         values.put(Constants.POST_AUTHOR,getAuthor());
         values.put(Constants.TIME_CREATED,ServerValue.TIMESTAMP);
-
         mDatabaseStory.child(storyUrl).setValue(values);
+        FireBaseUtils.subscribeTopic(storyUrl);
         postStoryChapter();
         Toast.makeText(getApplicationContext(),"Story successfully posted", Toast.LENGTH_LONG).show();
     }

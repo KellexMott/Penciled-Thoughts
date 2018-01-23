@@ -1,8 +1,10 @@
 package com.techart.writersblock;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,24 +15,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ChapterEditorOnlineActivity extends AppCompatActivity {
-
     private ProgressDialog mProgress;
     private String chapterUrl;
     private EditText editor;
-    private EditText editorTitle;
     private String oldText;
     private String oldTitle;
-
     private String storyUrl;
     private String newText;
-    private String newTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_storyeditor);
+        setContentView(R.layout.activity_story);
         editor = (EditText) findViewById(R.id.editText);
-        editorTitle = (EditText) findViewById(R.id.editTitle);
 
         Intent intent = getIntent();
         storyUrl = intent.getStringExtra(Constants.STORY_REFID);
@@ -38,10 +35,9 @@ public class ChapterEditorOnlineActivity extends AppCompatActivity {
         oldText = intent.getStringExtra(Constants.CHAPTER_CONTENT);
         oldTitle = intent.getStringExtra(Constants.CHAPTER_TITLE);
 
-        setTitle("Editing");
+        setTitle("Editing Episode " + oldTitle);
         editor.setText(oldText);
-        editorTitle.setText(oldTitle);
-        editorTitle.requestFocus();
+        editor.requestFocus();
     }
 
     @Override
@@ -53,22 +49,19 @@ public class ChapterEditorOnlineActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        newText = editor.getText().toString().trim();
-        newTitle = editorTitle.getText().toString().trim();
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_update:
-                if ( EditorUtils.isEmpty(this,newTitle, "chapter title") && EditorUtils.validateMainText(this,editor.getLayout().getLineCount()))
-                {
-                    startPosting();
-                }
+                startPosting();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private boolean validate()
+    {
+        return EditorUtils.validateMainText(this,editor.getLayout().getLineCount());
     }
 
     /*
@@ -77,15 +70,10 @@ public class ChapterEditorOnlineActivity extends AppCompatActivity {
         else posts the chapter
      */
     private void startPosting() {
-        if (!storyUrl.equals("null") && chapterUrl != null){
+        newText = editor.getText().toString().trim();
+        if (validate() && !storyUrl.equals("null") && chapterUrl != null){
             postChapter();
         }
-    }
-
-    private void finishEditing() {
-        newText = editor.getText().toString().trim();
-        newTitle = editorTitle.getText().toString().trim();
-        finish();
     }
 
     private void postChapter() {
@@ -94,20 +82,30 @@ public class ChapterEditorOnlineActivity extends AppCompatActivity {
         mProgress.show();
         Map<String,Object> values = new HashMap<>();
         values.put(Constants.CHAPTER_CONTENT,newText);
-        values.put(Constants.CHAPTER_TITLE,newTitle);
         FireBaseUtils.mDatabaseChapters.child(storyUrl).child(chapterUrl).updateChildren(values);
         mProgress.dismiss();
         Toast.makeText(getApplicationContext(),"Chapter successfully posted", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        finishEditing();
+        finish();
     }
 
     @Override
     public void onBackPressed() {
-        finishEditing();
+        DialogInterface.OnClickListener dialogClickListener =
+        new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int button) {
+                if (button == DialogInterface.BUTTON_POSITIVE) {
+                    finish();
+                }
+                if (button == DialogInterface.BUTTON_NEGATIVE) {
+                    dialog.dismiss();
+                }
+            }
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("CHANGES WILL NOT BE SAVED!")
+        .setPositiveButton("Understood", dialogClickListener)
+        .setNegativeButton("Stay in editor", dialogClickListener)
+        .show();
     }
 }

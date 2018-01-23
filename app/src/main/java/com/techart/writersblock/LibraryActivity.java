@@ -16,8 +16,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.MutableData;
-import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -64,17 +62,16 @@ public class LibraryActivity extends AppCompatActivity {
                 ((TextView)v.findViewById(R.id.tv_title)).setText(model.getPostTitle());
                 if (model.getChaptersAdded() != null && model.getChaptersAdded() != 0)
                 {
-                    ((TextView)v.findViewById(R.id.tv_update)).setText(TimeUtils.setPlurality(model.getChaptersAdded(), " chapter") + " added");
+                    ((TextView)v.findViewById(R.id.tv_update)).setText(NumberUtils.setPlurality(model.getChaptersAdded(), " chapter") + " added");
                 }
                  v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onStoryOpened(post_key);
+                       // onStoryOpened(post_key);
                         storyExists(post_key);
                     }
                 });
             }
-
         };
         mPoemList.setAdapter(fireBaseRecyclerAdapter);
     }
@@ -147,33 +144,8 @@ public class LibraryActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    public  void onStoryOpened(String storyUrl) {
-        FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.mAuth.getCurrentUser().getUid()).child(storyUrl).runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(MutableData mutableData) {
-                Library library = mutableData.getValue(Library.class);
-                if (library == null) {
-                    return Transaction.success(mutableData);
-                }
-
-                library.setChaptersAdded(0);
-                // Set value and report transaction success
-                mutableData.setValue(library);
-                return Transaction.success(mutableData);
-
-                // Set value and report transaction success
-            }
-
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b,
-                                   DataSnapshot dataSnapshot) {
-            }
-        });
-    }
-
     @Override
     public void onBackPressed() {
-        setResult(RESULT_OK,getIntent());
         finish();
     }
 }

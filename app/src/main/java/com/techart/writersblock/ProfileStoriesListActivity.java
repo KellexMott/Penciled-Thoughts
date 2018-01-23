@@ -162,6 +162,7 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         Intent likedPostsIntent = new Intent(ProfileStoriesListActivity.this,StoryDialogActivity.class);
                         likedPostsIntent.putExtra(Constants.POST_KEY,post_key);
+                        likedPostsIntent.putExtra(Constants.STORY_CHAPTERCOUNT,model.getChapters().toString());
                         startActivity(likedPostsIntent);
                     }
                 });
@@ -238,9 +239,7 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
     public static class StoryViewHolder extends RecyclerView.ViewHolder
     {
         TextView tvTitle;
-        TextView tvAuthor;
         Button tvCategory;
-       // Button tvStatus;
         Button btEdit;
         TextView tvNumLikes;
         TextView tvNumComments;
@@ -260,7 +259,6 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
         public StoryViewHolder(View itemView) {
             super(itemView);
             tvTitle = (TextView)itemView.findViewById(R.id.tv_title);
-            // = (TextView)itemView.findViewById(R.id.tv_author);
             tbStatus = (ToggleButton)itemView.findViewById(R.id.tb_status);
             tvCategory = (Button)itemView.findViewById(R.id.tv_category);
             btEdit = (Button)itemView.findViewById(R.id.bt_edit);

@@ -57,7 +57,7 @@ public class AuthorsStoriesListActivity extends AppCompatActivity {
                 viewHolder.tvTitle.setText(model.getTitle());
                 viewHolder.tvCategory.setText(getString(R.string.post_category,model.getCategory()));
                 viewHolder.tvStatus.setText(model.getStatus());
-                viewHolder.setIvImage(AuthorsStoriesListActivity.this, ImageUtils.getStoryUrl(model.getCategory().trim()));
+                viewHolder.setIvImage(AuthorsStoriesListActivity.this, ImageUtils.getStoryUrl(model.getCategory().trim(),model.getTitle()));
                 viewHolder.setTypeFace(AuthorsStoriesListActivity.this);
                 viewHolder.tvAuthor.setText(getString(R.string.post_author,model.getAuthor()));
                 if (model.getNumLikes() != null)

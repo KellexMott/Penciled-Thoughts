@@ -10,6 +10,7 @@ import java.util.Date;
  */
 public final class TimeUtils {
     //constants, time in seconds
+    public static final int  MILLISECONDS_DAY = 86400000;
     private static final int  MINUTE = 60;
     private static final int  HOUR = 3600;
     private static final int  DAY= 86400;
@@ -39,7 +40,7 @@ public final class TimeUtils {
      */
     public static String timeElapsed(long timePostedInMilliseconds)
     {
-        long timeInSeconds = millisecondsToSeconds(timePostedInMilliseconds);
+        long timeInSeconds = millisecondsToSeconds(currentTime() - timePostedInMilliseconds);
         if (timeInSeconds < MINUTE)
         {
             return "just now";

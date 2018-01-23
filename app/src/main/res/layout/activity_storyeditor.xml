@@ -12,6 +12,7 @@
         android:id="@+id/layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp"
         android:orientation="horizontal">
 
         <TextView
@@ -35,7 +36,9 @@
 
     <EditText
         android:id="@+id/editText"
+        android:paddingTop="10dp"
         style="@style/ButtonEditor"
+        android:lineSpacingMultiplier="1.2"
         android:hint="@string/tap_to_write"
         android:background="@null"
         android:inputType="textMultiLine|textCapSentences" />

@@ -11,9 +11,9 @@ public class Story {
     private Long chapters;
     private String category;
     private String status;
+    private Long lastUpdate;
     private String description;
 
-    private Boolean isPostEdited;
     private Long numLikes;
     private Long numComments;
     private Long numViews;
@@ -49,15 +49,6 @@ public class Story {
 
     public void setCategory(String category) {
         this.category = category;
-    }
-
-
-    public Boolean getPostEdited() {
-        return isPostEdited;
-    }
-
-    public void setPostEdited(Boolean postEdited) {
-        isPostEdited = postEdited;
     }
 
     public Long getTimeCreated() {
@@ -114,5 +105,13 @@ public class Story {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Long getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(Long lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 }

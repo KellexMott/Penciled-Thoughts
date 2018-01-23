@@ -12,32 +12,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_centerInParent="true"
+        android:contentDescription="@string/book_image"
         android:padding="7dp"
         app:srcCompat="@drawable/ic_book_grey"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_toRightOf="@+id/ivFile"
-        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_toRightOf="@+id/ivFile"
+            android:layout_toEndOf="@+id/ivFile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_margin="10dp"
+            android:padding="10dp"
             android:textColor="@color/colorText"
             android:textSize="18sp" />
-        <TextView
-            android:id="@+id/tv_update"
-            android:layout_toRightOf="@+id/tvTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#e60b21"
-            android:layout_margin="4dp"
-            android:textSize="14sp" />
-    </LinearLayout>
 
 </RelativeLayout>

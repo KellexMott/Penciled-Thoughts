@@ -26,7 +26,7 @@ public final class ImageUtils {
 
     }
 
-    protected static int getStoryUrl(String category) {
+    protected static int getStoryUrl(String category,String title) {
         switch (category)
         {
             case "Action":
@@ -34,12 +34,35 @@ public final class ImageUtils {
             case "Drama":
                 return R.drawable.drama;
             case "Fiction":
-                return R.drawable.fiction;
+                return getFictionImage(title);
             case "Romance":
-                return R.drawable.romance;
+                return getRomanceImage(title);
             default: return R.drawable.fiction;
         }
     }
+
+    private static int getFictionImage(String title) {
+        switch (title)
+        {
+            case "JUSTICE MUST BE SERVED":
+                return R.drawable.fiction1;
+            case "HALLELUJAH; You Are Home":
+                return R.drawable.fiction2;
+            case "SILENCE":
+                return R.drawable.fiction3;
+            default: return R.drawable.fiction;
+        }
+    }
+
+    private static int getRomanceImage(String title) {
+        switch (title)
+        {
+            case "EMOTIONALLY DETACHED":
+                return R.drawable.romance;
+            default: return R.drawable.romance1;
+        }
+    }
+
 
     protected static int getPoemUrl(int category) {
         switch (category)
@@ -70,16 +93,6 @@ public final class ImageUtils {
             default: return R.drawable.devotion3;
         }
     }
-
-/*
-    private int getImage(String image) {
-        return images.get(image);
-        images= new HashMap<>();
-        images.put("action",R.drawable.action);
-        images.put("drama",R.drawable.drama);
-        images.put("fiction",R.drawable.fiction);
-        images.put("romance",R.drawable.romance);
-    }*/
 
 
     public static String getRealPathFromUrl(Context context, Uri imageUrl)

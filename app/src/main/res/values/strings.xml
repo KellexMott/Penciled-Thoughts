@@ -3,6 +3,10 @@
     <string name="poem_deleted">Poem deleted</string>
     <string name="poem_updated">Poem updated</string>
 
+    <item type="bool" name="is_true">true</item>
+    <item type="bool" name="is_false">false</item>
+
+
 
     <!--activity login -->
     <string name="prompt_email">Email</string>
@@ -122,6 +126,8 @@
     <string name="add_post">Add Post</string>
     <string name="liked">%1$s liked %2$s</string>
     <string name="post_category">%1$s  *  </string>
+    <string name="post_status">%1$s  *  </string>
+    <string name="post_chapters">%1$s</string>
     <string name="post_author">%1$s</string>
     <string name="article_author">By %1$s</string>
     <string name="viewers">%1$s views</string>
@@ -152,4 +158,6 @@
     <string name="stories">Stories</string>
     <string name="type_comment">Type comment &#230;</string>
     <string name="send_icon">send icon</string>
+    <string name="book_image">book image</string>
+    <string name="updated">Updated</string>
 </resources>

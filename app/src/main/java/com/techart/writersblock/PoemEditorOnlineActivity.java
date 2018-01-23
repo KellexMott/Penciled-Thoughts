@@ -1,8 +1,10 @@
 package com.techart.writersblock;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -115,6 +117,22 @@ public class PoemEditorOnlineActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        finish();
+        DialogInterface.OnClickListener dialogClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int button) {
+                        if (button == DialogInterface.BUTTON_POSITIVE) {
+                            finish();
+                        }
+                        if (button == DialogInterface.BUTTON_NEGATIVE) {
+                            dialog.dismiss();
+                        }
+                    }
+                };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("CHANGES WILL NOT BE SAVED!")
+                .setPositiveButton("Understood", dialogClickListener)
+                .setNegativeButton("Stay in editor", dialogClickListener)
+                .show();
     }
 }

@@ -41,12 +41,13 @@ public class Tab2Stories extends Fragment {
     private ArrayList<String> contents;
     private ArrayList<String> chapterTitles;
     private int pageCount;
+    Long timeAccessed;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.storyrecyclerviewer, container, false);
-
 
         FireBaseUtils.mDatabaseLike.keepSynced(true);
         FireBaseUtils.mDatabaseStory.keepSynced(true);
@@ -70,24 +71,29 @@ public class Tab2Stories extends Fragment {
                 final String post_key = getRef(position).getKey();
                 viewHolder.tvTitle.setText(model.getTitle());
                 viewHolder.tvCategory.setText(getString(R.string.post_category,model.getCategory()));
-                viewHolder.tvStatus.setText(model.getStatus());
-                viewHolder.setIvImage(getContext(), ImageUtils.getStoryUrl(model.getCategory().trim()));
+                viewHolder.tvStatus.setText(getString(R.string.post_status,model.getStatus()));
+                viewHolder.tvChapters.setText(getString(R.string.post_chapters,NumberUtils.setPlurality(model.getChapters(),"Chapter")));
+                viewHolder.setIvImage(getContext(), ImageUtils.getStoryUrl(model.getCategory().trim(),model.getTitle()));
                 viewHolder.setTypeFace(getContext());
                 viewHolder.tvAuthor.setText(getString(R.string.post_author,model.getAuthor()));
+
                 if (model.getNumLikes() != null)
                 {
                     viewHolder.tvNumLikes.setText(String.format("%s",model.getNumLikes().toString()));
                 }
+
                 if (model.getNumComments() != null)
                 {
                     viewHolder.tvNumComments.setText(String.format("%s",model.getNumComments().toString()));
-                }if (model.getNumViews() != null)
+                }
+
+                if (model.getNumViews() != null)
                 {
                     viewHolder.tvNumViews.setText(String.format("%s",model.getNumViews().toString()));
                 }
                 if (model.getTimeCreated() != null)
                 {
-                    String time = com.techart.writersblock.TimeUtils.timeElapsed(TimeUtils.currentTime() - model.getTimeCreated());
+                    String time = TimeUtils.timeElapsed(model.getTimeCreated());
                     viewHolder.tvTime.setText(time);
                 }
 
@@ -102,13 +108,19 @@ public class Tab2Stories extends Fragment {
                 viewHolder.setLikeBtn(post_key);
                 viewHolder.setPostViewed(post_key);
 
+                if (model.getLastUpdate() != null)
+                {
+                    Boolean t = TimeUtils.currentTime() - model.getLastUpdate() < TimeUtils.MILLISECONDS_DAY; //&& res;
+                    viewHolder.setVisibility(t);
+                }
+
+
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         showDescription(model.getDescription(),post_key,model);
                     }
                 });
-
 
                 viewHolder.btnLiked.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -224,7 +236,6 @@ public class Tab2Stories extends Fragment {
                     readIntent.putStringArrayListExtra(Constants.POST_TITLE,chapterTitles);
                     startActivity(readIntent);
                 }
-
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -232,6 +243,7 @@ public class Tab2Stories extends Fragment {
             }
         });
     }
+
 
     private void addToLibrary(final Story model, final String post_key)
     {
@@ -244,6 +256,7 @@ public class Tab2Stories extends Fragment {
                     values.put(Constants.POST_KEY,  post_key);
                     values.put(Constants.POST_TITLE, model.getTitle());
                     values.put(Constants.CHAPTER_ADDED, 0);
+                    values.put("lastAccessed", timeAccessed);
                     FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.mAuth.getCurrentUser().getUid()).child(post_key).setValue(values);
                     Toast.makeText(getContext(),model.getTitle() + " added to library",Toast.LENGTH_LONG).show();
                 }
@@ -286,10 +299,11 @@ public class Tab2Stories extends Fragment {
     public static class StoryViewHolder extends RecyclerView.ViewHolder
     {
         TextView tvTitle;
-        //TextView tvAuthor;
+        TextView tvState;
         TextView tvAuthor;
         TextView tvCategory;
         TextView tvStatus;
+        TextView tvChapters;
         TextView tvNumLikes;
         TextView tvNumComments;
         TextView tvNumViews;
@@ -309,9 +323,10 @@ public class Tab2Stories extends Fragment {
         public StoryViewHolder(View itemView) {
             super(itemView);
             tvTitle = (TextView)itemView.findViewById(R.id.tv_title);
-           // tvAuthor = (TextView)itemView.findViewById(R.id.tv_author);
+            tvState = (TextView)itemView.findViewById(R.id.tv_state);
             tvAuthor = (TextView)itemView.findViewById(R.id.bt_author);
             tvStatus = (TextView)itemView.findViewById(R.id.tv_status);
+            tvChapters = (TextView)itemView.findViewById(R.id.tv_chapters);
             tvCategory = (TextView)itemView.findViewById(R.id.tv_category);
             ivStory = (ImageView)itemView.findViewById(R.id.iv_news);
 
@@ -335,8 +350,17 @@ public class Tab2Stories extends Fragment {
             tvTitle.setTypeface(typeface);
             tvStatus.setTypeface(typeface);
             tvCategory.setTypeface(typeface);
+            tvChapters.setTypeface(typeface);
         }
 
+        protected void setVisibility(Boolean isVisible)
+        {
+            if (isVisible){
+                tvState.setVisibility(View.VISIBLE);
+            }else{
+                tvState.setVisibility(View.INVISIBLE);
+            }
+        }
 
         public void setIvImage(Context context, int resourceValue)
         {

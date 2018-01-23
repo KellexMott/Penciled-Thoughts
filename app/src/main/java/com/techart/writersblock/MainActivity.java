@@ -16,9 +16,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 /**
  * Landing page.
@@ -57,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(loginIntent);
                 }
+                FirebaseMessaging.getInstance().subscribeToTopic(Constants.NEW_POST_SUBSCRIPTION);
             }
         };
         haveNetworkConnection();
@@ -64,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         setSupportActionBar(toolbar);
        /* CollapsingToolbarLayout collapsingToolbarLayout =(CollapsingToolbarLayout)findViewById(R.id.toolbar_layout);
         collapsingToolbarLayout.setTitleEnabled(false);*/
-
         //VIEWPAGER
         vp= (ViewPager) findViewById(R.id.container);
         this.addPages();
@@ -99,6 +97,16 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 }
             });
         //End bottom naviagtion
+
+        //ToDO fully implement
+        /*
+        BottomNavigationMenuView bottomNavigationMenuView =
+                (BottomNavigationMenuView) bottomNavigationView.getChildAt(0);
+        View v = bottomNavigationMenuView.getChildAt(2); // number of menu from left
+        new QBadgeView(this).bindTarget(v)
+                .setBadgeGravity(Gravity.CENTER)
+                .setBadgeNumber(5);
+                */
     }
 
     @Override
@@ -174,31 +182,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void countUpdatedStories()
-    {
-        FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                int chapterCounter = 0;
-                int storyCounter = 0;
-                for (DataSnapshot chapterSnapShot: dataSnapshot.getChildren()) {
-                    Library library = chapterSnapShot.getValue(Library.class);
-                    if (library.getChaptersAdded() != 0)
-                    {
-                        storyCounter++;
-                        chapterCounter+=library.getChaptersAdded();
-                    }
-                }
-                String chapter = TimeUtils.setPlurality(chapterCounter," new chapter");
-                String tale = TimeUtils.setPlurality(storyCounter,"tale");
-               // NewChapterNotification.notify(getApplication(),chapter + " added", chapter,tale);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
     }
 
     private void haveNetworkConnection() {

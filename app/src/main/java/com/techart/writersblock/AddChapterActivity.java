@@ -49,7 +49,7 @@ public class AddChapterActivity extends AppCompatActivity {
         storyId = intent.getStringExtra("id");
         storyUrl = intent.getStringExtra(Constants.STORY_REFID);
         if (storyId != null) {
-            setTitle("Adding " + Constants.EPISODE);
+            setTitle("Adding " + Constants.CHAPTER);
             title.requestFocus();
         }
     }
@@ -144,7 +144,6 @@ public class AddChapterActivity extends AppCompatActivity {
             showErrorDialog("Error...! You have not written anything");
         }
     }
-
 
     private void showErrorDialog(String errorMsg)
     {

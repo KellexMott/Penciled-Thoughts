@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 public class StoryDialogActivity extends AppCompatActivity {
 
     private String postKey;
+    private String chapters;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +35,7 @@ public class StoryDialogActivity extends AppCompatActivity {
         list.setAdapter(adapter);
         list.setStackFromBottom(true);
         postKey = getIntent().getStringExtra(Constants.POST_KEY);
+        chapters = getIntent().getStringExtra(Constants.STORY_CHAPTERCOUNT);
 
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -43,6 +45,7 @@ public class StoryDialogActivity extends AppCompatActivity {
                     case "Add Chapter" :
                         Intent editorDevotionIntent = new Intent(StoryDialogActivity.this, AddChapterOnlineActivity.class);
                         editorDevotionIntent.putExtra(Constants.STORY_REFID,postKey);
+                        editorDevotionIntent.putExtra(Constants.STORY_CHAPTERCOUNT,chapters);
                         startActivity(editorDevotionIntent);
                         break;
                     case "Edit Chapter":

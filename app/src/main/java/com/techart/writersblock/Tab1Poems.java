@@ -23,8 +23,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Date;
-
 
 public class Tab1Poems extends Fragment {
     private RecyclerView mPoemList;
@@ -73,7 +71,7 @@ public class Tab1Poems extends Fragment {
                 viewHolder.post_title.setText(model.getTitle());
 
                 viewHolder.post_author.setText(getString(R.string.article_author,model.getAuthor()));
-                viewHolder.setIvImage(getContext(),ImageUtils.getPoemUrl(NumberUtils.setPlurality(position)));
+                viewHolder.setIvImage(getContext(),ImageUtils.getPoemUrl(NumberUtils.getModuleOfTen(position)));
                 viewHolder.setTypeFace(getContext());
                 if (model.getNumLikes() != null)
                 {
@@ -92,7 +90,7 @@ public class Tab1Poems extends Fragment {
                 }
                 if (model.getTimeCreated() != null)
                 {
-                    String time = TimeUtils.timeElapsed(currentTime() - model.getTimeCreated());
+                    String time = TimeUtils.timeElapsed(model.getTimeCreated());
                     viewHolder.timeTextView.setText(time);
                 }
                 viewHolder.setLikeBtn(post_key);
@@ -119,10 +117,10 @@ public class Tab1Poems extends Fragment {
 
                             }
                         });
-
                         Intent readPoemIntent = new Intent(getContext(),ScrollingActivity.class);
                         readPoemIntent.putExtra(Constants.POST_CONTENT, model.getPoemText());
                         readPoemIntent.putExtra(Constants.POST_TITLE, model.getTitle());
+                        readPoemIntent.putExtra(Constants.POST_KEY, post_key);
                         startActivity(readPoemIntent);
                     }
                 });
@@ -199,17 +197,10 @@ public class Tab1Poems extends Fragment {
         firebaseRecyclerAdapter.notifyDataSetChanged();
     }
 
-
     public String getAuthor()
     {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         return user.getDisplayName();
-    }
-
-    private long currentTime()
-    {
-        Date date = new Date();
-        return date.getTime();
     }
 
     public static class PoemViewHolder extends RecyclerView.ViewHolder

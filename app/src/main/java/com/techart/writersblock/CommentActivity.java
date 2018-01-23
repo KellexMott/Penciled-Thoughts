@@ -83,8 +83,6 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         mCommentList.setAdapter(firebaseRecyclerAdapter);
     }
 
-
-
     private void init() {
         mEtComment = (EditText) findViewById(R.id.et_comment);
         findViewById(R.id.iv_send).setOnClickListener(this);
