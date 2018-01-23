@@ -154,7 +154,6 @@ public class StoryEditorActivity extends AppCompatActivity {
         values.put(Constants.STORY_CATEGORY,storyCategory);
         values.put(Constants.STORY_STATUS,status);
         values.put(Constants.STORY_CHAPTERCOUNT,0);
-        values.put(Constants.LAST_UPDATE,0);
         values.put(Constants.NUM_LIKES,0);
         values.put(Constants.NUM_COMMENTS,0);
         values.put(Constants.NUM_VIEWS,0);

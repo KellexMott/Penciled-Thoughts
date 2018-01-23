@@ -18,23 +18,17 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 public class CommentActivity extends AppCompatActivity implements View.OnClickListener {
     private RecyclerView mCommentList;
-    private DatabaseReference mDatabaseComment;
-    private DatabaseReference mDatabasePoem;
-    private DatabaseReference mDatabaseDevotions;
-    private DatabaseReference mDatabaseStories;
-
     private FirebaseAuth mAuth;
 
     private EditText mEtComment;
@@ -47,11 +41,9 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
-        mDatabasePoem = FirebaseDatabase.getInstance().getReference().child(Constants.POEM_KEY);
-        mDatabaseDevotions = FirebaseDatabase.getInstance().getReference().child(Constants.DEVOTION_KEY);
-        mDatabaseStories = FirebaseDatabase.getInstance().getReference().child(Constants.STORY_KEY);
 
-        mDatabaseComment = FirebaseDatabase.getInstance().getReference().child("Comments");
+        FireBaseUtils.mDatabaseComment.keepSynced(true);
+
         post_key = getIntent().getStringExtra(Constants.POST_KEY);
         postName = getIntent().getStringExtra(Constants.POST_TITLE);
         postType = getIntent().getStringExtra(Constants.POST_TYPE);
@@ -60,23 +52,25 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
 
         mCommentList = (RecyclerView) findViewById(R.id.comment_recyclerview);
         mCommentList.setHasFixedSize(true);
-        mCommentList.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(CommentActivity.this);
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        mCommentList.setLayoutManager(linearLayoutManager);
         init();
         initCommentSection();
     }
 
     private void initCommentSection() {
+        Query commentsQuery = FireBaseUtils.mDatabaseComment.child(post_key).orderByChild(Constants.TIME_CREATED);
         FirebaseRecyclerAdapter<Comment, CommentHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Comment, CommentHolder>(
-                Comment.class, R.layout.item_comment, CommentHolder.class, mDatabaseComment.child(post_key)
-        )
+                Comment.class, R.layout.item_comment, CommentHolder.class, commentsQuery)
         {
             @Override
             protected void populateViewHolder(CommentHolder viewHolder, final Comment model, int position) {
                 viewHolder.authorTextView.setText(model.getAuthor());
                 viewHolder.commentTextView.setText(model.getCommentText());
                 viewHolder.setTypeFace(CommentActivity.this);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d, HH:mm:ss");
-                String time = simpleDateFormat.format(model.getTimeCreated());
+                String time = TimeUtils.timeElapsed(model.getTimeCreated());
                 viewHolder.timeTextView.setText(time);
             }
         };
@@ -101,18 +95,17 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         isSent = false;
         if (!comment.isEmpty())
         {
-            mDatabaseComment = FirebaseDatabase.getInstance().getReference().child(Constants.COMMENTS_KEY).child(post_key);
             final ProgressDialog progressDialog = new ProgressDialog(CommentActivity.this);
             progressDialog.setMessage("Sending comment..");
             progressDialog.setCancelable(true);
             progressDialog.setIndeterminate(true);
             progressDialog.show();
-            mDatabaseComment.addValueEventListener(new ValueEventListener() {
+            FireBaseUtils.mDatabaseComment.child(post_key).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (!isSent)
                     {
-                        DatabaseReference newComment = mDatabaseComment.push();
+                        DatabaseReference newComment = FireBaseUtils.mDatabaseComment.child(post_key).push();
                         Map<String,Object> values = new HashMap<>();
                         values.put(Constants.USER,mAuth.getCurrentUser().getUid());
                         values.put(Constants.POST_AUTHOR,getAuthor());
@@ -153,7 +146,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void poemCommentCount() {
-        mDatabasePoem.child(post_key).runTransaction(new Transaction.Handler() {
+        FireBaseUtils.mDatabasePoems.child(post_key).runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
                 Poem poem = mutableData.getValue(Poem.class);
@@ -174,7 +167,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void devotionCommentCount() {
-        mDatabaseDevotions.child(post_key).runTransaction(new Transaction.Handler() {
+        FireBaseUtils.mDatabaseDevotions.child(post_key).runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
                 Devotion devotion = mutableData.getValue(Devotion.class);
@@ -194,7 +187,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         });
     }
     private void storyCommentCount() {
-        mDatabaseStories.child(post_key).runTransaction(new Transaction.Handler() {
+        FireBaseUtils.mDatabaseStory.child(post_key).runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
                 Story story = mutableData.getValue(Story.class);

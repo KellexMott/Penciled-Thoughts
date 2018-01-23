@@ -44,13 +44,15 @@ public final class ImageUtils {
     private static int getFictionImage(String title) {
         switch (title)
         {
+            case "The Tumans":
+                return R.drawable.fiction;
             case "JUSTICE MUST BE SERVED":
                 return R.drawable.fiction1;
             case "HALLELUJAH; You Are Home":
                 return R.drawable.fiction2;
             case "SILENCE":
                 return R.drawable.fiction3;
-            default: return R.drawable.fiction;
+            default: return R.drawable.fiction4;
         }
     }
 
