@@ -13,7 +13,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -21,15 +20,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-
 
 public class ProfileStoriesListActivity extends AppCompatActivity {
     private RecyclerView mPoemList;
     private DatabaseReference mDatabaseStory;
-
     private DatabaseReference mDatabaseLike;
     private String author;
     private AlertDialog updateDialog;
@@ -39,19 +35,16 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
 
     private boolean mProcessLike = false;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tabrecyclerviewer);
-
         author = FireBaseUtils.getAuthor();
         setTitle("Stories");
         mDatabaseStory = FireBaseUtils.mDatabaseStory;
         mDatabaseLike = FireBaseUtils.mDatabaseLike;
         mDatabaseLike.keepSynced(true);
         mDatabaseStory.keepSynced(true);
-
         mPoemList = (RecyclerView) findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ProfileStoriesListActivity.this);
@@ -119,7 +112,6 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
                      //FireBaseUtils.deleteFromViews(post_key);
                     }
                 });
-
 
                 viewHolder.btnLiked.setOnClickListener(new View.OnClickListener() {
                     @Override

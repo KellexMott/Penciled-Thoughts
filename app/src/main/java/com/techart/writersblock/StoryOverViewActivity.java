@@ -36,10 +36,9 @@ public class StoryOverViewActivity extends AppCompatActivity {
         setContentView(R.layout.dialog_storyoverview);
         setTitle(Constants.CREATE_STORY);
 
-        final String[] categories = {"Select Category", "Action", "Drama ", "Fiction ","Romance "};
         spCategory = (Spinner) findViewById(R.id.categories);
 
-        ArrayAdapter<String> pagesAdapter = new ArrayAdapter<>(StoryOverViewActivity.this, R.layout.spinnertxt, categories);
+        ArrayAdapter<CharSequence> pagesAdapter =  ArrayAdapter.createFromResource(StoryOverViewActivity.this, R.array.categories, R.layout.spinnertxt);
         pagesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         pagesAdapter.notifyDataSetChanged();
         spCategory.setAdapter(pagesAdapter);
@@ -68,11 +67,7 @@ public class StoryOverViewActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
         setValues();
         switch (id) {
             case R.id.action_next:

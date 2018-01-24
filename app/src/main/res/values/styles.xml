@@ -1,5 +1,13 @@
 <resources>
 
+    <string-array name="categories">
+        <item>Select Category</item>
+        <item>Action</item>
+        <item>Drama</item>
+        <item>Fiction</item>
+        <item>Romance</item>
+    </string-array>
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
@@ -15,7 +23,7 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <!-- activity_editor -->
     <style name="ButtonEditor">

@@ -1,5 +1,7 @@
 package com.techart.writersblock;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -90,7 +92,28 @@ public class ActivityReadStory extends AppCompatActivity {
         {
             pageNumbers.add("Chapter " + i);//String.valueOf(i));//You should add items from db here (first spinner)
         }
-        ArrayAdapter<String> pagesAdapter = new ArrayAdapter<>(ActivityReadStory.this, R.layout.chapter, pageNumbers);
+
+        ArrayAdapter<String> pagesAdapter = new ArrayAdapter<String>(ActivityReadStory.this, R.layout.chapter, pageNumbers){
+
+            public View getView(int position, View convertView, ViewGroup parent) {
+
+                View view = super.getView(position, convertView, parent);
+                TextView chapter = (TextView) view.findViewById(R.id.tv_chapters);
+                if (getItem(position) != null)
+                {
+                    chapter.setTextColor(Color.parseColor("#FFD600"));
+                }
+                Typeface typeface = EditorUtils.getTypeFace(ActivityReadStory.this);
+                ((TextView) view).setTypeface(typeface);
+                return view;
+            }
+            public View getDropDownView(int position,  View convertView,  ViewGroup parent) {
+                View view =super.getDropDownView(position, convertView, parent);
+                Typeface typeface = EditorUtils.getTypeFace(ActivityReadStory.this);
+                ((TextView) view).setTypeface(typeface);
+                return view;
+            }
+        };
         pagesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         pagesAdapter.notifyDataSetChanged();
         pages.setAdapter(pagesAdapter);
@@ -108,7 +131,6 @@ public class ActivityReadStory extends AppCompatActivity {
         });
     }
 
-
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -118,7 +140,6 @@ public class ActivityReadStory extends AppCompatActivity {
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
-
 
         public PlaceholderFragment() {
         }
