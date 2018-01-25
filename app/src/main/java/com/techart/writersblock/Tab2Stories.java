@@ -54,7 +54,6 @@ public class Tab2Stories extends Fragment {
         FireBaseUtils.mDatabaseStory.keepSynced(true);
         mStoryList = (RecyclerView) rootView.findViewById(R.id.rv_story);
         mStoryList.setHasFixedSize(true);
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);

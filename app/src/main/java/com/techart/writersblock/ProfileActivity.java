@@ -58,6 +58,7 @@ public class ProfileActivity extends AppCompatActivity
     private FirebaseAuth mAuth;
     private String currentPhotoUrl;
     private String userName;
+    private boolean isAttached;
 
     private static final int GALLERY_REQUEST = 1;
 
@@ -184,6 +185,18 @@ public class ProfileActivity extends AppCompatActivity
     }
 
     @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        isAttached = true;
+    }
+
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        isAttached = false;
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_account, menu);
@@ -192,11 +205,7 @@ public class ProfileActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
             logOut();
         }else if (id == R.id.action_changedp)
@@ -239,9 +248,11 @@ public class ProfileActivity extends AppCompatActivity
 
     private void setPicturePicture(String url)
     {
-        Glide.with(this)
+        if (isAttached){
+            Glide.with(this)
                 .load(url)
                 .into(imProfilePicture);
+        }
     }
 
     private void deletePrompt()
@@ -291,20 +302,20 @@ public class ProfileActivity extends AppCompatActivity
     private void startPosting()
     {
         mProgress = new ProgressDialog(ProfileActivity.this);
-        mProgress.setMessage("Uploading picture ...");
+        mProgress.setMessage("Uploading picture, please wait...");
         mProgress.setCanceledOnTouchOutside(false);
         mProgress.show();
         StorageReference filePath = FireBaseUtils.mStoragePhotos.child(uri.getLastPathSegment());
         filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(getApplicationContext(),"Profile picture changed successfully",Toast.LENGTH_LONG).show();
-                currentPhotoUrl = taskSnapshot.getDownloadUrl().toString();
-                Map<String,Object> values = new HashMap<>();
-                values.put("imageUrl",taskSnapshot.getDownloadUrl().toString());
-                FireBaseUtils.mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).updateChildren(values);
-                tvSetPhoto.setVisibility(View.INVISIBLE);
-                mProgress.dismiss();
+            Toast.makeText(getApplicationContext(),"Profile picture changed successfully",Toast.LENGTH_LONG).show();
+            currentPhotoUrl = taskSnapshot.getDownloadUrl().toString();
+            Map<String,Object> values = new HashMap<>();
+            values.put("imageUrl",taskSnapshot.getDownloadUrl().toString());
+            FireBaseUtils.mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).updateChildren(values);
+            tvSetPhoto.setVisibility(View.INVISIBLE);
+            mProgress.dismiss();
             }
 
         });
@@ -313,10 +324,9 @@ public class ProfileActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode,int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            super.onActivityResult(requestCode, resultCode, data);
-            if (data != null && data.getData() != null) {
-                uri = data.getData();
+        if (resultCode == RESULT_OK && data != null){
+            uri = data.getData();
+            if (uri != null){
                 String realPath = ImageUtils.getRealPathFromUrl(this, uri);
                 Uri uriFromPath = Uri.fromFile(new File(realPath));
                 displaySelectedDp(imProfilePicture,uriFromPath);
@@ -350,5 +360,10 @@ public class ProfileActivity extends AppCompatActivity
             .setPositiveButton(getString(android.R.string.yes), dialogClickListener)
             .setNegativeButton(getString(android.R.string.no), dialogClickListener)
             .show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

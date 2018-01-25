@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(getApplicationContext(),"No internet connection, kindly ensure you have internet", Toast.LENGTH_LONG).show();
+                    noIntenet();
                 }
 
             }
@@ -88,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
         if (validate(email,password))
         {
             mProgress.setMessage("Logging in ...");
+            mProgress.setCancelable(false);
             mProgress.show();
             mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
@@ -100,35 +101,33 @@ public class LoginActivity extends AppCompatActivity {
                         mProgress.dismiss();
                         if (task.getException() instanceof FirebaseAuthInvalidUserException)
                         {
-                            Toast.makeText(getApplicationContext(),"Invalid email, enter the email you registered with", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),"Unrecognized email...! Use the email you registered with", Toast.LENGTH_LONG).show();
                         }
                         else if (task.getException() instanceof FirebaseAuthInvalidCredentialsException)
                         {
                             Toast.makeText(getApplicationContext(),"Wrong password, enter the password you registered with", Toast.LENGTH_LONG).show();
                         }
-                        else if(haveNetworkConnection())
-                        {
-                            Toast.makeText(getApplicationContext(),"Connected", Toast.LENGTH_LONG).show();
-                        }
                         else
                         {
-                            Toast.makeText(getApplicationContext(),"No internet connection, Ensure you are connected and try again", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),"We could not log you in, try again", Toast.LENGTH_LONG).show();
                         }
                     }
                 }
             });
+        }else {
+            noIntenet();
         }
     }
 
     private boolean validate(String email,String password){
-        return EditorUtils.isEmailValid(this,email) &&
+        return haveNetworkConnection() &&
+                EditorUtils.isEmailValid(this,email) &&
                 EditorUtils.isEmpty(this,password,"password");
     }
 
 
     private boolean haveNetworkConnection() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
         if (cm != null)
         {
             NetworkInfo netWorkInfo = cm.getActiveNetworkInfo();
@@ -141,12 +140,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void validUsersExistance() {
-        mProgress.dismiss();
         final String userId = mAuth.getCurrentUser().getUid();
         if (userId != null) {
             mDatabaseUsers.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    mProgress.dismiss();
                     if (dataSnapshot.hasChild(userId)) {
                         Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
                         mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -165,6 +164,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         } else {
+            mProgress.dismiss();
             Toast.makeText(LoginActivity.this, "Error encountered, Try again later", Toast.LENGTH_LONG).show();
         }
 
@@ -191,4 +191,9 @@ public class LoginActivity extends AppCompatActivity {
                 .setNegativeButton("Cancel", dialogClickListener)
                 .show();
     }
+
+    private void noIntenet(){
+        Toast.makeText(getApplicationContext(),"No internet...! Turn on Data or Wifi.", Toast.LENGTH_LONG).show();
+    }
+
 }

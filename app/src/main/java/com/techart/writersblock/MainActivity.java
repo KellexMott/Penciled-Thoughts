@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(loginIntent);
                 }
+                FirebaseMessaging.getInstance().subscribeToTopic("newPost");
+
                 FireBaseUtils.subscribeToNewPostNotification();
             }
         };

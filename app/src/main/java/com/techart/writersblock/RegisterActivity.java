@@ -1,7 +1,10 @@
 package com.techart.writersblock;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -61,6 +64,8 @@ public class RegisterActivity extends AppCompatActivity {
             if (validateCredentials())
             {
                 startRegister();
+            } else {
+                Toast.makeText(RegisterActivity.this,"Ensure that your internet is working",Toast.LENGTH_LONG ).show();
             }
             }
         });
@@ -81,55 +86,71 @@ public class RegisterActivity extends AppCompatActivity {
     private void startRegister() {
         mProgress = new ProgressDialog(this);
         mProgress.setMessage("Signing Up  ...");
+        mProgress.setCanceledOnTouchOutside(false);
         mProgress.show();
 
         mAuth.createUserWithEmailAndPassword(email,firstPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    String userId = mAuth.getCurrentUser().getUid();
-                    Map<String,Object> values = new HashMap<>();
-                    values.put("name",name);
-                    values.put("imageUrl","default");
-                    values.put("signedAs",signingInAs);
-                    values.put(Constants.TIME_CREATED, ServerValue.TIMESTAMP);
+                    if (task.isSuccessful()) {
+                        String userId = mAuth.getCurrentUser().getUid();
+                        Map<String,Object> values = new HashMap<>();
+                        values.put("name",name);
+                        values.put("imageUrl","default");
+                        values.put("signedAs",signingInAs);
+                        values.put(Constants.TIME_CREATED, ServerValue.TIMESTAMP);
 
-                    FireBaseUtils.mDatabaseUsers.child(userId).setValue(values);
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                        .setDisplayName(name)
-                        .build();
-                if (user != null) {
-                    user.updateProfile(profileUpdates)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(RegisterActivity.this, "User profile updated.", Toast.LENGTH_LONG).show();
+                        FireBaseUtils.mDatabaseUsers.child(userId).setValue(values);
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                            .setDisplayName(name)
+                            .build();
+                    if (user != null) {
+                        user.updateProfile(profileUpdates)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(RegisterActivity.this, "User profile updated.", Toast.LENGTH_LONG).show();
+                                        }
                                     }
-                                }
-                            });
-                    Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
-                    mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(mainIntent);
-                } else {
-                    Toast.makeText(RegisterActivity.this, "Error encountered, Try again later", Toast.LENGTH_LONG).show();
-                }
-            }
-            else
-            {
-                if(task.getException() instanceof FirebaseAuthUserCollisionException)
-                {
-                    Toast.makeText(RegisterActivity.this,"User already exits, use another email address",Toast.LENGTH_LONG ).show();
+                                });
+                        mProgress.dismiss();
+                        Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
+                        mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(mainIntent);
+                    } else {
+                        mProgress.dismiss();
+                        Toast.makeText(RegisterActivity.this, "Error encountered, Please try again later", Toast.LENGTH_LONG).show();
+                    }
                 }
                 else
                 {
-                    Toast.makeText(RegisterActivity.this,"Ensure that your internet is working",Toast.LENGTH_LONG ).show();
+                    mProgress.dismiss();
+                    if(task.getException() instanceof FirebaseAuthUserCollisionException)
+                    {
+                        Toast.makeText(RegisterActivity.this,"User already exits, use another email address",Toast.LENGTH_LONG ).show();
+                    }
+                    else
+                    {
+                        Toast.makeText(RegisterActivity.this,"Ensure that your internet is working",Toast.LENGTH_LONG ).show();
+                    }
                 }
             }
-            mProgress.dismiss();
-            }
         });
+    }
+
+    private boolean haveNetworkConnection() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm != null)
+        {
+            NetworkInfo netWorkInfo = cm.getActiveNetworkInfo();
+            if (netWorkInfo != null && netWorkInfo.getState() == NetworkInfo.State.CONNECTED)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -142,7 +163,8 @@ public class RegisterActivity extends AppCompatActivity {
         repeatedPassword =  etRepeatedPassword.getText().toString().trim();
         name =  etUsername.getText().toString().trim();
         email = etLogin.getText().toString().trim();
-        return EditorUtils.dropDownValidator(getApplicationContext(), signingInAs) &&
+        return haveNetworkConnection() &&
+                EditorUtils.dropDownValidator(getApplicationContext(), signingInAs) &&
                 EditorUtils.isEmpty(getApplicationContext(),name,"username") &&
                 EditorUtils.isEmpty(getApplicationContext(),email,"email") &&
                 EditorUtils.isEmailValid(getApplicationContext(), email) &&
