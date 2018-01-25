@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private int NOT_USED;
 
     private BottomNavigationView bottomNavigationView;
 
@@ -63,8 +62,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         haveNetworkConnection();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-       /* CollapsingToolbarLayout collapsingToolbarLayout =(CollapsingToolbarLayout)findViewById(R.id.toolbar_layout);
-        collapsingToolbarLayout.setTitleEnabled(false);*/
+
         //VIEWPAGER
         vp= (ViewPager) findViewById(R.id.container);
         this.addPages();
@@ -175,9 +173,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            /*case R.id.action_aboutUs:
-                countUpdatedStories();
-                break;*/
+
             case R.id.action_help:
                 Intent help = new Intent(MainActivity.this,HelpActivity.class);
                 startActivity(help);
