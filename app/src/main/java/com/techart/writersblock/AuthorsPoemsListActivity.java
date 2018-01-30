@@ -40,7 +40,7 @@ public class AuthorsPoemsListActivity extends AppCompatActivity {
         mDatabaseLike.keepSynced(true);
         mDatabasePoems.keepSynced(true);
 
-        mPoemList = (RecyclerView) findViewById(R.id.poem_list);
+        mPoemList = findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(AuthorsPoemsListActivity.this);
         linearLayoutManager.setReverseLayout(true);
@@ -62,7 +62,6 @@ public class AuthorsPoemsListActivity extends AppCompatActivity {
 
                 viewHolder.post_author.setText(getString(R.string.article_author,model.getAuthor()));
                 viewHolder.setIvImage(AuthorsPoemsListActivity.this,ImageUtils.getPoemUrl(NumberUtils.getModuleOfTen(position)));
-                viewHolder.setTypeFace(AuthorsPoemsListActivity.this);
                 if (model.getNumLikes() != null)
                 {
                     String count = NumberUtils.shortenDigit(model.getNumLikes());

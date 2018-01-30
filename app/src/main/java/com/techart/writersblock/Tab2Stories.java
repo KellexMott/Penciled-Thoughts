@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -13,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -52,7 +52,7 @@ public class Tab2Stories extends Fragment {
 
         FireBaseUtils.mDatabaseLike.keepSynced(true);
         FireBaseUtils.mDatabaseStory.keepSynced(true);
-        mStoryList = (RecyclerView) rootView.findViewById(R.id.rv_story);
+        mStoryList = rootView.findViewById(R.id.rv_story);
         mStoryList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setReverseLayout(true);
@@ -74,8 +74,7 @@ public class Tab2Stories extends Fragment {
                 viewHolder.tvStatus.setText(getString(R.string.post_status,model.getStatus()));
                 viewHolder.tvChapters.setText(getString(R.string.post_chapters,NumberUtils.setPlurality(model.getChapters(),"Chapter")));
                 viewHolder.setIvImage(getContext(), ImageUtils.getStoryUrl(model.getCategory().trim(),model.getTitle()));
-                viewHolder.setTypeFace(getContext());
-                viewHolder.tvAuthor.setText(getString(R.string.post_author,model.getAuthor()));
+                viewHolder.btAuthor.setText(getString(R.string.post_author,model.getAuthor()));
 
                 if (model.getNumLikes() != null)
                 {
@@ -97,7 +96,7 @@ public class Tab2Stories extends Fragment {
                     viewHolder.tvTime.setText(time);
                 }
 
-                viewHolder.tvAuthor.setOnClickListener(new View.OnClickListener() {
+                viewHolder.btAuthor.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent readPoemIntent = new Intent(getContext(),AuthorsProfileActivity.class);
@@ -208,18 +207,19 @@ public class Tab2Stories extends Fragment {
         contents = new ArrayList<>();
         chapterTitles = new ArrayList<>();
         addToLibrary(model,post_key);
-        loadChapters();
+        loadChapters(model.getCategory().trim());
     }
 
 
-    private void loadChapters()
+    private void loadChapters(String status)
     {
         final ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Loading chapters");
         progressDialog.setCancelable(true);
-        progressDialog.setIndeterminate(true);
         progressDialog.show();
-        mDatabaseChapters.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        FireBaseUtils.isComplete(status,mDatabaseChapters);
+        mDatabaseChapters.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 pageCount = ((int) dataSnapshot.getChildrenCount());
@@ -227,13 +227,11 @@ public class Tab2Stories extends Fragment {
                 {
                     Chapter chapter = chapterSnapShot.getValue(Chapter.class);
                     contents.add(chapter.getContent());
-                    chapterTitles.add(chapter.getChapterTitle());
                 }
                 if (contents.size() == pageCount) {
                     progressDialog.dismiss();
                     Intent readIntent = new Intent(getContext(),ActivityReadStory.class);
                     readIntent.putStringArrayListExtra(Constants.POST_CONTENT,contents);
-                    readIntent.putStringArrayListExtra(Constants.POST_TITLE,chapterTitles);
                     startActivity(readIntent);
                 }
             }
@@ -301,7 +299,7 @@ public class Tab2Stories extends Fragment {
     {
         TextView tvTitle;
         TextView tvState;
-        TextView tvAuthor;
+        Button btAuthor;
         TextView tvCategory;
         TextView tvStatus;
         TextView tvChapters;
@@ -323,35 +321,26 @@ public class Tab2Stories extends Fragment {
 
         public StoryViewHolder(View itemView) {
             super(itemView);
-            tvTitle = (TextView)itemView.findViewById(R.id.tv_title);
-            tvState = (TextView)itemView.findViewById(R.id.tv_state);
-            tvAuthor = (TextView)itemView.findViewById(R.id.bt_author);
-            tvStatus = (TextView)itemView.findViewById(R.id.tv_status);
-            tvChapters = (TextView)itemView.findViewById(R.id.tv_chapters);
-            tvCategory = (TextView)itemView.findViewById(R.id.tv_category);
-            ivStory = (ImageView)itemView.findViewById(R.id.iv_news);
+            tvTitle = itemView.findViewById(R.id.tv_title);
+            tvState = itemView.findViewById(R.id.tv_state);
+            btAuthor = itemView.findViewById(R.id.bt_author);
+            tvStatus = itemView.findViewById(R.id.tv_status);
+            tvChapters = itemView.findViewById(R.id.tv_chapters);
+            tvCategory = itemView.findViewById(R.id.tv_category);
+            ivStory = itemView.findViewById(R.id.iv_news);
 
-            btnDelete = (ImageButton)itemView.findViewById(R.id.im_delete);
-            btnLiked = (ImageButton)itemView.findViewById(R.id.likeBtn);
-            btnComment = (ImageButton)itemView.findViewById(R.id.commentBtn);
-            btnViews = (ImageButton)itemView.findViewById(R.id.bt_views);
-            tvTime = (TextView) itemView.findViewById(R.id.tv_time);
-            tvNumLikes = (TextView) itemView.findViewById(R.id.tv_numlikes);
-            tvNumComments = (TextView) itemView.findViewById(R.id.tv_numcomments);
-            tvNumViews = (TextView) itemView.findViewById(R.id.tv_numviews);
+            btnDelete = itemView.findViewById(R.id.im_delete);
+            btnLiked = itemView.findViewById(R.id.likeBtn);
+            btnComment = itemView.findViewById(R.id.commentBtn);
+            btnViews = itemView.findViewById(R.id.bt_views);
+            tvTime = itemView.findViewById(R.id.tv_time);
+            tvNumLikes = itemView.findViewById(R.id.tv_numlikes);
+            tvNumComments = itemView.findViewById(R.id.tv_numcomments);
+            tvNumViews = itemView.findViewById(R.id.tv_numviews);
             this.mView = itemView;
             mDatabaseLike = FireBaseUtils.mDatabaseLike;
             mAUth = FirebaseAuth.getInstance();
             mDatabaseLike.keepSynced(true);
-        }
-
-        protected void setTypeFace(Context context) {
-            Typeface typeface = EditorUtils.getTypeFace(context);
-            tvAuthor.setTypeface(typeface);
-            tvTitle.setTypeface(typeface);
-            tvStatus.setTypeface(typeface);
-            tvCategory.setTypeface(typeface);
-            tvChapters.setTypeface(typeface);
         }
 
         protected void setVisibility(Boolean isVisible)

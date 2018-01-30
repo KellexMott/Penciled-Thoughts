@@ -1,8 +1,6 @@
 package com.techart.writersblock;
 
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -50,7 +48,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         setTitle("Comments on "+ postName);
         mAuth = FirebaseAuth.getInstance();
 
-        mCommentList = (RecyclerView) findViewById(R.id.comment_recyclerview);
+        mCommentList = findViewById(R.id.comment_recyclerview);
         mCommentList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(CommentActivity.this);
         linearLayoutManager.setReverseLayout(true);
@@ -69,7 +67,6 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
             protected void populateViewHolder(CommentHolder viewHolder, final Comment model, int position) {
                 viewHolder.authorTextView.setText(model.getAuthor());
                 viewHolder.commentTextView.setText(model.getCommentText());
-                viewHolder.setTypeFace(CommentActivity.this);
                 String time = TimeUtils.timeElapsed(model.getTimeCreated());
                 viewHolder.timeTextView.setText(time);
             }
@@ -78,7 +75,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void init() {
-        mEtComment = (EditText) findViewById(R.id.et_comment);
+        mEtComment = findViewById(R.id.et_comment);
         findViewById(R.id.iv_send).setOnClickListener(this);
     }
 
@@ -221,16 +218,9 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
 
         public CommentHolder(View itemView) {
             super(itemView);
-            authorTextView = (TextView) itemView.findViewById(R.id.tvAuthor) ;
-            timeTextView = (TextView) itemView.findViewById(R.id.tvTime);
-            commentTextView = (TextView) itemView.findViewById(R.id.tvComment);
-        }
-
-        protected void setTypeFace(Context context){
-            Typeface typeface =  EditorUtils.getTypeFace(context);
-            authorTextView.setTypeface(typeface);
-            commentTextView.setTypeface(typeface);
-            timeTextView.setTypeface(typeface);
+            authorTextView = itemView.findViewById(R.id.tvAuthor);
+            timeTextView = itemView.findViewById(R.id.tvTime);
+            commentTextView = itemView.findViewById(R.id.tvComment);
         }
     }
 

@@ -2,7 +2,6 @@ package com.techart.writersblock;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -45,7 +44,7 @@ public class Tab1Poems extends Fragment {
         mDatabaseLike.keepSynced(true);
         mDatabasePoems.keepSynced(true);
 
-        mPoemList = (RecyclerView) rootView.findViewById(R.id.poem_list);
+        mPoemList = rootView.findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
 
         recyclerViewLayoutManager = new GridLayoutManager(getContext(),2);
@@ -72,7 +71,6 @@ public class Tab1Poems extends Fragment {
 
                 viewHolder.post_author.setText(getString(R.string.article_author,model.getAuthor()));
                 viewHolder.setIvImage(getContext(),ImageUtils.getPoemUrl(NumberUtils.getModuleOfTen(position)));
-                viewHolder.setTypeFace(getContext());
                 if (model.getNumLikes() != null)
                 {
                     String count = NumberUtils.shortenDigit(model.getNumLikes());
@@ -225,33 +223,24 @@ public class Tab1Poems extends Fragment {
 
         public PoemViewHolder(View itemView) {
             super(itemView);
-            post_title = (TextView)itemView.findViewById(R.id.post_title);
-            post_author = (TextView)itemView.findViewById(R.id.post_author) ;
+            post_title = itemView.findViewById(R.id.post_title);
+            post_author = itemView.findViewById(R.id.post_author);
 
-            ivArticle = (ImageView)itemView.findViewById(R.id.iv_news);
+            ivArticle = itemView.findViewById(R.id.iv_news);
 
-            timeTextView = (TextView) itemView.findViewById(R.id.tvTime);
-            btnLiked = (ImageButton)itemView.findViewById(R.id.likeBtn);
-            btnDelete = (ImageButton)itemView.findViewById(R.id.im_del);
-            btnComment = (ImageButton)itemView.findViewById(R.id.commentBtn);
-            tvNumViews = (TextView) itemView.findViewById(R.id.tv_numviews);
-            btnViews = (ImageButton)itemView.findViewById(R.id.bt_views);
-            numLikes = (TextView) itemView.findViewById(R.id.tv_likes);
-            numComments = (TextView) itemView.findViewById(R.id.tv_comments);
+            timeTextView = itemView.findViewById(R.id.tvTime);
+            btnLiked = itemView.findViewById(R.id.likeBtn);
+            btnDelete = itemView.findViewById(R.id.im_del);
+            btnComment = itemView.findViewById(R.id.commentBtn);
+            tvNumViews = itemView.findViewById(R.id.tv_numviews);
+            btnViews = itemView.findViewById(R.id.bt_views);
+            numLikes = itemView.findViewById(R.id.tv_likes);
+            numComments = itemView.findViewById(R.id.tv_comments);
 
             this.mView = itemView;
             mDatabaseLike =FireBaseUtils.mDatabaseLike;
             mAUth = FirebaseAuth.getInstance();
             mDatabaseLike.keepSynced(true);
-        }
-
-
-        protected void setTypeFace(Context context) {
-            Typeface typeface = EditorUtils.getTypeFace(context);
-            post_author.setTypeface(typeface);
-            post_title.setTypeface(typeface);
-            timeTextView.setTypeface(typeface);
-            tvNumViews.setTypeface(typeface);
         }
 
         public void setIvImage(Context context, int image)

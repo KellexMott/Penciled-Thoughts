@@ -21,8 +21,7 @@ public class ScrollingActivity extends AppCompatActivity {
         String postContent = getIntent().getStringExtra(Constants.POST_CONTENT);
         setTitle(postTitle);
         FirebaseMessaging.getInstance().subscribeToTopic(postKey);
-        tvPoem = (TextView)findViewById(R.id.tvPoem);
-        tvPoem.setTypeface(EditorUtils.getTypeFace(this));
+        tvPoem = findViewById(R.id.tvPoem);
         tvPoem.setText(postContent);
     }
 

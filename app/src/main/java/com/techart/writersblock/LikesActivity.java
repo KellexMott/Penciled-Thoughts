@@ -1,7 +1,5 @@
 package com.techart.writersblock;
 
-import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,7 +26,7 @@ public class LikesActivity extends AppCompatActivity
         postKey = getIntent().getStringExtra(Constants.POST_KEY);
         mAuth = FirebaseAuth.getInstance();
         FireBaseUtils.mDatabaseLike.child(postKey).keepSynced(true);
-        mLikeList = (RecyclerView) findViewById(R.id.lv_notice);
+        mLikeList = findViewById(R.id.lv_notice);
         mLikeList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setReverseLayout(true);
@@ -48,13 +46,6 @@ public class LikesActivity extends AppCompatActivity
                 String time = com.techart.writersblock.TimeUtils.timeElapsed(model.getTimeCreated());
                 viewHolder.tvUser.setText(getString(R.string.liked,model.getUser(),model.getPostTitle()));
                 viewHolder.tvTime.setText(time);
-                viewHolder.setTypeFace(LikesActivity.this);
-                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //ToDo Call listview
-                    }
-                });
             }
         };
         mLikeList.setAdapter(firebaseRecyclerAdapter);
@@ -71,17 +62,11 @@ public class LikesActivity extends AppCompatActivity
 
         public NoticeViewHolder(View itemView) {
             super(itemView);
-            tvUser = (TextView)itemView.findViewById(R.id.tv_user);
-            tvTime = (TextView)itemView.findViewById(R.id.tv_time) ;
+            tvUser = itemView.findViewById(R.id.tv_user);
+            tvTime = itemView.findViewById(R.id.tv_time);
 
             this.mView = itemView;
             mAUth = FirebaseAuth.getInstance();
-        }
-
-        public void setTypeFace(Context context){
-           Typeface typeface =  EditorUtils.getTypeFace(context);
-           tvUser.setTypeface(typeface);
-           tvTime.setTypeface(typeface);
         }
 
     }

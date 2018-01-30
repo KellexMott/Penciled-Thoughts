@@ -1,7 +1,5 @@
 package com.techart.writersblock;
 
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,14 +22,9 @@ import java.util.List;
 public class ActivityReadStory extends AppCompatActivity {
 
     private List<String> contents;
-    private List<String> chapterTitles;
     private List<String> pageNumbers;
     private int pageCount;
-    private int lastPage;
     private Spinner pages;
-    private TextView tvTitle;
-
-
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -52,19 +45,20 @@ public class ActivityReadStory extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         contents = getIntent().getStringArrayListExtra(Constants.POST_CONTENT);
-        chapterTitles = getIntent().getStringArrayListExtra(Constants.POST_TITLE);
         pageCount = contents.size();
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = findViewById(R.id.container);
+        mViewPager.setPageTransformer(true,new ZoomOutPageTransformer());
+        mViewPager.setOffscreenPageLimit(1);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -84,36 +78,14 @@ public class ActivityReadStory extends AppCompatActivity {
         });
 
         // Setup spinner
-        pages = (Spinner) findViewById(R.id.pages);
-
+        pages = findViewById(R.id.pages);
         pageNumbers = new ArrayList<>();
-
         for(int i = 1; i <= pageCount; i++)
         {
             pageNumbers.add("Chapter " + i);//String.valueOf(i));//You should add items from db here (first spinner)
         }
 
-        ArrayAdapter<String> pagesAdapter = new ArrayAdapter<String>(ActivityReadStory.this, R.layout.chapter, pageNumbers){
-
-            public View getView(int position, View convertView, ViewGroup parent) {
-
-                View view = super.getView(position, convertView, parent);
-                TextView chapter = (TextView) view.findViewById(R.id.tv_chapters);
-                if (getItem(position) != null)
-                {
-                    chapter.setTextColor(Color.parseColor("#FFD600"));
-                }
-                Typeface typeface = EditorUtils.getTypeFace(ActivityReadStory.this);
-                ((TextView) view).setTypeface(typeface);
-                return view;
-            }
-            public View getDropDownView(int position,  View convertView,  ViewGroup parent) {
-                View view =super.getDropDownView(position, convertView, parent);
-                Typeface typeface = EditorUtils.getTypeFace(ActivityReadStory.this);
-                ((TextView) view).setTypeface(typeface);
-                return view;
-            }
-        };
+        ArrayAdapter<String> pagesAdapter = new ArrayAdapter<String>(ActivityReadStory.this, R.layout.chapter, pageNumbers);
         pagesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         pagesAdapter.notifyDataSetChanged();
         pages.setAdapter(pagesAdapter);
@@ -160,8 +132,7 @@ public class ActivityReadStory extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_pagescroll, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setTypeface(EditorUtils.getTypeFace(getContext()));
+            TextView textView = rootView.findViewById(R.id.section_label);
 
             textView.setText(getArguments().getString(ARG_SECTION_NUMBER));
             return rootView;

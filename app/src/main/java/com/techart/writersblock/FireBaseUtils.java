@@ -60,6 +60,14 @@ public final class FireBaseUtils {
         });
     }
 
+    protected static void isComplete(String status,DatabaseReference databaseReference) {
+        if (status.equals("Complete")){
+            databaseReference.keepSynced(false);
+        }else{
+            databaseReference.keepSynced(true);
+        }
+    }
+
     protected static void subscribeTopic(final String postKey) {
         FirebaseMessaging.getInstance().subscribeToTopic(postKey);
     }

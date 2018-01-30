@@ -40,7 +40,7 @@ public class AuthorsDevotionsListActivity extends AppCompatActivity {
         mDatabaseLike.keepSynced(true);
         mDatabaseDevotions.keepSynced(true);
 
-        mPoemList = (RecyclerView) findViewById(R.id.poem_list);
+        mPoemList = findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(AuthorsDevotionsListActivity.this);
         linearLayoutManager.setReverseLayout(true);
@@ -60,7 +60,6 @@ public class AuthorsDevotionsListActivity extends AppCompatActivity {
                 viewHolder.post_title.setText(model.getTitle());
                 viewHolder.post_author.setText(getString(R.string.article_author,model.getAuthor()));
                 viewHolder.setIvImage(AuthorsDevotionsListActivity.this,ImageUtils.getDevotionUrl(NumberUtils.getModuleOfTen(position)));
-                viewHolder.setTypeFace(AuthorsDevotionsListActivity.this);
 
                 if (model.getNumLikes() != null)
                 {

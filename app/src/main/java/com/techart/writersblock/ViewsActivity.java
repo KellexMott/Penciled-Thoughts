@@ -28,7 +28,7 @@ public class ViewsActivity extends AppCompatActivity
         mAuth = FirebaseAuth.getInstance();
         setTitle("Viewers");
         FireBaseUtils.mDatabaseViews.child(postKey).keepSynced(true);
-        mPoemList = (RecyclerView) findViewById(R.id.lv_notice);
+        mPoemList = findViewById(R.id.lv_notice);
         mPoemList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ViewsActivity.this);
         linearLayoutManager.setReverseLayout(true);
@@ -51,7 +51,6 @@ public class ViewsActivity extends AppCompatActivity
             protected void populateViewHolder(LikesActivity.NoticeViewHolder viewHolder, final Notice model, int position) {
                 String time = TimeUtils.timeElapsed(model.getTimeCreated());
                 viewHolder.tvUser.setText(model.getUser());
-                viewHolder.setTypeFace(ViewsActivity.this);
                 viewHolder.tvTime.setText(time);
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override

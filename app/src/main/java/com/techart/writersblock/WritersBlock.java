@@ -3,6 +3,7 @@ package com.techart.writersblock;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
+
 import com.firebase.client.Firebase;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -18,6 +19,7 @@ public class WritersBlock extends Application {
         super.onCreate();
         Firebase.setAndroidContext(this);
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        TypefaceUtil.overrideFont(getApplicationContext(),"SERIF","fonts/time-new-roman.ttf");
     }
     @Override
     protected void attachBaseContext(Context base) {

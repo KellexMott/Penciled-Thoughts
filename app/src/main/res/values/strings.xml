@@ -3,9 +3,8 @@
     <string name="poem_deleted">Poem deleted</string>
     <string name="poem_updated">Poem updated</string>
 
-    <item type="bool" name="is_true">true</item>
-    <item type="bool" name="is_false">false</item>
-
+    <item name="is_true" type="bool">true</item>
+    <item name="is_false" type="bool">false</item>
 
 
     <!--activity login -->

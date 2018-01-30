@@ -35,7 +35,7 @@ public class Tab3Devotion extends Fragment {
         FireBaseUtils.mDatabaseLike.keepSynced(true);
         FireBaseUtils.mDatabaseDevotions.keepSynced(true);
 
-        mPoemList = (RecyclerView) rootView.findViewById(R.id.poem_list);
+        mPoemList = rootView.findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
 
         recyclerViewLayoutManager = new GridLayoutManager(getContext(),2);
@@ -71,7 +71,6 @@ public class Tab3Devotion extends Fragment {
                 viewHolder.post_title.setText(model.getTitle());
                 viewHolder.post_author.setText(getString(R.string.article_author,model.getAuthor()));
                 viewHolder.setIvImage(getContext(),ImageUtils.getDevotionUrl(NumberUtils.getModuleOfTen(position)));
-                viewHolder.setTypeFace(getContext());
                 if (model.getNumLikes() != null)
                 {
                     String count = NumberUtils.shortenDigit(model.getNumLikes());

@@ -60,20 +60,19 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             }
         };
         haveNetworkConnection();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         //VIEWPAGER
-        vp= (ViewPager) findViewById(R.id.container);
+        vp= findViewById(R.id.container);
         this.addPages();
         //TABLAYOUT
-        tabLayout= (TabLayout) findViewById(R.id.tabs);
+        tabLayout= findViewById(R.id.tabs);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setupWithViewPager(vp);
         tabLayout.addOnTabSelectedListener(this);
 
-        bottomNavigationView = (BottomNavigationView)
-                findViewById(R.id.bottom_navigation);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -129,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         pagerAdapter.addFragment(new Tab2Stories());
         pagerAdapter.addFragment(new Tab1Poems());
         pagerAdapter.addFragment(new Tab3Devotion());
-
+        vp.setOffscreenPageLimit(1);
         //SET ADAPTER TO VP
         vp.setAdapter(pagerAdapter);
     }
@@ -150,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     @Override
     public void onPageSelected(int position) {
-        TabLayout tabLayout = (TabLayout)findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.getTabAt(position).select();
     }
 
