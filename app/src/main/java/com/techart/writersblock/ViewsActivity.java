@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,7 +42,6 @@ public class ViewsActivity extends AppCompatActivity
     private void bindView()
     {
         Query viewQuery = FireBaseUtils.mDatabaseViews.child(postKey).orderByChild(Constants.TIME_CREATED);
-        //ToDo fully implement class and method
         FirebaseRecyclerAdapter<Notice,LikesActivity.NoticeViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Notice, LikesActivity.NoticeViewHolder>(
                 Notice.class,R.layout.list_view,LikesActivity.NoticeViewHolder.class, viewQuery)
         {
@@ -52,12 +50,6 @@ public class ViewsActivity extends AppCompatActivity
                 String time = TimeUtils.timeElapsed(model.getTimeCreated());
                 viewHolder.tvUser.setText(model.getUser());
                 viewHolder.tvTime.setText(time);
-                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //ToDo Call listview
-                    }
-                });
             }
         };
         mPoemList.setAdapter(firebaseRecyclerAdapter);
