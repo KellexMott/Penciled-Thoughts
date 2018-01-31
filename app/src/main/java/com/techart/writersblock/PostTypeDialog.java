@@ -21,7 +21,7 @@ public class PostTypeDialog extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_selecttype);
-        ListView list = (ListView) findViewById(R.id.list);
+        ListView list = findViewById(R.id.list);
         final String[] options = new String[] { "Devotion", "Poem", "Story" };
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, options);
@@ -41,7 +41,7 @@ public class PostTypeDialog extends AppCompatActivity {
                         startActivity(editorPoemIntent);
                         break;
                     case "Story":
-                        Intent editorStoryIntent = new Intent(PostTypeDialog.this, StoryOverViewActivity.class);
+                        Intent editorStoryIntent = new Intent(PostTypeDialog.this, StoryPrologueActivity.class);
                         startActivity(editorStoryIntent);
                         break;
                 }

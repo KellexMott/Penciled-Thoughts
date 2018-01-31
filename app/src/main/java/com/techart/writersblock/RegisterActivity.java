@@ -47,26 +47,24 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
         mAuth = FirebaseAuth.getInstance();
-
-        etUsername = (EditText) findViewById(R.id.et_username);
-        etLogin = (EditText) findViewById(R.id.et_login);
-        etPassword = (EditText) findViewById(R.id.et_password);
-        etRepeatedPassword = (EditText) findViewById(R.id.et_repeatPassword);
-        btRegister = (Button) findViewById(R.id.bt_register);
+        etUsername = findViewById(R.id.et_username);
+        etLogin = findViewById(R.id.et_login);
+        etPassword = findViewById(R.id.et_password);
+        etRepeatedPassword = findViewById(R.id.et_repeatPassword);
+        btRegister = findViewById(R.id.bt_register);
         btRegister.setClickable(true);
 
         btRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-            if (validateCredentials())
-            {
-                startRegister();
-            } else {
-                Toast.makeText(RegisterActivity.this,"Ensure that your internet is working",Toast.LENGTH_LONG ).show();
-            }
+                if (haveNetworkConnection()) {
+                    if (validateCredentials()) {
+                        startRegister();
+                    }
+                } else {
+                    Toast.makeText(RegisterActivity.this,"Ensure that your internet is working",Toast.LENGTH_LONG ).show();
+                }
             }
         });
     }
@@ -127,12 +125,10 @@ public class RegisterActivity extends AppCompatActivity {
                 else
                 {
                     mProgress.dismiss();
-                    if(task.getException() instanceof FirebaseAuthUserCollisionException)
-                    {
+                    if(task.getException() instanceof FirebaseAuthUserCollisionException) {
                         Toast.makeText(RegisterActivity.this,"User already exits, use another email address",Toast.LENGTH_LONG ).show();
                     }
-                    else
-                    {
+                    else {
                         Toast.makeText(RegisterActivity.this,"Ensure that your internet is working",Toast.LENGTH_LONG ).show();
                     }
                 }
@@ -142,11 +138,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     private boolean haveNetworkConnection() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (cm != null)
-        {
+        if (cm != null) {
             NetworkInfo netWorkInfo = cm.getActiveNetworkInfo();
-            if (netWorkInfo != null && netWorkInfo.getState() == NetworkInfo.State.CONNECTED)
-            {
+            if (netWorkInfo != null && netWorkInfo.getState() == NetworkInfo.State.CONNECTED) {
                 return true;
             }
         }
@@ -163,8 +157,7 @@ public class RegisterActivity extends AppCompatActivity {
         repeatedPassword =  etRepeatedPassword.getText().toString().trim();
         name =  etUsername.getText().toString().trim();
         email = etLogin.getText().toString().trim();
-        return haveNetworkConnection() &&
-                EditorUtils.dropDownValidator(getApplicationContext(), signingInAs) &&
+        return  EditorUtils.dropDownValidator(getApplicationContext(), signingInAs) &&
                 EditorUtils.isEmpty(getApplicationContext(),name,"username") &&
                 EditorUtils.isEmpty(getApplicationContext(),email,"email") &&
                 EditorUtils.isEmailValid(getApplicationContext(), email) &&

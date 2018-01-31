@@ -34,7 +34,7 @@ public class AddChapterOnlineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_story);
-        editor = (EditText) findViewById(R.id.editText);
+        editor = findViewById(R.id.editText);
         mProgress = new ProgressDialog(this);
 
         Intent intent = getIntent();

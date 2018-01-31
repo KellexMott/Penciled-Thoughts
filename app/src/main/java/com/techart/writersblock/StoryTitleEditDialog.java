@@ -34,10 +34,10 @@ public class StoryTitleEditDialog extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_storyedit);
-        etDialogEditor = (EditText)findViewById(R.id.et_dialog_editor);
-        tvTitle = (TextView) findViewById(R.id.tv_title);
-        tvUpdate = (TextView) findViewById(R.id.tv_update);
-        tvCancel = (TextView) findViewById(R.id.tv_cancel);
+        etDialogEditor = findViewById(R.id.et_dialog_editor);
+        tvTitle = findViewById(R.id.tv_title);
+        tvUpdate = findViewById(R.id.tv_update);
+        tvCancel = findViewById(R.id.tv_cancel);
 
         storyUrl = getIntent().getStringExtra(Constants.STORY_REFID);
         oldText = getIntent().getStringExtra(Constants.STORY_DESCRIPTION);

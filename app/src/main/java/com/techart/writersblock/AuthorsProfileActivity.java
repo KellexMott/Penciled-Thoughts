@@ -29,9 +29,9 @@ public class AuthorsProfileActivity extends AppCompatActivity
         setContentView(R.layout.activity_author);
         mAuth = FirebaseAuth.getInstance();
 
-        postedPoems = (RelativeLayout) findViewById(R.id.rv_postedpoems);
-        postedSpirituals = (RelativeLayout) findViewById(R.id.rv_postedspirituals);
-        postedStories = (RelativeLayout) findViewById(R.id.rv_postedstories);
+        postedPoems = findViewById(R.id.rv_postedpoems);
+        postedSpirituals = findViewById(R.id.rv_postedspirituals);
+        postedStories = findViewById(R.id.rv_postedstories);
 
         // ibProfile = (ImageView)findViewById(R.id.ibProfile);
         postedPoems.setOnClickListener(new View.OnClickListener() {

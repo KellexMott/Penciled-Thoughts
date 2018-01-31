@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -20,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -45,7 +47,7 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
         mDatabaseLike = FireBaseUtils.mDatabaseLike;
         mDatabaseLike.keepSynced(true);
         mDatabaseStory.keepSynced(true);
-        mPoemList = (RecyclerView) findViewById(R.id.poem_list);
+        mPoemList = findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ProfileStoriesListActivity.this);
         linearLayoutManager.setReverseLayout(true);
@@ -250,19 +252,19 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
 
         public StoryViewHolder(View itemView) {
             super(itemView);
-            tvTitle = (TextView)itemView.findViewById(R.id.tv_title);
-            tbStatus = (ToggleButton)itemView.findViewById(R.id.tb_status);
-            tvCategory = (Button)itemView.findViewById(R.id.tv_category);
-            btEdit = (Button)itemView.findViewById(R.id.bt_edit);
+            tvTitle = itemView.findViewById(R.id.tv_title);
+            tbStatus = itemView.findViewById(R.id.tb_status);
+            tvCategory = itemView.findViewById(R.id.tv_category);
+            btEdit = itemView.findViewById(R.id.bt_edit);
 
-            btnDelete = (ImageButton)itemView.findViewById(R.id.im_delete);
-            btnLiked = (ImageButton)itemView.findViewById(R.id.likeBtn);
-            btnComment = (ImageButton)itemView.findViewById(R.id.commentBtn);
-            btnViews = (ImageButton)itemView.findViewById(R.id.bt_views);
-            tvTime = (TextView) itemView.findViewById(R.id.tv_time);
-            tvNumLikes = (TextView) itemView.findViewById(R.id.tv_numlikes);
-            tvNumComments = (TextView) itemView.findViewById(R.id.tv_numcomments);
-            tvNumViews = (TextView) itemView.findViewById(R.id.tv_numviews);
+            btnDelete = itemView.findViewById(R.id.im_delete);
+            btnLiked = itemView.findViewById(R.id.likeBtn);
+            btnComment = itemView.findViewById(R.id.commentBtn);
+            btnViews = itemView.findViewById(R.id.bt_views);
+            tvTime = itemView.findViewById(R.id.tv_time);
+            tvNumLikes = itemView.findViewById(R.id.tv_numlikes);
+            tvNumComments = itemView.findViewById(R.id.tv_numcomments);
+            tvNumViews = itemView.findViewById(R.id.tv_numviews);
             this.mView = itemView;
             mDatabaseLike = FireBaseUtils.mDatabaseLike;
             mAUth = FirebaseAuth.getInstance();

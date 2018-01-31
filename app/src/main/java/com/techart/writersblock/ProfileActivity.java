@@ -80,14 +80,14 @@ public class ProfileActivity extends AppCompatActivity
         }
         setTitle(userName);
         loadProfilePicture();
-        tvSetPhoto = (TextView)findViewById(R.id.tv_setImage);
-        imProfilePicture = (ImageButton)findViewById(R.id.ib_profile);
-        mypoems = (RelativeLayout)findViewById(R.id.mypoems);
-        myspirituals = (RelativeLayout)findViewById(R.id.rv_myspirituals);
-        mystories = (RelativeLayout)findViewById(R.id.rv_mystories);
-        postedPoems = (RelativeLayout) findViewById(R.id.rv_postedpoems);
-        postedSpirituals = (RelativeLayout) findViewById(R.id.rv_postedspirituals);
-        postedStories = (RelativeLayout) findViewById(R.id.rv_postedstories);
+        tvSetPhoto = findViewById(R.id.tv_setImage);
+        imProfilePicture = findViewById(R.id.ib_profile);
+        mypoems = findViewById(R.id.mypoems);
+        myspirituals = findViewById(R.id.rv_myspirituals);
+        mystories = findViewById(R.id.rv_mystories);
+        postedPoems = findViewById(R.id.rv_postedpoems);
+        postedSpirituals = findViewById(R.id.rv_postedspirituals);
+        postedStories = findViewById(R.id.rv_postedstories);
 
         //Sets new DP buy first deleting existing one
         tvSetPhoto.setOnClickListener(new View.OnClickListener() {
@@ -148,8 +148,7 @@ public class ProfileActivity extends AppCompatActivity
             }
         });
 
-        bottomNavigationView = (BottomNavigationView)
-                findViewById(R.id.bottom_navigation);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {

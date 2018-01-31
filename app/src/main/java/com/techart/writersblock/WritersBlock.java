@@ -19,7 +19,7 @@ public class WritersBlock extends Application {
         super.onCreate();
         Firebase.setAndroidContext(this);
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        TypefaceUtil.overrideFont(getApplicationContext(),"SERIF","fonts/time-new-roman.ttf");
+        TypefaceUtil.overrideFonts(getApplicationContext());
     }
     @Override
     protected void attachBaseContext(Context base) {

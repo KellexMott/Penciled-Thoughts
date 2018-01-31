@@ -50,89 +50,76 @@ public class LoginActivity extends AppCompatActivity {
         // Set up the login form.
         mAuth = FirebaseAuth.getInstance();
         mDatabaseUsers = FireBaseUtils.mDatabaseUsers;
-        mUsername = (EditText)findViewById(R.id.loginUsername);
-        mPassWord = (EditText)findViewById(R.id.loginPassword);
-        mLogin = (Button)findViewById(R.id.btLogin);
-        mRegister = (Button)findViewById(R.id.btSignUp);
-
+        mUsername = findViewById(R.id.loginUsername);
+        mPassWord = findViewById(R.id.loginPassword);
+        mLogin = findViewById(R.id.btLogin);
+        mRegister = findViewById(R.id.btSignUp);
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                validUserCredentials();
+                if (haveNetworkConnection()){
+                    validUserCredentials();
+                }else{
+                    noIntenet();
+                }
             }
         });
 
         mRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (haveNetworkConnection())
-                {
+                if (haveNetworkConnection()) {
                     Intent registerIntent = new Intent(LoginActivity.this,RegisterActivity.class);
                     registerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(registerIntent);
-                }
-                else
-                {
+                }else {
                     noIntenet();
                 }
-
             }
         });
-
     }
 
     private void validUserCredentials() {
         mProgress = new ProgressDialog(LoginActivity.this);
         String email = mUsername.getText().toString().trim();
         String password = mPassWord.getText().toString().trim();
-        if (validate(email,password))
-        {
+        if (validate(email,password)) {
             mProgress.setMessage("Logging in ...");
             mProgress.setCancelable(false);
             mProgress.show();
             mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful())
-                    {
+                    if(task.isSuccessful()) {
                         validUsersExistance();
-                    }else
-                    {
+                    }else {
                         mProgress.dismiss();
-                        if (task.getException() instanceof FirebaseAuthInvalidUserException)
-                        {
-                            Toast.makeText(getApplicationContext(),"Unrecognized email...! Use the email you registered with", Toast.LENGTH_LONG).show();
+                        if (task.getException() instanceof FirebaseAuthInvalidUserException) {
+                            Toast.makeText(LoginActivity.this,"Unrecognized email...! Use the email you registered with", Toast.LENGTH_LONG).show();
                         }
-                        else if (task.getException() instanceof FirebaseAuthInvalidCredentialsException)
-                        {
-                            Toast.makeText(getApplicationContext(),"Wrong password, enter the password you registered with", Toast.LENGTH_LONG).show();
+                        else if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                            Toast.makeText(LoginActivity.this,"Wrong password, enter the password you registered with", Toast.LENGTH_LONG).show();
                         }
-                        else
-                        {
-                            Toast.makeText(getApplicationContext(),"We could not log you in, try again", Toast.LENGTH_LONG).show();
+                        else {
+                            Toast.makeText(LoginActivity.this,"We could not log you in, try again", Toast.LENGTH_LONG).show();
                         }
                     }
                 }
             });
-        }else {
-            noIntenet();
         }
     }
 
     private boolean validate(String email,String password){
-        return haveNetworkConnection() &&
-                EditorUtils.isEmailValid(this,email) &&
+        return  EditorUtils.isEmailValid(this,email) &&
                 EditorUtils.isEmpty(this,password,"password");
     }
 
 
     private boolean haveNetworkConnection() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (cm != null)
-        {
+        if (cm != null) {
             NetworkInfo netWorkInfo = cm.getActiveNetworkInfo();
-            if (netWorkInfo != null && netWorkInfo.getState() == NetworkInfo.State.CONNECTED)
-            {
+            if (netWorkInfo != null && netWorkInfo.getState() == NetworkInfo.State.CONNECTED) {
                 return true;
             }
         }
@@ -151,13 +138,12 @@ public class LoginActivity extends AppCompatActivity {
                         mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(mainIntent);
                     } else {
-                        Toast.makeText(getApplicationContext(), "You need to setup an Account", Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this, "You need to setup an Account", Toast.LENGTH_LONG).show();
                         Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
                         registerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(registerIntent);
                     }
                 }
-
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 
@@ -193,7 +179,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void noIntenet(){
-        Toast.makeText(getApplicationContext(),"No internet...! Turn on Data or Wifi.", Toast.LENGTH_LONG).show();
+        Toast.makeText(LoginActivity.this,"No internet...! Turn on Data or Wifi.", Toast.LENGTH_LONG).show();
     }
 
 }

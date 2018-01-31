@@ -27,7 +27,7 @@ public class ChapterEditorOnlineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story);
-        editor = (EditText) findViewById(R.id.editText);
+        editor = findViewById(R.id.editText);
 
         Intent intent = getIntent();
         storyUrl = intent.getStringExtra(Constants.STORY_REFID);

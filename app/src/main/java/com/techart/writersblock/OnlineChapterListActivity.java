@@ -23,7 +23,7 @@ public class OnlineChapterListActivity extends AppCompatActivity {
         storyUrl = getIntent().getStringExtra(Constants.STORY_REFID);
         setTitle("Chapters");
 
-        mPoemList = (RecyclerView) findViewById(R.id.poem_list);
+        mPoemList = findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(OnlineChapterListActivity.this);
         mPoemList.setLayoutManager(linearLayoutManager);
@@ -71,8 +71,8 @@ public class OnlineChapterListActivity extends AppCompatActivity {
 
         public ChapterViewHolder(View itemView) {
             super(itemView);
-            tvTitle = (TextView)itemView.findViewById(R.id.tvTitle);
-            tvTime = (TextView) itemView.findViewById(R.id.tv_timeCreated);
+            tvTitle = itemView.findViewById(R.id.tvTitle);
+            tvTime = itemView.findViewById(R.id.tv_timeCreated);
             this.mView = itemView;
        }
     }

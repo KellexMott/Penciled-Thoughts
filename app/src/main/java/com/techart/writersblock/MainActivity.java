@@ -188,10 +188,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             NetworkInfo netWorkInfo = cm.getActiveNetworkInfo();
             if (netWorkInfo != null && netWorkInfo.getState() == NetworkInfo.State.CONNECTED)
             {
-                Toast.makeText(getApplicationContext(),"Connected", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this,"Connected", Toast.LENGTH_LONG).show();
             }
             else {
-                Toast.makeText(getApplicationContext(),"No internet Connection", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this,"No internet Connection", Toast.LENGTH_LONG).show();
             }
         }
     }

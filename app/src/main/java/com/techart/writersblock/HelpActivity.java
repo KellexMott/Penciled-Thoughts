@@ -18,7 +18,7 @@ public class HelpActivity extends AppCompatActivity {
         setTitle("Help");
 
         String information = getString(R.string.help);
-        WebView webView = (WebView)findViewById(R.id.wv_help);
+        WebView webView = findViewById(R.id.wv_help);
         webView.loadDataWithBaseURL(null,information,"text/html","utf-8",null);
     }
 }

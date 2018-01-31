@@ -27,7 +27,7 @@ public class MyStoriesListActivity extends AppCompatActivity
         setTitle("Stories");
         cursorAdapter = new StoryCursorAdapter(this, null, 0);
 
-        ListView list = (ListView) findViewById(R.id.lvItems);
+        ListView list = findViewById(R.id.lvItems);
         list.setAdapter(cursorAdapter);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -67,7 +67,7 @@ public class MyStoriesListActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_add:
-                Intent editorStoryIntent = new Intent(MyStoriesListActivity.this, StoryOverViewActivity.class);
+                Intent editorStoryIntent = new Intent(MyStoriesListActivity.this, StoryPrologueActivity.class);
                 startActivity(editorStoryIntent);
                 break;
         }

@@ -44,7 +44,7 @@ public class LibraryActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mDatabaseLibrary.keepSynced(true);
 
-        mPoemList = (ListView) findViewById(R.id.lvItems);
+        mPoemList = findViewById(R.id.lvItems);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(LibraryActivity.this);
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);

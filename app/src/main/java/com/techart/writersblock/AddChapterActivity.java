@@ -41,8 +41,8 @@ public class AddChapterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_storyeditor);
-        editor = (EditText) findViewById(R.id.editText);
-        title = (EditText)findViewById(R.id.editTitle);
+        editor = findViewById(R.id.editText);
+        title = findViewById(R.id.editTitle);
         mProgress = new ProgressDialog(this);
 
         Intent intent = getIntent();

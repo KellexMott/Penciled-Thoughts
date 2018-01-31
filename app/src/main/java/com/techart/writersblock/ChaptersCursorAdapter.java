@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
+ * Cursor adapter for chapters
  * Created by Kelvin on 30/05/2017.
  */
 
@@ -37,10 +38,10 @@ public class ChaptersCursorAdapter extends CursorAdapter {
         String hasUrl = cursor.getString(
                 cursor.getColumnIndex(WritersBlockContract.ChapterEntry.CHAPTER_URL));
 
-        ImageView iv = (ImageView) view.findViewById(R.id.ivFile);
+        ImageView iv = view.findViewById(R.id.ivFile);
 
-        TextView tv = (TextView) view.findViewById(R.id.tvTitle);
-        TextView tm = (TextView) view.findViewById(R.id.tv_timeCreated);
+        TextView tv = view.findViewById(R.id.tvTitle);
+        TextView tm = view.findViewById(R.id.tv_timeCreated);
         tv.setText(noteTitle);
         tm.setText(timeCreated);
         if (hasUrl.length() > 5)

@@ -34,7 +34,7 @@ public class ProfilePoemsListActivity extends AppCompatActivity {
         mDatabaseLike.keepSynced(true);
         mDatabasePoems.keepSynced(true);
 
-        mPoemList = (RecyclerView) findViewById(R.id.poem_list);
+        mPoemList = findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ProfilePoemsListActivity.this);
         linearLayoutManager.setReverseLayout(true);

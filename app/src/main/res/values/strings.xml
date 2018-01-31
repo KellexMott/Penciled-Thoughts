@@ -9,7 +9,7 @@
 
     <!--activity login -->
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password </string>
+    <string name="prompt_password">Password</string>
     <string name="title_activity_login">Sign in</string>
 
     <!--bottom menu -->
@@ -138,9 +138,9 @@
     <string name="comment_icon">Comment icon</string>
     <string name="view_icon">View icon</string>
     <string name="just_now">just now</string>
-    <string name="episode">Episode:</string>
+    <string name="episode">Chapter:</string>
     <string name="document_image">Document image</string>
-    <string name="story_overview">Story Overview</string>
+    <string name="story_prologue">Prologue</string>
     <string name="story_title">Story Title</string>
     <string name="background_image">background image</string>
     <string name="profile_picture">profile picture</string>
@@ -159,4 +159,6 @@
     <string name="send_icon">send icon</string>
     <string name="book_image">book image</string>
     <string name="updated">Updated</string>
+    <string name="edit_description">Edit Description</string>
+    <string name="cancel">Cancel</string>
 </resources>

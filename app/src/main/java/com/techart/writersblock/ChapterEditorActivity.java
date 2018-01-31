@@ -47,8 +47,8 @@ public class ChapterEditorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storyeditor);
-        editor = (EditText) findViewById(R.id.editText);
-        editorTitle = (EditText) findViewById(R.id.editTitle);
+        editor = findViewById(R.id.editText);
+        editorTitle = findViewById(R.id.editTitle);
         mAuth = FirebaseAuth.getInstance();
 
         Intent intent = getIntent();

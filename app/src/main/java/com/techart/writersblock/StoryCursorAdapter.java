@@ -40,12 +40,12 @@ public class StoryCursorAdapter extends CursorAdapter {
         String hasUrl = cursor.getString(
                 cursor.getColumnIndex(WritersBlockContract.StoryEntry.STORY_REFID));
 
-        TextView tvStoryTitle = (TextView) view.findViewById(R.id.tvTitle);
+        TextView tvStoryTitle = view.findViewById(R.id.tvTitle);
         tvStoryTitle.setText(storyTitle);
 
-        TextView time = (TextView) view.findViewById(R.id.tv_timeCreated);
+        TextView time = view.findViewById(R.id.tv_timeCreated);
         time.setText(timeCreated);
-        ImageView im = (ImageView) view.findViewById(R.id.ivFile);
+        ImageView im = view.findViewById(R.id.ivFile);
 
         if (hasUrl.length() > 5) {
              im.setImageResource(R.drawable.ic_book_blue);

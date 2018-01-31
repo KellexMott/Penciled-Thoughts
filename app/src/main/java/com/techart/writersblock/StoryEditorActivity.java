@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * Provides the ability to write a Story, Store in a local db and/or post
  * to Server. Only called once per Story.
- * Invoked by StoryOverViewActivity
+ * Invoked by StoryPrologueActivity
  */
 public class StoryEditorActivity extends AppCompatActivity {
 
@@ -52,8 +52,8 @@ public class StoryEditorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storyeditor);
-        chapterTitle = (EditText) findViewById(R.id.editTitle);
-        editor = (EditText) findViewById(R.id.editText);
+        chapterTitle = findViewById(R.id.editTitle);
+        editor = findViewById(R.id.editText);
         mAuth = FirebaseAuth.getInstance();
         storyTitle = getIntent().getStringExtra("Title");
         storyDescription = getIntent().getStringExtra("Description");

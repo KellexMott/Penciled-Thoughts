@@ -39,8 +39,8 @@ public class PoemEditorOnlineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
         mAuth = FirebaseAuth.getInstance();
-        editor = (EditText) findViewById(R.id.editText);
-        title = (EditText)findViewById(R.id.editTitle);
+        editor = findViewById(R.id.editText);
+        title = findViewById(R.id.editTitle);
         mProgress = new ProgressDialog(this);
 
         Intent intent = getIntent();

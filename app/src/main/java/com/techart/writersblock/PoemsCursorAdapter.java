@@ -38,9 +38,9 @@ public class PoemsCursorAdapter extends CursorAdapter {
                 cursor.getColumnIndex(WritersBlockContract.PoemEntry.POEM_FIREBASEURL));
 
 
-        TextView tv = (TextView) view.findViewById(R.id.tvTitle);
-        TextView tm = (TextView) view.findViewById(R.id.tv_timeCreated);
-        ImageView im = (ImageView) view.findViewById(R.id.ivFile);
+        TextView tv = view.findViewById(R.id.tvTitle);
+        TextView tm = view.findViewById(R.id.tv_timeCreated);
+        ImageView im = view.findViewById(R.id.ivFile);
         if (isPosted.length() > 5)
         {
 

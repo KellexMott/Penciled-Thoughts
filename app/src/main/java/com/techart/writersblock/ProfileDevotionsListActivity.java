@@ -41,7 +41,7 @@ public class ProfileDevotionsListActivity extends AppCompatActivity {
         mDatabaseLike.keepSynced(true);
         mDatabaseDevotions.keepSynced(true);
 
-        mPoemList = (RecyclerView) findViewById(R.id.poem_list);
+        mPoemList = findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ProfileDevotionsListActivity.this);
         linearLayoutManager.setReverseLayout(true);
@@ -171,17 +171,17 @@ public class ProfileDevotionsListActivity extends AppCompatActivity {
 
         public ArticleEditViewHolder(View itemView) {
             super(itemView);
-            post_title = (TextView)itemView.findViewById(R.id.post_title);
-            btnLiked = (ImageButton)itemView.findViewById(R.id.likeBtn);
-            btnDelete = (ImageButton)itemView.findViewById(R.id.im_del);
-            btnComment = (ImageButton)itemView.findViewById(R.id.commentBtn);
-            tvNumViews = (TextView) itemView.findViewById(R.id.tv_numviews);
-            btnViews = (ImageButton)itemView.findViewById(R.id.bt_views);
-            numLikes = (TextView) itemView.findViewById(R.id.tv_likes);
-            numComments = (TextView) itemView.findViewById(R.id.tv_comments);
+            post_title = itemView.findViewById(R.id.post_title);
+            btnLiked = itemView.findViewById(R.id.likeBtn);
+            btnDelete = itemView.findViewById(R.id.im_del);
+            btnComment = itemView.findViewById(R.id.commentBtn);
+            tvNumViews = itemView.findViewById(R.id.tv_numviews);
+            btnViews = itemView.findViewById(R.id.bt_views);
+            numLikes = itemView.findViewById(R.id.tv_likes);
+            numComments = itemView.findViewById(R.id.tv_comments);
 
-            tvTimeCreated = (TextView) itemView.findViewById(R.id.tvTime);
-            btEdit = (Button) itemView.findViewById(R.id.bt_edit);
+            tvTimeCreated = itemView.findViewById(R.id.tvTime);
+            btEdit = itemView.findViewById(R.id.bt_edit);
 
             this.mView = itemView;
             mDatabaseLike =FireBaseUtils.mDatabaseLike;
