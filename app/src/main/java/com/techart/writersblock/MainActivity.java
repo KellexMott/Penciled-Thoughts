@@ -97,16 +97,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 }
             });
         //End bottom naviagtion
-
-        //ToDO fully implement
-        /*
-        BottomNavigationMenuView bottomNavigationMenuView =
-                (BottomNavigationMenuView) bottomNavigationView.getChildAt(0);
-        View v = bottomNavigationMenuView.getChildAt(2); // number of menu from left
-        new QBadgeView(this).bindTarget(v)
-                .setBadgeGravity(Gravity.CENTER)
-                .setBadgeNumber(5);
-                */
     }
 
     @Override
