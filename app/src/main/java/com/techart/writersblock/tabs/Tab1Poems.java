@@ -14,7 +14,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.techart.writersblock.AuthorsProfileActivity;
 import com.techart.writersblock.CommentActivity;
@@ -35,8 +34,6 @@ public class Tab1Poems extends Fragment {
     private RecyclerView mPoemList;
     private FirebaseAuth mAuth;
 
-    GridLayoutManager recyclerViewLayoutManager;
-
     private boolean mProcessView = false;
 
     private boolean mProcessLike = false;
@@ -52,12 +49,10 @@ public class Tab1Poems extends Fragment {
         mPoemList = rootView.findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
 
-        recyclerViewLayoutManager = new GridLayoutManager(getContext(),2);
+        GridLayoutManager recyclerViewLayoutManager = new GridLayoutManager(getContext(),2);
 
-        recyclerViewLayoutManager.setReverseLayout(true);
-        //recyclerViewLayoutManager.getStackFromEnd();
         mPoemList.setLayoutManager(recyclerViewLayoutManager);
-        bindView(mPoemList);
+        bindView();
         return rootView;
     }
 
@@ -67,11 +62,9 @@ public class Tab1Poems extends Fragment {
         return "Poems";
     }
 
-    private void bindView(RecyclerView mPoemList) {
-        Query commentsQuery = FireBaseUtils.mDatabasePoems.orderByChild(Constants.TIME_CREATED);
+    private void bindView() {
         FirebaseRecyclerAdapter<Poem,PoemViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Poem, PoemViewHolder>(
-                Poem.class,R.layout.item_row,PoemViewHolder.class, commentsQuery)
-        {
+                Poem.class,R.layout.item_row,PoemViewHolder.class, FireBaseUtils.mDatabasePoems) {
             @Override
             protected void populateViewHolder(PoemViewHolder viewHolder, final Poem model, int position) {
                 final String post_key = getRef(position).getKey();

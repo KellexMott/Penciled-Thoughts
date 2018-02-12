@@ -22,16 +22,13 @@ public final class NumberUtils {
         {
             return Long.toString(count);
         }
-        else if (count >= THOUSAND && count < MILLION)
-        {
+        else if (count >= THOUSAND && count < MILLION) {
             return String.format(("%.1f"),((double)count)/THOUSAND) + "K";
         }
-        else if (count >= MILLION && count < BILLION)
-        {
+        else if (count >= MILLION && count < BILLION) {
             return String.format(("%.1f"),((double)count)/MILLION ) + "M";
         }
-        else
-        {
+        else {
             return String.format(("%.1f"),((double)count)/BILLION )  + "G";
         }
     }

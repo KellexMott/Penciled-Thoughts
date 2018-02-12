@@ -35,6 +35,7 @@ import com.techart.writersblock.utils.TimeUtils;
 import com.techart.writersblock.viewholders.StoryViewHolder;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -299,6 +300,16 @@ public class Tab2Stories extends Fragment {
                 .setPositiveButton("Start Reading", dialogClickListener)
                 .setNegativeButton("Back", dialogClickListener)
                 .show();
+    }
+
+    /**
+     * Gets the real-time time of day in milliseconds
+     * @return return time in milliseconds
+     */
+    public long currentTime()
+    {
+        Date date = new Date();
+        return date.getTime();
     }
 }
 

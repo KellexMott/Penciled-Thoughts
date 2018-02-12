@@ -54,7 +54,6 @@ public class Tab3Devotion extends Fragment {
         mPoemList.setHasFixedSize(true);
 
         recyclerViewLayoutManager = new GridLayoutManager(getContext(),2);
-        mPoemList.setLayoutManager(recyclerViewLayoutManager);
 
         mPoemList.setLayoutManager(recyclerViewLayoutManager);
         bindView();

@@ -22,7 +22,6 @@ public final class TimeUtils {
     {
     }
 
-
     /**
      * Convert milliseconds to seconds
      * @param timePostedInMilliseconds time to be converted
@@ -38,35 +37,25 @@ public final class TimeUtils {
      * @param timePostedInMilliseconds time to be converted
      * @return time lapse
      */
-    public static String timeElapsed(long timePostedInMilliseconds)
-    {
+    public static String timeElapsed(long timePostedInMilliseconds) {
         long timeInSeconds = millisecondsToSeconds(currentTime() - timePostedInMilliseconds);
         if (timeInSeconds < MINUTE)
         {
             return "just now";
         }
-        else if (timeInSeconds < HOUR)
-        {
-            timeInSeconds = timeInSeconds/MINUTE;
-            return setPlurality(timeInSeconds,"min") + " ago";
+        else if (timeInSeconds < HOUR) {
+            return setPlurality(timeInSeconds/MINUTE,"min") + " ago";
         }
-        else if (timeInSeconds < DAY)
-        {
-            timeInSeconds = timeInSeconds/HOUR;
-            return setPlurality(timeInSeconds,"hr")+ " ago";
+        else if (timeInSeconds < DAY) {
+            return setPlurality(timeInSeconds/HOUR,"hr")+ " ago";
         }
-        else if(timeInSeconds < WEEK)
-        {
-            timeInSeconds = timeInSeconds/DAY;
-            return setPlurality(timeInSeconds,"day") + " ago";
+        else if(timeInSeconds < WEEK) {
+            return setPlurality(timeInSeconds/DAY,"day") + " ago";
         }
-        else if (timeInSeconds < MONTH)
-        {
-            timeInSeconds = timeInSeconds/WEEK;
-           return setPlurality(timeInSeconds,"week") + " ago";
+        else if (timeInSeconds < MONTH) {
+           return setPlurality(timeInSeconds/WEEK,"week") + " ago";
         }
-        else
-        {
+        else {
             return timeStampToDate(timePostedInMilliseconds);
         }
     }
@@ -79,7 +68,7 @@ public final class TimeUtils {
      */
     public static  String setPlurality(long value, String word)
     {
-        if(value % 10 == 1)
+        if(value == 1)
         {
             return "a " + word;
         }
