@@ -9,6 +9,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.techart.writersblock.devotion.DevotionEditorActivity;
+import com.techart.writersblock.poems.PoemEditorActivity;
+import com.techart.writersblock.stories.StoryPrologueActivity;
+
 /**
  * Presents a dialog requesting user to choose the Post Type
  * Created by Kelvin on 30/07/2017.

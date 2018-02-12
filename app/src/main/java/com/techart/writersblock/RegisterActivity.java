@@ -22,6 +22,9 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.ServerValue;
+import com.techart.writersblock.utils.Constants;
+import com.techart.writersblock.utils.EditorUtils;
+import com.techart.writersblock.utils.FireBaseUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -98,7 +101,7 @@ public class RegisterActivity extends AppCompatActivity {
                         values.put("signedAs",signingInAs);
                         values.put(Constants.TIME_CREATED, ServerValue.TIMESTAMP);
 
-                        FireBaseUtils.mDatabaseUsers.child(userId).setValue(values);
+                    FireBaseUtils.mDatabaseUsers.child(userId).setValue(values);
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                             .setDisplayName(name)
@@ -121,15 +124,13 @@ public class RegisterActivity extends AppCompatActivity {
                         mProgress.dismiss();
                         Toast.makeText(RegisterActivity.this, "Error encountered, Please try again later", Toast.LENGTH_LONG).show();
                     }
-                }
-                else
-                {
+                } else {
                     mProgress.dismiss();
                     if(task.getException() instanceof FirebaseAuthUserCollisionException) {
                         Toast.makeText(RegisterActivity.this,"User already exits, use another email address",Toast.LENGTH_LONG ).show();
                     }
                     else {
-                        Toast.makeText(RegisterActivity.this,"Ensure that your internet is working",Toast.LENGTH_LONG ).show();
+                        Toast.makeText(RegisterActivity.this,"Error encountered, Please try again later",Toast.LENGTH_LONG ).show();
                     }
                 }
             }

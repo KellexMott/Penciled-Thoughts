@@ -8,6 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.Query;
+import com.techart.writersblock.models.Notice;
+import com.techart.writersblock.utils.Constants;
+import com.techart.writersblock.utils.FireBaseUtils;
+import com.techart.writersblock.utils.TimeUtils;
 
 /**
  * Retrieves and displays list of people who have viewed a particular post

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/pref_header_about">
+
+        <Preference
+            android:selectable="false"
+            android:summary="@string/summary_about" />
+
+        <Preference
+            android:key="@string/key_app_version"
+            android:title="@string/title_version"
+            android:summary="@string/app_version" />
+
+        <!-- preference opens url in browser -->
+        <Preference
+            android:title="@string/title_developer"
+            android:summary="@string/summary_developer">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/url_developer" />
+        </Preference>
+
+        <!-- preference opens url in browser -->
+        <Preference
+            android:title="@string/title_help"
+            android:summary="@string/summary_help">
+            <intent
+                android:action="com.techart.writersblock.HelpActivity"/>
+        </Preference>
+
+        <!-- Writers -->
+
+        <!-- Story -->
+        <Preference
+            android:title="@string/title_story_writer"
+            android:summary="@string/summary_story_writer">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/url_story_writer" />
+        </Preference>
+
+        <!-- Poem -->
+        <Preference
+            android:title="@string/title_poem_writer"
+            android:summary="@string/summary_poem_writer">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/url_poem_writer" />
+        </Preference>
+
+        <!-- Devotion -->
+        <Preference
+            android:title="@string/title_devotion_writer"
+            android:summary="@string/summary_devotion_writer">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/url_devotion_writer" />
+        </Preference>
+
+    </PreferenceCategory>
+</PreferenceScreen>

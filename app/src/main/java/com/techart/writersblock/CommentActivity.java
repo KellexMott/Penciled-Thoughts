@@ -21,6 +21,13 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+import com.techart.writersblock.models.Comment;
+import com.techart.writersblock.models.Devotion;
+import com.techart.writersblock.models.Poem;
+import com.techart.writersblock.models.Story;
+import com.techart.writersblock.utils.Constants;
+import com.techart.writersblock.utils.FireBaseUtils;
+import com.techart.writersblock.utils.TimeUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,8 +46,10 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
-
         FireBaseUtils.mDatabaseComment.keepSynced(true);
+        FireBaseUtils.mDatabaseStory.keepSynced(true);
+        FireBaseUtils.mDatabaseDevotions.keepSynced(true);
+        FireBaseUtils.mDatabasePoems.keepSynced(true);
 
         post_key = getIntent().getStringExtra(Constants.POST_KEY);
         postName = getIntent().getStringExtra(Constants.POST_TITLE);

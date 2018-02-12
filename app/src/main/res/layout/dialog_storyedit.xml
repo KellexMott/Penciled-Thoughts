@@ -5,7 +5,7 @@
     android:layout_width="300dip"
     android:layout_height="wrap_content"
     android:padding="10dp"
-    tools:context="com.techart.writersblock.StoryPrologueActivity">
+    tools:context="com.techart.writersblock.stories.StoryPrologueActivity">
 
     <TextView
         android:id="@+id/tv_title"

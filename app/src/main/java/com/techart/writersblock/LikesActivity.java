@@ -10,6 +10,10 @@ import android.widget.TextView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.Query;
+import com.techart.writersblock.models.Notice;
+import com.techart.writersblock.utils.Constants;
+import com.techart.writersblock.utils.FireBaseUtils;
+import com.techart.writersblock.utils.TimeUtils;
 
 
 public class LikesActivity extends AppCompatActivity
@@ -43,7 +47,7 @@ public class LikesActivity extends AppCompatActivity
         {
             @Override
             protected void populateViewHolder(LikesActivity.NoticeViewHolder viewHolder, final Notice model, int position) {
-                String time = com.techart.writersblock.TimeUtils.timeElapsed(model.getTimeCreated());
+                String time = TimeUtils.timeElapsed(model.getTimeCreated());
                 viewHolder.tvUser.setText(getString(R.string.liked,model.getUser(),model.getPostTitle()));
                 viewHolder.tvTime.setText(time);
             }

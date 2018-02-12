@@ -2,16 +2,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.techart.writersblock.MainActivity">
-<!--
-    <item
-        android:id="@+id/action_aboutUs"
-        android:orderInCategory="100"
-        android:title="About Us"
-        app:showAsAction="never" />
-        -->
     <item
         android:id="@+id/action_help"
         android:orderInCategory="100"
+        android:icon="@drawable/ic_info_white_24px"
         android:title="@string/log_help"
-        app:showAsAction="never" />
+        app:showAsAction="always" />
 </menu>

@@ -8,6 +8,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.techart.writersblock.devotion.AuthorsDevotionsListActivity;
+import com.techart.writersblock.poems.AuthorsPoemsListActivity;
+import com.techart.writersblock.stories.AuthorsStoriesListActivity;
+import com.techart.writersblock.utils.Constants;
 
 
 public class AuthorsProfileActivity extends AppCompatActivity

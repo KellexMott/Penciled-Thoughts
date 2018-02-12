@@ -6,6 +6,7 @@ import android.support.multidex.MultiDex;
 
 import com.firebase.client.Firebase;
 import com.google.firebase.database.FirebaseDatabase;
+import com.techart.writersblock.utils.TypefaceUtil;
 
 /**
  * Initializes Fire base context

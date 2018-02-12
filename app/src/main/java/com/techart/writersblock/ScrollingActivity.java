@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
-import com.google.firebase.messaging.FirebaseMessaging;
+import com.techart.writersblock.utils.Constants;
 
 /**
  * Presents the view for reading items
@@ -15,11 +15,9 @@ public class ScrollingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrolling);
-        String postKey = getIntent().getStringExtra(Constants.POST_KEY);
         String postTitle = getIntent().getStringExtra(Constants.POST_TITLE);
         String postContent = getIntent().getStringExtra(Constants.POST_CONTENT);
         setTitle(postTitle);
-        FirebaseMessaging.getInstance().subscribeToTopic(postKey);
         tvPoem = findViewById(R.id.tvPoem);
         tvPoem.setText(postContent);
     }

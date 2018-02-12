@@ -16,7 +16,10 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.messaging.FirebaseMessaging;
+import com.techart.writersblock.tabs.Tab1Poems;
+import com.techart.writersblock.tabs.Tab2Stories;
+import com.techart.writersblock.tabs.Tab3Devotion;
+import com.techart.writersblock.utils.FireBaseUtils;
 
 /**
  * Landing page.
@@ -54,8 +57,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(loginIntent);
                 }
-                FirebaseMessaging.getInstance().subscribeToTopic("newPost");
-
                 FireBaseUtils.subscribeToNewPostNotification();
             }
         };
@@ -172,9 +173,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-
             case R.id.action_help:
-                Intent help = new Intent(MainActivity.this,HelpActivity.class);
+                Intent help = new Intent(MainActivity.this,InformationActivity.class);
                 startActivity(help);
                 break;
         }
