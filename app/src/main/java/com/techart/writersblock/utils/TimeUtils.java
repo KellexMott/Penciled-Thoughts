@@ -16,6 +16,7 @@ public final class TimeUtils {
     private static final int  DAY= 86400;
     private static final int  WEEK= 604800;
     private static final int  MONTH= 2628000;
+    private static final int  YEAR= 31556926;
     private static final int MILLISECONDS_IN_A_SECOND = 1000;
 
     private TimeUtils()
@@ -54,6 +55,9 @@ public final class TimeUtils {
         }
         else if (timeInSeconds < MONTH) {
            return setPlurality(timeInSeconds/WEEK,"week") + " ago";
+        }
+        else if (timeInSeconds < YEAR) {
+           return setPlurality(timeInSeconds/MONTH,"month") + " ago";
         }
         else {
             return timeStampToDate(timePostedInMilliseconds);

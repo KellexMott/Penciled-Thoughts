@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#01365a</color>
     <color name="colorAccent">#FFD600</color>
     <color name="colorActiveNav">#fed6d2d9</color>
-    <color name="colorText">#292f33</color>
+    <color name="colorText">#000</color> <!--292f33-->
     <color name="colorWhite">#ffff</color>
     <color name="colorTitle">#6a8cb7</color>
     <color name="colorMediumGrey">#727272</color>
