@@ -128,7 +128,7 @@
     <string name="post_status">%1$s  *  </string>
     <string name="post_chapters">%1$s</string>
     <string name="post_author">%1$s</string>
-    <string name="article_author">By %1$s</string>
+    <string name="article_author">%1$s</string>
     <string name="viewers">%1$s views</string>
     <string name="tap_to_write">Tap to start writing</string>
     <string name="delete_icon">Delete Icon</string>
@@ -158,7 +158,7 @@
     <string name="type_comment">Type comment &#230;</string>
     <string name="send_icon">send icon</string>
     <string name="book_image">book image</string>
-    <string name="updated">Updated</string>
+    <string name="updated">+</string>
     <string name="edit_description">Edit Description</string>
     <string name="cancel">Cancel</string>
 

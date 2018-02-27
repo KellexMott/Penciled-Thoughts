@@ -35,7 +35,6 @@ import com.techart.writersblock.utils.TimeUtils;
 import com.techart.writersblock.viewholders.StoryViewHolder;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -85,7 +84,7 @@ public class Tab2Stories extends Fragment {
                 viewHolder.tvStatus.setText(getString(R.string.post_status,model.getStatus()));
                 viewHolder.tvChapters.setText(getString(R.string.post_chapters, NumberUtils.setPlurality(model.getChapters(),"Chapter")));
                 viewHolder.setIvImage(getContext(), ImageUtils.getStoryUrl(model.getCategory().trim(),model.getTitle()));
-                viewHolder.btAuthor.setText(getString(R.string.post_author,model.getAuthor()));
+                viewHolder.tvAuthor.setText(getString(R.string.post_author,model.getAuthor()));
 
                 if (model.getNumLikes() != null) {
                     viewHolder.tvNumLikes.setText(String.format("%s",model.getNumLikes().toString()));
@@ -103,7 +102,7 @@ public class Tab2Stories extends Fragment {
                     viewHolder.tvTime.setText(time);
                 }
 
-                viewHolder.btAuthor.setOnClickListener(new View.OnClickListener() {
+                viewHolder.tvAuthor.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent readPoemIntent = new Intent(getContext(),AuthorsProfileActivity.class);
@@ -114,12 +113,10 @@ public class Tab2Stories extends Fragment {
                 viewHolder.setLikeBtn(post_key);
                 viewHolder.setPostViewed(post_key);
 
-                if (model.getLastUpdate() != null)
-                {
+                if (model.getLastUpdate() != null) {
                     Boolean t = TimeUtils.currentTime() - model.getLastUpdate() < TimeUtils.MILLISECONDS_DAY; //&& res;
                     viewHolder.setVisibility(t);
                 }
-
 
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -300,16 +297,6 @@ public class Tab2Stories extends Fragment {
                 .setPositiveButton("Start Reading", dialogClickListener)
                 .setNegativeButton("Back", dialogClickListener)
                 .show();
-    }
-
-    /**
-     * Gets the real-time time of day in milliseconds
-     * @return return time in milliseconds
-     */
-    public long currentTime()
-    {
-        Date date = new Date();
-        return date.getTime();
     }
 }
 

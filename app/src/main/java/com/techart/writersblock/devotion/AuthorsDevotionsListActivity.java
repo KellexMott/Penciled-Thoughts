@@ -64,7 +64,7 @@ public class AuthorsDevotionsListActivity extends AppCompatActivity {
     {
         Query query = mDatabaseDevotions.orderByChild(Constants.POST_AUTHOR).equalTo(author);
         firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Devotion, PoemViewHolder>(
-                Devotion.class,R.layout.item_row,PoemViewHolder.class, query) {
+                Devotion.class,R.layout.item_article,PoemViewHolder.class, query) {
             @Override
             protected void populateViewHolder(PoemViewHolder viewHolder, final Devotion model, int position) {
                 final String post_key = getRef(position).getKey();

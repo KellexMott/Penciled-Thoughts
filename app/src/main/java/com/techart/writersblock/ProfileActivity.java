@@ -180,16 +180,6 @@ public class ProfileActivity extends AppCompatActivity
                     }
                 });
         //End bottom naviagtion
-
-
-        //ToDO fully implement
-
-        /*BottomNavigationMenuView bottomNavigationMenuView =
-                (BottomNavigationMenuView) bottomNavigationView.getChildAt(0);
-        View v = bottomNavigationMenuView.getChildAt(1); // number of menu from left
-        new QBadgeView(this).bindTarget(v)
-                .setBadgeGravity(Gravity.CENTER)
-                .setBadgeNumber(5);*/
     }
 
     @Override
@@ -216,8 +206,7 @@ public class ProfileActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == R.id.action_logout) {
             logOut();
-        }else if (id == R.id.action_changedp)
-        {
+        } else if (id == R.id.action_changedp) {
             Intent imageIntent = new Intent();
             imageIntent.setType("image/*");
             imageIntent.setAction(Intent.ACTION_GET_CONTENT);
@@ -238,13 +227,10 @@ public class ProfileActivity extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Users users = dataSnapshot.getValue(Users.class);
-                if (users.getImageUrl() != null && users.getImageUrl().length() > 7)
-                {
+                if (users.getImageUrl() != null && users.getImageUrl().length() > 7) {
                     currentPhotoUrl = users.getImageUrl();
                     setPicturePicture(currentPhotoUrl);
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getBaseContext(),"No image found",Toast.LENGTH_LONG).show();
                 }
             }
@@ -254,8 +240,7 @@ public class ProfileActivity extends AppCompatActivity
         });
     }
 
-    private void setPicturePicture(String url)
-    {
+    private void setPicturePicture(String url) {
         if (isAttached){
             Glide.with(this)
                 .load(url)
@@ -263,8 +248,7 @@ public class ProfileActivity extends AppCompatActivity
         }
     }
 
-    private void deletePrompt()
-    {
+    private void deletePrompt() {
         DialogInterface.OnClickListener dialogClickListener =
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -368,10 +352,5 @@ public class ProfileActivity extends AppCompatActivity
             .setPositiveButton(getString(android.R.string.yes), dialogClickListener)
             .setNegativeButton(getString(android.R.string.no), dialogClickListener)
             .show();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 }

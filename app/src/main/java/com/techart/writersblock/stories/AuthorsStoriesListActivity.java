@@ -70,7 +70,7 @@ public class AuthorsStoriesListActivity extends AppCompatActivity {
                 viewHolder.tvCategory.setText(getString(R.string.post_category,model.getCategory()));
                 viewHolder.tvStatus.setText(model.getStatus());
                 viewHolder.setIvImage(AuthorsStoriesListActivity.this, ImageUtils.getStoryUrl(model.getCategory().trim(),model.getTitle()));
-                viewHolder.btAuthor.setText(getString(R.string.post_author,model.getAuthor()));
+                viewHolder.tvAuthor.setText(getString(R.string.post_author,model.getAuthor()));
                 if (model.getNumLikes() != null)
                 {
                     viewHolder.tvNumLikes.setText(String.format("%s",model.getNumLikes().toString()));
@@ -88,7 +88,7 @@ public class AuthorsStoriesListActivity extends AppCompatActivity {
                     viewHolder.tvTime.setText(time);
                 }
 
-                viewHolder.btAuthor.setOnClickListener(new View.OnClickListener() {
+                viewHolder.tvAuthor.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent readPoemIntent = new Intent(AuthorsStoriesListActivity.this,AuthorsProfileActivity.class);

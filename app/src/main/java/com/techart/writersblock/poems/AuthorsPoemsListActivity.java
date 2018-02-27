@@ -64,7 +64,7 @@ public class AuthorsPoemsListActivity extends AppCompatActivity {
     {
         Query query = mDatabasePoems.orderByChild(Constants.POST_AUTHOR).equalTo(author);
         FirebaseRecyclerAdapter<Poem,PoemViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Poem, PoemViewHolder>(
-                Poem.class,R.layout.item_row,PoemViewHolder.class, query)
+                Poem.class,R.layout.item_article,PoemViewHolder.class, query)
         {
             @Override
             protected void populateViewHolder(PoemViewHolder viewHolder, final Poem model, int position) {

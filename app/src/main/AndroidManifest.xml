@@ -55,27 +55,34 @@
         <activity
             android:name=".devotion.DevotionEditorActivity"
             android:excludeFromRecents="true" />
+
         <activity android:name=".RegisterActivity" />
+        <activity android:name=".LoginActivity" />
+
         <activity
             android:name=".PostTypeDialog"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/dialogTheme" />
+
         <activity
             android:name=".stories.StoryDialogActivity"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/dialogTheme" />
+
         <activity
             android:name=".stories.StoryTitleEditDialog"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/dialogTheme" />
+
         <activity
             android:name=".stories.StoryDescriptionEditDialog"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/dialogTheme" />
+
         <activity
             android:name=".HelpActivity"
             android:parentActivityName=".InformationActivity">
@@ -84,175 +91,127 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ProfileActivity"
             android:launchMode="singleTop" />
         <activity
             android:name=".ActivityReadStory"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".LoginActivity"
-            android:excludeFromRecents="true"
-            android:label="@string/title_activity_login" />
+
         <activity
             android:name=".LikesActivity"
             android:excludeFromRecents="true"
             android:parentActivityName=".MainActivity" />
+
         <activity
             android:name=".poems.MyPoemsListActivity"
             android:parentActivityName=".ProfileActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.ProfileActivity" />
         </activity>
+
         <activity
             android:name=".stories.StoryPrologueActivity"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:parentActivityName=".ProfileActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.ProfileActivity" />
         </activity>
+
         <activity
             android:name=".chapters.ChapterEditorActivity"
             android:excludeFromRecents="true"
             android:parentActivityName=".ProfileActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.ProfileActivity" />
         </activity>
+
         <activity
             android:name=".chapters.ChapterEditorOnlineActivity"
             android:excludeFromRecents="true"
             android:parentActivityName=".stories.ProfileStoriesListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.stories.ProfileStoriesListActivity" />
         </activity>
+
         <activity
             android:name=".devotion.DevotionEditorOnlineActivity"
             android:excludeFromRecents="true"
             android:parentActivityName=".stories.ProfileStoriesListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.devotion.ProfileDevotionsListActivity" />
         </activity>
+
         <activity
             android:name=".poems.PoemEditorOnlineActivity"
             android:excludeFromRecents="true"
             android:parentActivityName=".stories.ProfileStoriesListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.devotion.ProfileDevotionsListActivity" />
         </activity>
+
         <activity
             android:name=".chapters.OnlineChapterListActivity"
             android:excludeFromRecents="true"
             android:parentActivityName=".stories.ProfileStoriesListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.stories.ProfileStoriesListActivity" />
+
         </activity>
+
         <activity
             android:name=".AuthorsProfileActivity"
             android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.MainActivity" />
         </activity>
+
         <activity
             android:name=".chapters.AddChapterActivity"
             android:parentActivityName=".chapters.MyChaptersListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.poems.MyPoemsListActivity" />
         </activity>
+
         <activity
             android:name=".chapters.AddChapterOnlineActivity"
             android:parentActivityName=".stories.ProfileStoriesListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.stories.ProfileStoriesListActivity" />
         </activity>
+
         <activity
             android:name=".chapters.MyChaptersListActivity"
             android:parentActivityName=".ProfileActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.chapters.MyChaptersListActivity" />
         </activity>
+
         <activity
             android:name=".stories.MyStoriesListActivity"
             android:parentActivityName=".ProfileActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.ProfileActivity" />
         </activity>
+
         <activity
             android:name=".poems.AuthorsPoemsListActivity"
             android:parentActivityName=".AuthorsProfileActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.AuthorsProfileActivity" />
         </activity>
+
         <activity
             android:name=".devotion.AuthorsDevotionsListActivity"
             android:parentActivityName=".AuthorsProfileActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.AuthorsProfileActivity" />
         </activity>
-        <activity
-            android:name=".stories.AuthorsStoriesListActivity"
-            android:parentActivityName=".AuthorsProfileActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.AuthorsProfileActivity" />
-        </activity>
+
         <activity
             android:name=".poems.ProfilePoemsListActivity"
             android:parentActivityName=".AuthorsProfileActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.AuthorsProfileActivity" />
         </activity>
+
         <activity
             android:name=".devotion.ProfileDevotionsListActivity"
             android:parentActivityName=".AuthorsProfileActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.AuthorsProfileActivity" />
         </activity>
+
         <activity
             android:name=".stories.ProfileStoriesListActivity"
             android:parentActivityName=".AuthorsProfileActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.AuthorsProfileActivity" />
         </activity>
+
         <activity
             android:name=".stories.StoryEditorActivity"
             android:excludeFromRecents="true"
             android:parentActivityName=".ProfileActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.ProfileActivity" />
         </activity>
+
         <activity
             android:name=".LibraryActivity"
             android:excludeFromRecents="true"
             android:parentActivityName=".ProfileActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.ProfileActivity" />
         </activity>
+
         <activity
             android:name=".devotion.MySpiritualsListActivity"
             android:parentActivityName=".ProfileActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.ProfileActivity" />
         </activity>
 
         <activity
@@ -265,16 +224,11 @@
             android:name=".poems.PoemEditorActivity"
             android:excludeFromRecents="true"
             android:parentActivityName=".ProfileActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.ProfileActivity" />
         </activity>
+
         <activity
             android:name=".ScrollingActivity"
             android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techart.writersblock.MainActivity" />
         </activity>
 
         <!-- [START firebase_service] -->
@@ -291,7 +245,6 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>

@@ -3,7 +3,6 @@ package com.techart.writersblock.viewholders;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,7 +21,7 @@ public final class StoryViewHolder extends RecyclerView.ViewHolder
 {
     public TextView tvTitle;
     public TextView tvState;
-    public Button btAuthor;
+    public TextView tvAuthor;
     public TextView tvCategory;
     public TextView tvStatus;
     public TextView tvChapters;
@@ -46,7 +45,7 @@ public final class StoryViewHolder extends RecyclerView.ViewHolder
         super(itemView);
         tvTitle = itemView.findViewById(R.id.tv_title);
         tvState = itemView.findViewById(R.id.tv_state);
-        btAuthor = itemView.findViewById(R.id.bt_author);
+        tvAuthor = itemView.findViewById(R.id.tv_author);
         tvStatus = itemView.findViewById(R.id.tv_status);
         tvChapters = itemView.findViewById(R.id.tv_chapters);
         tvCategory = itemView.findViewById(R.id.tv_category);

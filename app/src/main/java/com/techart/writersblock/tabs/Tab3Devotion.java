@@ -78,7 +78,7 @@ public class Tab3Devotion extends Fragment {
     private void bindView()
     {
         fireBaseRecyclerAdapter = new FirebaseRecyclerAdapter<Devotion, PoemViewHolder>(
-                Devotion.class,R.layout.item_row,PoemViewHolder.class, FireBaseUtils.mDatabaseDevotions) {
+                Devotion.class,R.layout.item_article,PoemViewHolder.class, FireBaseUtils.mDatabaseDevotions) {
             @Override
             protected void populateViewHolder(PoemViewHolder viewHolder, final Devotion model, int position) {
                 final String post_key = getRef(position).getKey();
