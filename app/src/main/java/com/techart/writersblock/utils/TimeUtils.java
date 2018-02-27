@@ -56,9 +56,6 @@ public final class TimeUtils {
         else if (timeInSeconds < MONTH) {
            return setPlurality(timeInSeconds/WEEK,"week") + " ago";
         }
-        else if (timeInSeconds < YEAR) {
-           return setPlurality(timeInSeconds/MONTH,"month") + " ago";
-        }
         else {
             return timeStampToDate(timePostedInMilliseconds);
         }
@@ -70,10 +67,8 @@ public final class TimeUtils {
      * @param word distinction
      * @return return a string
      */
-    public static  String setPlurality(long value, String word)
-    {
-        if(value == 1)
-        {
+    public static  String setPlurality(long value, String word) {
+        if(value == 1) {
             return "a " + word;
         }
         return value + " " + word + "s";
@@ -84,9 +79,8 @@ public final class TimeUtils {
      * @param timePostedInMilliseconds time to be converted
      * @return return date and time
      */
-    public static String timeStampToDate(long timePostedInMilliseconds)
-    {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d, HH:mm:ss");
+    public static String timeStampToDate(long timePostedInMilliseconds) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, MMM d, ''yy");
         return simpleDateFormat.format(timePostedInMilliseconds);
     }
 
@@ -94,8 +88,7 @@ public final class TimeUtils {
      * Gets the real-time time of day in milliseconds
      * @return return time in milliseconds
      */
-    public static long currentTime()
-    {
+    public static long currentTime() {
         Date date = new Date();
         return date.getTime();
     }
