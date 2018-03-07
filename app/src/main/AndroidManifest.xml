@@ -56,8 +56,17 @@
             android:name=".devotion.DevotionEditorActivity"
             android:excludeFromRecents="true" />
 
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity
+            android:name=".RegisterActivity"
+            android:noHistory="true"
+            android:autoRemoveFromRecents="true"
+            android:theme="@style/FullScreen" />
+
+        <activity
+            android:name=".LoginActivity"
+            android:noHistory="true"
+            android:autoRemoveFromRecents="true"
+            android:theme="@style/FullScreen"/>
 
         <activity
             android:name=".PostTypeDialog"

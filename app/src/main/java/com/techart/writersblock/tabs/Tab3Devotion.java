@@ -84,6 +84,7 @@ public class Tab3Devotion extends Fragment {
                 final String post_key = getRef(position).getKey();
                 FireBaseUtils.mDatabaseLike.child(post_key).keepSynced(true);
                 viewHolder.post_title.setText(model.getTitle());
+                viewHolder.setTint(getContext());
                 viewHolder.post_author.setText(getString(R.string.article_author,model.getAuthor()));
                 viewHolder.setIvImage(getContext(), ImageUtils.getDevotionUrl(NumberUtils.getModuleOfTen(position)));
                 if (model.getNumLikes() != null)

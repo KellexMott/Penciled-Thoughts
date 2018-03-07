@@ -37,8 +37,6 @@ import com.techart.writersblock.viewholders.StoryViewHolder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-
 public class Tab2Stories extends Fragment {
     private RecyclerView mStoryList;
 
@@ -50,7 +48,6 @@ public class Tab2Stories extends Fragment {
     private ArrayList<String> chapterTitles;
     private int pageCount;
     Long timeAccessed;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,6 +77,7 @@ public class Tab2Stories extends Fragment {
                 final String post_key = getRef(position).getKey();
                 FireBaseUtils.mDatabaseLike.child(post_key).keepSynced(true);
                 viewHolder.tvTitle.setText(model.getTitle());
+                viewHolder.setTint(getContext());
                 viewHolder.tvCategory.setText(getString(R.string.post_category,model.getCategory()));
                 viewHolder.tvStatus.setText(getString(R.string.post_status,model.getStatus()));
                 viewHolder.tvChapters.setText(getString(R.string.post_chapters, NumberUtils.setPlurality(model.getChapters(),"Chapter")));
@@ -133,8 +131,7 @@ public class Tab2Stories extends Fragment {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (mProcessLike) {
-                                    if (dataSnapshot.hasChild(FireBaseUtils.mAuth.getCurrentUser().getUid()))
-                                    {
+                                    if (dataSnapshot.hasChild(FireBaseUtils.mAuth.getCurrentUser().getUid())) {
                                         FireBaseUtils.mDatabaseLike.child(post_key).child(FireBaseUtils.mAuth.getCurrentUser().getUid()).removeValue();
                                         FireBaseUtils.onStoryDisliked(post_key);
                                         mProcessLike = false;
@@ -191,8 +188,7 @@ public class Tab2Stories extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (mProcessView) {
-                    if (!dataSnapshot.hasChild(FireBaseUtils.mAuth.getCurrentUser().getUid()))
-                    {
+                    if (!dataSnapshot.hasChild(FireBaseUtils.mAuth.getCurrentUser().getUid())) {
                         FireBaseUtils.addStoryView(model,post_key);
                         mProcessView = false;
                         FireBaseUtils.onStoryViewed(post_key);

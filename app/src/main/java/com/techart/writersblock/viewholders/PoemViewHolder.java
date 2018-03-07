@@ -1,6 +1,7 @@
 package com.techart.writersblock.viewholders;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
@@ -64,6 +65,9 @@ public final class PoemViewHolder extends RecyclerView.ViewHolder
         Glide.with(context)
                 .load(image)
                 .into(ivArticle);
+    }
+    public void setTint(Context context){
+        ivArticle.setColorFilter(ContextCompat.getColor(context, R.color.colorTint));
     }
     public void setLikeBtn(String post_key) {
         FireBaseUtils.setLikeBtn(post_key,btnLiked);

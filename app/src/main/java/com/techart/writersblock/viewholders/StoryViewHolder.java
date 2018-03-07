@@ -1,6 +1,7 @@
 package com.techart.writersblock.viewholders;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
@@ -17,8 +18,7 @@ import com.techart.writersblock.utils.FireBaseUtils;
  * Created by kelvin on 2/12/18.
  */
 
-public final class StoryViewHolder extends RecyclerView.ViewHolder
-{
+public final class StoryViewHolder extends RecyclerView.ViewHolder {
     public TextView tvTitle;
     public TextView tvState;
     public TextView tvAuthor;
@@ -65,8 +65,11 @@ public final class StoryViewHolder extends RecyclerView.ViewHolder
         mDatabaseLike.keepSynced(true);
     }
 
-    public void setVisibility(Boolean isVisible)
-    {
+    public void setTint(Context context){
+        ivStory.setColorFilter(ContextCompat.getColor(context, R.color.colorTint));
+    }
+
+    public void setVisibility(Boolean isVisible) {
         if (isVisible){
             tvState.setVisibility(View.VISIBLE);
         }else{
@@ -74,8 +77,7 @@ public final class StoryViewHolder extends RecyclerView.ViewHolder
         }
     }
 
-    public void setIvImage(Context context, int resourceValue)
-    {
+    public void setIvImage(Context context, int resourceValue) {
         Glide.with(context)
                 .load(resourceValue)
                 .into(ivStory);

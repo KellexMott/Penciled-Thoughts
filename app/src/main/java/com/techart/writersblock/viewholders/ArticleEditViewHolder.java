@@ -55,6 +55,7 @@ public final class ArticleEditViewHolder extends RecyclerView.ViewHolder
         mDatabaseLike.keepSynced(true);
     }
 
+
     public void setLikeBtn(String post_key) {
         FireBaseUtils.setLikeBtn(post_key,btnLiked);
     }
