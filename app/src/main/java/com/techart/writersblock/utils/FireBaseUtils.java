@@ -44,8 +44,7 @@ public final class FireBaseUtils {
    public static StorageReference mStoragePhotos = FirebaseStorage.getInstance().getReference();
 
 
-    private FireBaseUtils()
-    {
+    private FireBaseUtils() {
 
     }
 
@@ -53,8 +52,8 @@ public final class FireBaseUtils {
         mSubscriptions.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (FireBaseUtils.mAuth.getCurrentUser() != null && !dataSnapshot.hasChild(FireBaseUtils.mAuth.getCurrentUser().getUid()))  {
-                    mSubscriptions.child(FireBaseUtils.mAuth.getCurrentUser().getUid()).setValue(Constants.NEW_POST_SUBSCRIPTION);
+                if (FireBaseUtils.mAuth.getCurrentUser() != null && !dataSnapshot.hasChild(getUiD()))  {
+                    mSubscriptions.child(getUiD()).setValue(Constants.NEW_POST_SUBSCRIPTION);
                 }
             }
             @Override
@@ -76,11 +75,15 @@ public final class FireBaseUtils {
         FirebaseMessaging.getInstance().subscribeToTopic(postKey);
     }
 
-    //ToDo Handle null possibility
     public static String getAuthor()
     {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         return user.getDisplayName();
+    }
+
+    public static String getUiD()
+    {
+        return mAuth.getCurrentUser().getUid();
     }
 
     public static void setLikeBtn(final String post_key, final ImageView btnLiked)
@@ -88,7 +91,7 @@ public final class FireBaseUtils {
         mDatabaseLike.child(post_key).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (FireBaseUtils.mAuth.getCurrentUser() != null && dataSnapshot.child(FireBaseUtils.mAuth.getCurrentUser().getUid()).hasChild(Constants.AUTHOR_URL))
+                if (FireBaseUtils.mAuth.getCurrentUser() != null && dataSnapshot.child(getUiD()).hasChild(Constants.AUTHOR_URL))
                 {
                     btnLiked.setImageResource(R.drawable.ic_thumb_up_blue_24dp);
                 }
@@ -111,7 +114,7 @@ public final class FireBaseUtils {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if (FireBaseUtils.mAuth.getCurrentUser() != null && dataSnapshot.child(FireBaseUtils.mAuth.getCurrentUser().getUid()).hasChild(Constants.AUTHOR_URL))
+                if (FireBaseUtils.mAuth.getCurrentUser() != null && dataSnapshot.child(getUiD()).hasChild(Constants.AUTHOR_URL))
                 {
                     btViewed.setImageResource(R.drawable.ic_visibility_blue_24px);
                 }
@@ -276,32 +279,32 @@ public final class FireBaseUtils {
 
     public static void addStoryLike(Story model, String post_key) {
         Map<String,Object> values = new HashMap<>();
-        values.put(Constants.AUTHOR_URL,mAuth.getCurrentUser().getUid());
+        values.put(Constants.AUTHOR_URL,getUiD());
         values.put(Constants.USER, FireBaseUtils.getAuthor());
         values.put(Constants.POST_TITLE, model.getTitle());
         values.put(Constants.POEM_KEY, post_key);
         values.put(Constants.TIME_CREATED, ServerValue.TIMESTAMP);
-        mDatabaseLike.child(post_key).child(FireBaseUtils.mAuth.getCurrentUser().getUid()).setValue(values);
+        mDatabaseLike.child(post_key).child(getUiD()).setValue(values);
     }
 
     public static void addDevotionLike(Devotion model, String post_key) {
         Map<String, Object> values = new HashMap<>();
-        values.put(Constants.AUTHOR_URL, mAuth.getCurrentUser().getUid());
+        values.put(Constants.AUTHOR_URL, getUiD());
         values.put(Constants.USER, getAuthor());
         values.put(Constants.POST_TITLE, model.getTitle());
         values.put(Constants.POEM_KEY, post_key);
         values.put(Constants.TIME_CREATED, ServerValue.TIMESTAMP);
-        mDatabaseLike.child(post_key).child(FireBaseUtils.mAuth.getCurrentUser().getUid()).setValue(values);
+        mDatabaseLike.child(post_key).child(getUiD()).setValue(values);
     }
 
     public static void addPoemLike(Poem model, String post_key) {
         Map<String, Object> values = new HashMap<>();
-        values.put(Constants.AUTHOR_URL, mAuth.getCurrentUser().getUid());
+        values.put(Constants.AUTHOR_URL, getUiD());
         values.put(Constants.USER, getAuthor());
         values.put(Constants.POST_TITLE, model.getTitle());
         values.put(Constants.POEM_KEY, post_key);
         values.put(Constants.TIME_CREATED, ServerValue.TIMESTAMP);
-        mDatabaseLike.child(post_key).child(FireBaseUtils.mAuth.getCurrentUser().getUid()).setValue(values);
+        mDatabaseLike.child(post_key).child(getUiD()).setValue(values);
     }
 
     public static void onPoemViewed(String post_key) {
@@ -368,32 +371,32 @@ public final class FireBaseUtils {
 
     public static void addStoryView(Story model, String post_key) {
         Map<String,Object> values = new HashMap<>();
-        values.put(Constants.AUTHOR_URL,mAuth.getCurrentUser().getUid());
+        values.put(Constants.AUTHOR_URL,getUiD());
         values.put(Constants.USER, FireBaseUtils.getAuthor());
         values.put(Constants.POST_TITLE, model.getTitle());
         values.put(Constants.POEM_KEY, post_key);
         values.put(Constants.TIME_CREATED, ServerValue.TIMESTAMP);
-        mDatabaseViews.child(post_key).child(FireBaseUtils.mAuth.getCurrentUser().getUid()).setValue(values);
+        mDatabaseViews.child(post_key).child(getUiD()).setValue(values);
     }
 
     public static void addDevotionView(Devotion model, String post_key) {
         Map<String, Object> values = new HashMap<>();
-        values.put(Constants.AUTHOR_URL, mAuth.getCurrentUser().getUid());
+        values.put(Constants.AUTHOR_URL, getUiD());
         values.put(Constants.USER, getAuthor());
         values.put(Constants.POST_TITLE, model.getTitle());
         values.put(Constants.POEM_KEY, post_key);
         values.put(Constants.TIME_CREATED, ServerValue.TIMESTAMP);
-        mDatabaseViews.child(post_key).child(FireBaseUtils.mAuth.getCurrentUser().getUid()).setValue(values);
+        mDatabaseViews.child(post_key).child(getUiD()).setValue(values);
     }
 
     public static void addPoemView(Poem model, String post_key) {
         Map<String, Object> values = new HashMap<>();
-        values.put(Constants.AUTHOR_URL, mAuth.getCurrentUser().getUid());
+        values.put(Constants.AUTHOR_URL, getUiD());
         values.put(Constants.USER, getAuthor());
         values.put(Constants.POST_TITLE, model.getTitle());
         values.put(Constants.POEM_KEY, post_key);
         values.put(Constants.TIME_CREATED, ServerValue.TIMESTAMP);
-        mDatabaseViews.child(post_key).child(FireBaseUtils.mAuth.getCurrentUser().getUid()).setValue(values);
+        mDatabaseViews.child(post_key).child(getUiD()).setValue(values);
     }
 
     public static void deleteStory(final String post_key)
@@ -496,7 +499,7 @@ public final class FireBaseUtils {
         mDatabaseLibrary.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                    FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.mAuth.getCurrentUser().getUid()).child(post_key).removeValue();
+                    FireBaseUtils.mDatabaseLibrary.child(getUiD()).child(post_key).removeValue();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
