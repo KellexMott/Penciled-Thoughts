@@ -48,10 +48,8 @@ import java.util.Map;
  * 1. Posted items
  * 2. Locally stored Articles
  * 3. Action such as changing and setting of dps
- *
  */
-public class ProfileActivity extends AppCompatActivity
-{
+public class ProfileActivity extends AppCompatActivity {
     private TextView tvSetPhoto;
     private ProgressDialog mProgress;
     private RelativeLayout mypoems;
@@ -64,7 +62,6 @@ public class ProfileActivity extends AppCompatActivity
 
     private ImageButton imProfilePicture;
     private static String author;
-    private FirebaseAuth mAuth;
     private String currentPhotoUrl;
     private String userName;
     private boolean isAttached;
@@ -79,8 +76,6 @@ public class ProfileActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         author = FireBaseUtils.getAuthor();
-
-        mAuth = FirebaseAuth.getInstance();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -102,7 +97,7 @@ public class ProfileActivity extends AppCompatActivity
         tvSetPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deletePrompt();
+                setPhoto();
             }
         });
         //Handles on clicks which brings up a larger image than that displayed
@@ -216,20 +211,19 @@ public class ProfileActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onStart()
-    {
+    protected void onStart() {
         super.onStart();
         bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
     }
 
     private void loadProfilePicture(){
-        FireBaseUtils.mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+        FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Users users = dataSnapshot.getValue(Users.class);
                 if (users.getImageUrl() != null && users.getImageUrl().length() > 7) {
                     currentPhotoUrl = users.getImageUrl();
-                    setPicturePicture(currentPhotoUrl);
+                    setPicture(currentPhotoUrl);
                 } else {
                     Toast.makeText(getBaseContext(),"No image found",Toast.LENGTH_LONG).show();
                 }
@@ -240,7 +234,7 @@ public class ProfileActivity extends AppCompatActivity
         });
     }
 
-    private void setPicturePicture(String url) {
+    private void setPicture(String url) {
         if (isAttached){
             Glide.with(this)
                 .load(url)
@@ -250,19 +244,29 @@ public class ProfileActivity extends AppCompatActivity
 
     private void deletePrompt() {
         DialogInterface.OnClickListener dialogClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int button) {
-                        if (button == DialogInterface.BUTTON_POSITIVE)
-                        {
-                            DeletePictureFromStorage();
-                        }
-                        if (button == DialogInterface.BUTTON_NEGATIVE)
-                        {
-                            dialog.dismiss();
-                        }
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int button) {
+                    if (button == DialogInterface.BUTTON_POSITIVE) {
+                        StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(currentPhotoUrl);
+                        photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                startPosting();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+
+                            }
+                        });
                     }
-                };
+                    if (button == DialogInterface.BUTTON_NEGATIVE)
+                    {
+                        dialog.dismiss();
+                    }
+                }
+            };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Current display picture will be permanently deleted")
                 .setPositiveButton("Upload", dialogClickListener)
@@ -270,31 +274,19 @@ public class ProfileActivity extends AppCompatActivity
                 .show();
     }
 
-    private void DeletePictureFromStorage()
-    {
-        if (currentPhotoUrl != null)
-        {
-            StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(currentPhotoUrl);
-            photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    startPosting();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-
-                }
-            });
+    private void setPhoto() {
+        if (currentPhotoUrl != null) {
+            deletePrompt();
         }else {
             startPosting();
         }
     }
 
+    @NonNull
     private void startPosting()
     {
         mProgress = new ProgressDialog(ProfileActivity.this);
-        mProgress.setMessage("Uploading picture, please wait...");
+        mProgress.setMessage("Uploading photo, please wait...");
         mProgress.setCanceledOnTouchOutside(false);
         mProgress.show();
         StorageReference filePath = FireBaseUtils.mStoragePhotos.child(uri.getLastPathSegment());
@@ -305,7 +297,7 @@ public class ProfileActivity extends AppCompatActivity
             currentPhotoUrl = taskSnapshot.getDownloadUrl().toString();
             Map<String,Object> values = new HashMap<>();
             values.put("imageUrl",taskSnapshot.getDownloadUrl().toString());
-            FireBaseUtils.mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).updateChildren(values);
+            FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).updateChildren(values);
             tvSetPhoto.setVisibility(View.INVISIBLE);
             mProgress.dismiss();
             }

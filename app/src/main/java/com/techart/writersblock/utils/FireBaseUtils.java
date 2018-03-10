@@ -1,5 +1,6 @@
 package com.techart.writersblock.utils;
 
+import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,7 +42,9 @@ public final class FireBaseUtils {
    public static DatabaseReference mDatabaseLibrary = FirebaseDatabase.getInstance().getReference().child(Constants.LIBRARY);
    public static DatabaseReference mSubscriptions = FirebaseDatabase.getInstance().getReference().child(Constants.SUBSCRIPTIONS_KEY);
    public static FirebaseAuth mAuth  = FirebaseAuth.getInstance();
-   public static StorageReference mStoragePhotos = FirebaseStorage.getInstance().getReference();
+   public static FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+    public static StorageReference mStoragePhotos = FirebaseStorage.getInstance().getReference();
 
 
     private FireBaseUtils() {
@@ -75,14 +78,12 @@ public final class FireBaseUtils {
         FirebaseMessaging.getInstance().subscribeToTopic(postKey);
     }
 
-    public static String getAuthor()
-    {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    public static String getAuthor() {
         return user.getDisplayName();
     }
 
-    public static String getUiD()
-    {
+    @NonNull
+    public static String getUiD() {
         return mAuth.getCurrentUser().getUid();
     }
 
