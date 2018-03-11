@@ -32,7 +32,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 import com.techart.writersblock.devotion.MySpiritualsListActivity;
 import com.techart.writersblock.devotion.ProfileDevotionsListActivity;
 import com.techart.writersblock.models.Users;
@@ -72,8 +71,8 @@ public class ProfileActivity extends AppCompatActivity {
     private static final int GALLERY_REQUEST = 1;
     // The request code used in ActivityCompat.requestPermissions()
     // and returned in the Activity's onRequestPermissionsResult()
-    int PERMISSION_ALL = 1;
-    String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private int PERMISSION_ALL = 1;
+    private String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     private BottomNavigationView bottomNavigationView;
     private Uri uri;
@@ -293,6 +292,14 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    private void setPicture(Uri url) {
+        Glide.with(this)
+            .load(url)
+            .centerCrop()
+            .into(imProfilePicture);
+        tvSetPhoto.setVisibility(View.VISIBLE);
+    }
+
     private void deletePrompt() {
         DialogInterface.OnClickListener dialogClickListener =
             new DialogInterface.OnClickListener() {
@@ -361,18 +368,9 @@ public class ProfileActivity extends AppCompatActivity {
             if (uri != null){
                 String realPath = ImageUtils.getRealPathFromUrl(this, uri);
                 Uri uriFromPath = Uri.fromFile(new File(realPath));
-                displaySelectedDp(imProfilePicture,uriFromPath);
+                setPicture(uriFromPath);
             }
         }
-    }
-
-    private void displaySelectedDp(ImageButton image, Uri uriFromPath) {
-        Picasso.with(this)
-                .load(uriFromPath)
-                .resize(300, 300)
-                .centerCrop()
-                .into(image);
-        tvSetPhoto.setVisibility(View.VISIBLE);
     }
 
     private void logOut() {

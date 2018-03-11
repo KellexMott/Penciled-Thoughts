@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.database.DataSnapshot;
@@ -42,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button mRegister;
 
     // Firebase references.
-    private FirebaseAuth mAuth;
     private DatabaseReference mDatabaseUsers;
 
     @Override
@@ -50,7 +48,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mAuth = FirebaseAuth.getInstance();
         mDatabaseUsers = FireBaseUtils.mDatabaseUsers;
         mUsername = findViewById(R.id.loginUsername);
         mPassWord = findViewById(R.id.loginPassword);
@@ -89,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
             mProgress.setMessage("Logging in ...");
             mProgress.setCancelable(false);
             mProgress.show();
-            mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            FireBaseUtils.mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()) {
@@ -129,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void validUsersExistance() {
-        final String userId = mAuth.getCurrentUser().getUid();
+        final String userId = FireBaseUtils.getUiD();
         if (userId != null) {
             mDatabaseUsers.addValueEventListener(new ValueEventListener() {
                 @Override

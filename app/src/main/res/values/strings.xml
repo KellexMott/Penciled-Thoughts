@@ -123,6 +123,8 @@
     <string name="next">Next</string>
     <string name="photo">Photo</string>
     <string name="add_post">Add Post</string>
+    <string name="num_likes">%1$d</string>
+    <string name="num_comments">%1$d</string>
     <string name="liked">%1$s liked %2$s</string>
     <string name="post_category">%1$s  *  </string>
     <string name="post_status">%1$s  *  </string>

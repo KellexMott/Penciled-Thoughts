@@ -41,7 +41,6 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
     private ArrayList<String> contents = new ArrayList<>(Arrays.asList("Action", "Drama", "Fiction","Romance"));
 
     String[] categories = {"Action", "Drama", "Fiction","Romance"};
-
     private boolean mProcessLike = false;
 
     @Override
@@ -83,11 +82,11 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
                 viewHolder.tbStatus.setTextColor(setColor(model.getStatus().equals("Complete")));
                 if (model.getNumLikes() != null)
                 {
-                    viewHolder.tvNumLikes.setText(model.getNumLikes().toString());
+                    viewHolder.tvNumLikes.setText(getString(R.string.num_likes,model.getNumLikes()));
                 }
                 if (model.getNumComments() != null)
                 {
-                    viewHolder.tvNumComments.setText(model.getNumComments().toString());
+                    viewHolder.tvNumComments.setText(getString(R.string.num_comments,model.getNumComments()));
                 }
                 if (model.getTimeCreated() != null)
                 {
@@ -131,7 +130,7 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (mProcessLike) {
                                     if (dataSnapshot.child(post_key).hasChild(Constants.AUTHOR_URL))  {
-                                        mDatabaseLike.child(post_key).child(FireBaseUtils.mAuth.getCurrentUser().getUid()).removeValue();
+                                        mDatabaseLike.child(post_key).child(FireBaseUtils.getUiD()).removeValue();
                                         FireBaseUtils.onStoryDisliked(post_key);
                                         mProcessLike = false;
                                     } else {
