@@ -1,6 +1,7 @@
 package com.techart.writersblock.utils;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -8,6 +9,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 
 import com.techart.writersblock.R;
 
@@ -17,14 +19,11 @@ import com.techart.writersblock.R;
  */
 
 public final class ImageUtils {
-    private ImageUtils()
-    {
-
+    private ImageUtils() {
     }
 
     public static int getStoryUrl(String category, String title) {
-        switch (category)
-        {
+        switch (category) {
             case "Action":
                 return R.drawable.action;
             case "Drama":
@@ -38,8 +37,7 @@ public final class ImageUtils {
     }
 
     private static int getFictionImage(String title) {
-        switch (title)
-        {
+        switch (title) {
             case "The Tumans":
                 return R.drawable.fiction;
             case "JUSTICE MUST BE SERVED":
@@ -55,8 +53,7 @@ public final class ImageUtils {
     }
 
     private static int getDramaImage(String title) {
-        switch (title)
-        {
+        switch (title) {
             case "A PRAYER AND A DOLLAR":
                 return R.drawable.adollar;
             default: return R.drawable.drama;
@@ -74,8 +71,7 @@ public final class ImageUtils {
 
 
     public static int getPoemUrl(int category) {
-        switch (category)
-        {
+        switch (category) {
             case 0:
                 return R.drawable.poem1;
             case 1:
@@ -91,8 +87,7 @@ public final class ImageUtils {
     }
 
     public static int getDevotionUrl(int category) {
-        switch (category)
-        {
+        switch (category) {
             case 0:
                 return R.drawable.devotion;
             case 1:
@@ -103,25 +98,33 @@ public final class ImageUtils {
         }
     }
 
-
-    public static String getRealPathFromUrl(Context context, Uri imageUrl)
-    {
-        Cursor curseo = null;
-        try
-        {
+    public static String getRealPathFromUrl(Context context, Uri imageUrl) {
+        Cursor cursor = null;
+        try {
             String[] proj = {MediaStore.Images.Media.DATA};
-            curseo = context.getContentResolver().query(imageUrl,proj,null,null,null);
-            int coIumnndex = curseo.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            curseo.moveToFirst();
-            return curseo.getString(coIumnndex);
-        }
-        finally {
-            if (curseo != null)
-            {
-                curseo.close();
+            cursor = context.getContentResolver().query(imageUrl,proj,null,null,null);
+            int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(columnIndex);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
             }
         }
     }
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
     public static Bitmap scaleDown(Bitmap realImage,Context context)
     {
         Bitmap newImage = Bitmap.createBitmap(250,250, Bitmap.Config.ARGB_8888);

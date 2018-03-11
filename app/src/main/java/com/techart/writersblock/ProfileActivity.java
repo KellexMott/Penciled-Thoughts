@@ -1,12 +1,17 @@
 package com.techart.writersblock;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -21,7 +26,6 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -43,6 +47,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.techart.writersblock.utils.ImageUtils.hasPermissions;
 /**
  * Displays users private content. Such as
  * 1. Posted items
@@ -61,12 +66,14 @@ public class ProfileActivity extends AppCompatActivity {
     private RelativeLayout postedStories;
 
     private ImageButton imProfilePicture;
-    private static String author;
     private String currentPhotoUrl;
-    private String userName;
     private boolean isAttached;
-
+    // GALLERY_REQUEST is a constant integer
     private static final int GALLERY_REQUEST = 1;
+    // The request code used in ActivityCompat.requestPermissions()
+    // and returned in the Activity's onRequestPermissionsResult()
+    int PERMISSION_ALL = 1;
+    String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     private BottomNavigationView bottomNavigationView;
     private Uri uri;
@@ -75,14 +82,7 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        author = FireBaseUtils.getAuthor();
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            // Name, email address, and profile photo Url
-            userName = user.getDisplayName();
-        }
-        setTitle(userName);
+        setTitle(FireBaseUtils.getAuthor());
         loadProfilePicture();
         tvSetPhoto = findViewById(R.id.tv_setImage);
         imProfilePicture = findViewById(R.id.ib_profile);
@@ -153,7 +153,6 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -202,12 +201,64 @@ public class ProfileActivity extends AppCompatActivity {
         if (id == R.id.action_logout) {
             logOut();
         } else if (id == R.id.action_changedp) {
-            Intent imageIntent = new Intent();
-            imageIntent.setType("image/*");
-            imageIntent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(imageIntent,GALLERY_REQUEST);
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                onGetPermission();
+            } else {
+                Intent imageIntent = new Intent();
+                imageIntent.setType("image/*");
+                imageIntent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(imageIntent,GALLERY_REQUEST);
+            }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @TargetApi(23)
+    private void onGetPermission() {
+        // only for MarshMallow and newer versions
+        if(!hasPermissions(this, PERMISSIONS)){
+            if (!shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                onPermissionDenied();
+            } else {
+                ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+            }
+        } else {
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(galleryIntent, GALLERY_REQUEST);
+        }
+    }
+
+    // Trigger gallery selection for a photo
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(galleryIntent, GALLERY_REQUEST);
+        } else {
+            //do something like displaying a message that he did not allow the app to access gallery and you wont be able to let him select from gallery
+            onPermissionDenied();
+        }
+    }
+
+    private void onPermissionDenied() {
+        DialogInterface.OnClickListener dialogClickListener =
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int button) {
+                    if (button == DialogInterface.BUTTON_POSITIVE) {
+                        ActivityCompat.requestPermissions(ProfileActivity.this, PERMISSIONS, PERMISSION_ALL);
+                    }
+                    if (button == DialogInterface.BUTTON_NEGATIVE) {
+                        dialog.dismiss();
+                    }
+                }
+            };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("YOU NEED TO ALLOW ACCESS TO MEDIA STORAGE")
+            .setMessage("Without this permission you can not upload an image")
+            .setPositiveButton("ALLOW", dialogClickListener)
+            .setNegativeButton("DENY", dialogClickListener)
+            .show();
     }
 
     @Override
@@ -257,20 +308,18 @@ public class ProfileActivity extends AppCompatActivity {
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception exception) {
-
                             }
                         });
                     }
-                    if (button == DialogInterface.BUTTON_NEGATIVE)
-                    {
+                    if (button == DialogInterface.BUTTON_NEGATIVE) {
                         dialog.dismiss();
                     }
                 }
             };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Current display picture will be permanently deleted")
-                .setPositiveButton("Upload", dialogClickListener)
-                .setNegativeButton("Cancel", dialogClickListener)
+                .setPositiveButton("UPLOAD", dialogClickListener)
+                .setNegativeButton("CANCEL", dialogClickListener)
                 .show();
     }
 
@@ -283,8 +332,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     @NonNull
-    private void startPosting()
-    {
+    private void startPosting() {
         mProgress = new ProgressDialog(ProfileActivity.this);
         mProgress.setMessage("Uploading photo, please wait...");
         mProgress.setCanceledOnTouchOutside(false);
@@ -318,8 +366,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void displaySelectedDp(ImageButton image, Uri uriFromPath)
-    {
+    private void displaySelectedDp(ImageButton image, Uri uriFromPath) {
         Picasso.with(this)
                 .load(uriFromPath)
                 .resize(300, 300)

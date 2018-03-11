@@ -40,7 +40,7 @@ public final class FireBaseUtils {
    public static DatabaseReference mDatabaseViews = FirebaseDatabase.getInstance().getReference().child(Constants.VIEWS_KEY);
    public static DatabaseReference mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child(Constants.USERS);
    public static DatabaseReference mDatabaseLibrary = FirebaseDatabase.getInstance().getReference().child(Constants.LIBRARY);
-   public static DatabaseReference mSubscriptions = FirebaseDatabase.getInstance().getReference().child(Constants.SUBSCRIPTIONS_KEY);
+   private static DatabaseReference mSubscriptions = FirebaseDatabase.getInstance().getReference().child(Constants.SUBSCRIPTIONS_KEY);
    public static FirebaseAuth mAuth  = FirebaseAuth.getInstance();
    public static FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -79,7 +79,7 @@ public final class FireBaseUtils {
     }
 
     public static String getAuthor() {
-        return user.getDisplayName();
+        return user != null ? user.getDisplayName() : "My Account"; //(a > b) ? a : b
     }
 
     @NonNull
@@ -92,19 +92,14 @@ public final class FireBaseUtils {
         mDatabaseLike.child(post_key).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (FireBaseUtils.mAuth.getCurrentUser() != null && dataSnapshot.child(getUiD()).hasChild(Constants.AUTHOR_URL))
-                {
+                if (FireBaseUtils.mAuth.getCurrentUser() != null && dataSnapshot.child(getUiD()).hasChild(Constants.AUTHOR_URL)) {
                     btnLiked.setImageResource(R.drawable.ic_thumb_up_blue_24dp);
-                }
-                else
-                {
+                } else {
                     btnLiked.setImageResource(R.drawable.ic_thumb_up_grey_24dp);
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
     }
@@ -115,12 +110,9 @@ public final class FireBaseUtils {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if (FireBaseUtils.mAuth.getCurrentUser() != null && dataSnapshot.child(getUiD()).hasChild(Constants.AUTHOR_URL))
-                {
+                if (FireBaseUtils.mAuth.getCurrentUser() != null && dataSnapshot.child(getUiD()).hasChild(Constants.AUTHOR_URL)) {
                     btViewed.setImageResource(R.drawable.ic_visibility_blue_24px);
-                }
-                else
-                {
+                } else {
                     btViewed.setImageResource(R.drawable.ic_visibility_grey_24px);
                 }
             }
