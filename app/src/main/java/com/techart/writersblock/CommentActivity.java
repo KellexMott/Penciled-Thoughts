@@ -11,8 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,8 +32,6 @@ import java.util.Map;
 
 public class CommentActivity extends AppCompatActivity implements View.OnClickListener {
     private RecyclerView mCommentList;
-    private FirebaseAuth mAuth;
-
     private EditText mEtComment;
     private String post_key;
     private String postName;
@@ -55,7 +51,6 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         postName = getIntent().getStringExtra(Constants.POST_TITLE);
         postType = getIntent().getStringExtra(Constants.POST_TYPE);
         setTitle("Comments on "+ postName);
-        mAuth = FirebaseAuth.getInstance();
 
         mCommentList = findViewById(R.id.comment_recyclerview);
         mCommentList.setHasFixedSize(true);
@@ -113,8 +108,8 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                     {
                         DatabaseReference newComment = FireBaseUtils.mDatabaseComment.child(post_key).push();
                         Map<String,Object> values = new HashMap<>();
-                        values.put(Constants.USER,mAuth.getCurrentUser().getUid());
-                        values.put(Constants.POST_AUTHOR,getAuthor());
+                        values.put(Constants.USER,FireBaseUtils.getUiD());
+                        values.put(Constants.POST_AUTHOR,FireBaseUtils.getAuthor());
                         values.put(Constants.COMMENT_TEXT,comment);
                         values.put(Constants.TIME_CREATED, ServerValue.TIMESTAMP);
                         newComment.setValue(values);
@@ -211,13 +206,6 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                                    DataSnapshot dataSnapshot) {
             }
         });
-    }
-
-
-    public String getAuthor()
-    {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        return user.getDisplayName();
     }
 
     public static class CommentHolder extends RecyclerView.ViewHolder {

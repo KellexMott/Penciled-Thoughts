@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.Query;
 import com.techart.writersblock.models.Notice;
 import com.techart.writersblock.utils.Constants;
@@ -18,17 +17,14 @@ import com.techart.writersblock.utils.TimeUtils;
 
 public class LikesActivity extends AppCompatActivity
 {
-    String title;
     String postKey;
     private RecyclerView mLikeList;
-    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_like);
         postKey = getIntent().getStringExtra(Constants.POST_KEY);
-        mAuth = FirebaseAuth.getInstance();
         FireBaseUtils.mDatabaseLike.child(postKey).keepSynced(true);
         mLikeList = findViewById(R.id.lv_notice);
         mLikeList.setHasFixedSize(true);
@@ -62,15 +58,12 @@ public class LikesActivity extends AppCompatActivity
         TextView tvTime;
         View mView;
 
-        FirebaseAuth mAUth;
-
         public NoticeViewHolder(View itemView) {
             super(itemView);
             tvUser = itemView.findViewById(R.id.tv_user);
             tvTime = itemView.findViewById(R.id.tv_time);
 
             this.mView = itemView;
-            mAUth = FirebaseAuth.getInstance();
         }
 
     }

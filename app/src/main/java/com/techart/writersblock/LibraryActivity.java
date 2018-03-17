@@ -12,43 +12,30 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseListAdapter;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.techart.writersblock.models.Chapter;
 import com.techart.writersblock.models.Library;
 import com.techart.writersblock.utils.Constants;
 import com.techart.writersblock.utils.FireBaseUtils;
-import com.techart.writersblock.utils.NumberUtils;
 
 import java.util.ArrayList;
 
 
 public class LibraryActivity extends AppCompatActivity {
     private ListView mPoemList;
-    private DatabaseReference mDatabaseLibrary;
-    private FirebaseAuth mAuth;
-    String author;
-    ArrayList<String> contents;
-    ArrayList<String> chapterTitles;
-    int pageCount;
-
-    private DatabaseReference mDatabaseChapters;
+    private ArrayList<String> contents;
+    private ArrayList<String> chapterTitles;
+    private int pageCount;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.items_listview);
-
-        author = getIntent().getStringExtra("author");
         setTitle("Shelf");
-        mDatabaseLibrary = FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.mAuth.getCurrentUser().getUid());
-        mAuth = FirebaseAuth.getInstance();
-        mDatabaseLibrary.keepSynced(true);
-
+        FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.getUiD()).keepSynced(true);
         mPoemList = findViewById(R.id.lvItems);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(LibraryActivity.this);
         linearLayoutManager.setReverseLayout(true);
@@ -59,16 +46,12 @@ public class LibraryActivity extends AppCompatActivity {
     private void bindView()
     {
         FirebaseListAdapter<Library> fireBaseRecyclerAdapter = new FirebaseListAdapter<Library>(
-               this,Library.class,R.layout.item_library, mDatabaseLibrary
+               this,Library.class,R.layout.item_library, FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.getUiD())
         ) {
             @Override
             protected void populateView(View v, Library model, int position) {
                 final String post_key = model.getPostKey();
                 ((TextView)v.findViewById(R.id.tv_title)).setText(model.getPostTitle());
-                if (model.getChaptersAdded() != null && model.getChaptersAdded() != 0)
-                {
-                    ((TextView)v.findViewById(R.id.tv_update)).setText(NumberUtils.setPlurality(model.getChaptersAdded(), " chapter") + " added");
-                }
                  v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -84,7 +67,7 @@ public class LibraryActivity extends AppCompatActivity {
 
     private void storyExists(final String key)
     {
-        FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.mAuth.getCurrentUser().getUid()).child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+        FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.getUiD()).child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.hasChild(Constants.POST_KEY))

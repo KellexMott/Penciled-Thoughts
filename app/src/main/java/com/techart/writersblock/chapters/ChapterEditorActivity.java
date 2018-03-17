@@ -12,8 +12,6 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ServerValue;
 import com.techart.writersblock.R;
@@ -28,14 +26,12 @@ import java.util.Map;
 public class ChapterEditorActivity extends AppCompatActivity {
 
     private ProgressDialog mProgress;
-    private DatabaseReference mDatabaseChapters;
     private String chapterUrl;
     private EditText editor;
     private EditText editorTitle;
     private String pageFilter;
     private String oldText;
     private String oldTitle;
-    private FirebaseAuth mAuth;
     private String storyFilter;
     private String status = "Ongoing";
     private String storyUrl;
@@ -54,7 +50,6 @@ public class ChapterEditorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_storyeditor);
         editor = findViewById(R.id.editText);
         editorTitle = findViewById(R.id.editTitle);
-        mAuth = FirebaseAuth.getInstance();
 
         Intent intent = getIntent();
         uri = intent.getParcelableExtra(WritersBlockContract.ChapterEntry.CONTENT_ITEM_TYPE);
@@ -141,8 +136,8 @@ public class ChapterEditorActivity extends AppCompatActivity {
         values.put(Constants.NUM_LIKES,0);
         values.put(Constants.NUM_COMMENTS,0);
         values.put(Constants.NUM_VIEWS,0);
-        values.put(Constants.AUTHOR_URL,mAuth.getCurrentUser().getUid());
-        values.put(Constants.POST_AUTHOR,getAuthor());
+        values.put(Constants.AUTHOR_URL,FireBaseUtils.getUiD());
+        values.put(Constants.POST_AUTHOR,FireBaseUtils.getAuthor());
         values.put(Constants.TIME_CREATED, ServerValue.TIMESTAMP);
 
         FireBaseUtils.mDatabaseStory.child(storyUrl).setValue(values);
@@ -210,12 +205,11 @@ public class ChapterEditorActivity extends AppCompatActivity {
         mProgress = new ProgressDialog(this);
         mProgress.setMessage("Posting ...");
         mProgress.show();
-        mDatabaseChapters = FireBaseUtils.mDatabaseChapters.child(storyUrl);
-        chapterUrl = mDatabaseChapters.push().getKey();
+        chapterUrl = FireBaseUtils.mDatabaseChapters.child(storyUrl).push().getKey();
         Map<String,Object> values = new HashMap<>();
         values.put(Constants.CHAPTER_CONTENT,newText);
         values.put(Constants.CHAPTER_TITLE,newTitle);
-        mDatabaseChapters.child(chapterUrl).updateChildren(values);
+        FireBaseUtils.mDatabaseChapters.child(storyUrl).child(chapterUrl).updateChildren(values);
         updateChapter();
         mProgress.dismiss();
         Toast.makeText(getApplicationContext(),"Chapter successfully posted", Toast.LENGTH_LONG).show();
@@ -238,11 +232,6 @@ public class ChapterEditorActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         finishEditing();
-    }
-
-    public String getAuthor() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        return user.getDisplayName();
     }
 
     @Override

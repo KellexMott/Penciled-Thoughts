@@ -79,13 +79,15 @@ public final class FireBaseUtils {
     }
 
     public static String getAuthor() {
-        return user != null ? user.getDisplayName() : "My Account"; //(a > b) ? a : b
+        return user != null ? user.getDisplayName() : "User"; //(a > b) ? a : b
     }
 
     @NonNull
     public static String getUiD() {
         return mAuth.getCurrentUser().getUid();
     }
+
+
 
     public static void setLikeBtn(final String post_key, final ImageView btnLiked)
     {

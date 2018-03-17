@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.techart.writersblock.R;
 import com.techart.writersblock.utils.Constants;
 import com.techart.writersblock.utils.EditorUtils;
@@ -26,7 +25,6 @@ import java.util.Map;
 public class PoemEditorOnlineActivity extends AppCompatActivity {
 
     private ProgressDialog mProgress;
-    private FirebaseAuth mAuth;
 
     private EditText editor;
     private EditText title;
@@ -42,7 +40,6 @@ public class PoemEditorOnlineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
-        mAuth = FirebaseAuth.getInstance();
         editor = findViewById(R.id.editText);
         title = findViewById(R.id.editTitle);
         mProgress = new ProgressDialog(this);

@@ -10,7 +10,6 @@ import android.view.View;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.techart.writersblock.CommentActivity;
@@ -25,8 +24,6 @@ import com.techart.writersblock.viewholders.ArticleEditViewHolder;
 
 public class ProfilePoemsListActivity extends AppCompatActivity {
     private RecyclerView mPoemList;
-    private DatabaseReference mDatabasePoems;
-    private DatabaseReference mDatabaseLike;
     private String author;
     private boolean mProcessLike = false;
 
@@ -37,10 +34,8 @@ public class ProfilePoemsListActivity extends AppCompatActivity {
 
         author = FireBaseUtils.getAuthor();
         setTitle("Poems");
-        mDatabasePoems = FireBaseUtils.mDatabasePoems;
-        mDatabaseLike = FireBaseUtils.mDatabaseLike;
-        mDatabaseLike.keepSynced(true);
-        mDatabasePoems.keepSynced(true);
+        FireBaseUtils.mDatabaseLike.keepSynced(true);
+        FireBaseUtils.mDatabasePoems.keepSynced(true);
 
         mPoemList = findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
@@ -53,7 +48,7 @@ public class ProfilePoemsListActivity extends AppCompatActivity {
 
     private void bindView()
     {
-        Query query = mDatabasePoems.orderByChild(Constants.POST_AUTHOR).equalTo(author);
+        Query query = FireBaseUtils.mDatabasePoems.orderByChild(Constants.POST_AUTHOR).equalTo(author);
         FirebaseRecyclerAdapter<Poem,ArticleEditViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Poem, ArticleEditViewHolder>(
                 Poem.class,R.layout.item_row_del,ArticleEditViewHolder.class, query)
         {
@@ -100,13 +95,13 @@ public class ProfilePoemsListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         mProcessLike = true;
-                        mDatabaseLike.addValueEventListener(new ValueEventListener() {
+                        FireBaseUtils.mDatabaseLike.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
 
                                 if (mProcessLike) {
                                     if (dataSnapshot.child(post_key).hasChild(Constants.AUTHOR_URL)) {
-                                        mDatabaseLike.child(post_key).child(FireBaseUtils.mAuth.getCurrentUser().getUid()).removeValue();
+                                        FireBaseUtils.mDatabaseLike.child(post_key).child(FireBaseUtils.getUiD()).removeValue();
                                         FireBaseUtils.onPoemDisliked(post_key);
                                         mProcessLike = false;
                                     } else {

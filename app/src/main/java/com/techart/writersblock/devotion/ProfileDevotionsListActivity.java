@@ -10,7 +10,6 @@ import android.view.View;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.techart.writersblock.CommentActivity;
@@ -25,8 +24,6 @@ import com.techart.writersblock.viewholders.ArticleEditViewHolder;
 
 public class ProfileDevotionsListActivity extends AppCompatActivity {
     private RecyclerView mPoemList;
-    private DatabaseReference mDatabaseDevotions;
-    private DatabaseReference mDatabaseLike;
     private FirebaseRecyclerAdapter<Devotion,ArticleEditViewHolder> firebaseRecyclerAdapter;
     private String postTitle;
     private String postContent;
@@ -40,10 +37,8 @@ public class ProfileDevotionsListActivity extends AppCompatActivity {
         setContentView(R.layout.tabrecyclerviewer);
         author = FireBaseUtils.getAuthor();
         setTitle("Devotions");
-        mDatabaseDevotions =FireBaseUtils.mDatabaseDevotions;
-        mDatabaseLike = FireBaseUtils.mDatabaseLike;
-        mDatabaseLike.keepSynced(true);
-        mDatabaseDevotions.keepSynced(true);
+        FireBaseUtils.mDatabaseLike.keepSynced(true);
+        FireBaseUtils.mDatabaseDevotions.keepSynced(true);
 
         mPoemList = findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
@@ -56,7 +51,7 @@ public class ProfileDevotionsListActivity extends AppCompatActivity {
 
     private void bindView()
     {
-        Query query = mDatabaseDevotions.orderByChild(Constants.POST_AUTHOR).equalTo(author);
+        Query query = FireBaseUtils.mDatabaseDevotions.orderByChild(Constants.POST_AUTHOR).equalTo(author);
         firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Devotion, ArticleEditViewHolder>(
                 Devotion.class,R.layout.item_row_del,ArticleEditViewHolder.class, query) {
             @Override
@@ -106,12 +101,12 @@ public class ProfileDevotionsListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         mProcessLike = true;
-                        mDatabaseLike.addValueEventListener(new ValueEventListener() {
+                        FireBaseUtils.mDatabaseLike.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (mProcessLike) {
                                     if (dataSnapshot.child(post_key).hasChild(Constants.AUTHOR_URL)) {
-                                        mDatabaseLike.child(post_key).child(FireBaseUtils.mAuth.getCurrentUser().getUid()).removeValue();
+                                        FireBaseUtils.mDatabaseLike.child(post_key).child(FireBaseUtils.getUiD()).removeValue();
                                         FireBaseUtils.onDevotionDisliked(post_key);
                                         mProcessLike = false;
                                     } else {

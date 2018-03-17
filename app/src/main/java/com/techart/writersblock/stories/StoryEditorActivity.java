@@ -12,8 +12,6 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ServerValue;
 import com.techart.writersblock.R;
@@ -34,10 +32,6 @@ import java.util.Map;
 public class StoryEditorActivity extends AppCompatActivity {
 
     private ProgressDialog mProgress;
-    private DatabaseReference mDatabaseStory;
-    private FirebaseAuth mAuth;
-
-    private DatabaseReference mDatabaseChapters;
 
     private String chapterUrl = "null";
 
@@ -59,7 +53,6 @@ public class StoryEditorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_storyeditor);
         chapterTitle = findViewById(R.id.editTitle);
         editor = findViewById(R.id.editText);
-        mAuth = FirebaseAuth.getInstance();
         storyTitle = getIntent().getStringExtra("Title");
         storyDescription = getIntent().getStringExtra("Description");
         storyCategory = getIntent().getStringExtra("Category");
@@ -141,13 +134,11 @@ public class StoryEditorActivity extends AppCompatActivity {
     }
 
 
-    private void postStory()
-    {
+    private void postStory() {
         mProgress = new ProgressDialog(this);
-        mDatabaseStory = FireBaseUtils.mDatabaseStory;
         mProgress.setMessage("Posting ...");
         mProgress.show();
-        DatabaseReference newPost = mDatabaseStory.push();
+        DatabaseReference newPost = FireBaseUtils.mDatabaseStory.push();
         storyUrl = newPost.getKey();
         Map<String,Object> values = new HashMap<>();
         values.put(Constants.STORY_TITLE,storyTitle);
@@ -158,32 +149,23 @@ public class StoryEditorActivity extends AppCompatActivity {
         values.put(Constants.NUM_LIKES,0);
         values.put(Constants.NUM_COMMENTS,0);
         values.put(Constants.NUM_VIEWS,0);
-        values.put(Constants.AUTHOR_URL,mAuth.getCurrentUser().getUid());
-        values.put(Constants.POST_AUTHOR,getAuthor());
+        values.put(Constants.AUTHOR_URL,FireBaseUtils.getUiD());
+        values.put(Constants.POST_AUTHOR,FireBaseUtils.getAuthor());
         values.put(Constants.TIME_CREATED,ServerValue.TIMESTAMP);
-        mDatabaseStory.child(storyUrl).setValue(values);
+        FireBaseUtils.mDatabaseStory.child(storyUrl).setValue(values);
         FireBaseUtils.subscribeTopic(storyUrl);
         postStoryChapter();
         Toast.makeText(getApplicationContext(),"Story successfully posted", Toast.LENGTH_LONG).show();
     }
 
-    private void postStoryChapter()
-    {
-        mDatabaseChapters = FireBaseUtils.mDatabaseChapters.child(storyUrl);
-        chapterUrl = mDatabaseChapters.push().getKey();
+    private void postStoryChapter() {
+        chapterUrl = FireBaseUtils.mDatabaseChapters.child(storyUrl).push().getKey();
         Map<String,Object> values = new HashMap<>();
         values.put(Constants.CHAPTER_TITLE,newTitle);
         values.put(Constants.CHAPTER_CONTENT,newText);
-        mDatabaseChapters.child(chapterUrl).setValue(values);
+        FireBaseUtils.mDatabaseChapters.child(storyUrl).child(chapterUrl).setValue(values);
         mProgress.dismiss();
         finishEditing();
-    }
-
-
-    public String getAuthor()
-    {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        return user.getDisplayName();
     }
 
     @Override

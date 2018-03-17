@@ -36,7 +36,6 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
     private RecyclerView mPoemList;
     private DatabaseReference mDatabaseStory;
     private DatabaseReference mDatabaseLike;
-    private String author;
     private AlertDialog updateDialog;
     private ArrayList<String> contents = new ArrayList<>(Arrays.asList("Action", "Drama", "Fiction","Romance"));
 
@@ -47,7 +46,6 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tabrecyclerviewer);
-        author = FireBaseUtils.getAuthor();
         setTitle("Stories");
         mDatabaseStory = FireBaseUtils.mDatabaseStory;
         mDatabaseLike = FireBaseUtils.mDatabaseLike;
@@ -70,7 +68,7 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
 
     private void bindView()
     {
-        Query query = mDatabaseStory.orderByChild(Constants.POST_AUTHOR).equalTo(author);
+        Query query = mDatabaseStory.orderByChild(Constants.POST_AUTHOR).equalTo(FireBaseUtils.getAuthor());
         FirebaseRecyclerAdapter<Story,StoryViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Story, StoryViewHolder>(
                 Story.class,R.layout.item_storyrow_del,StoryViewHolder.class, query) {
             @Override

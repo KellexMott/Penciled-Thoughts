@@ -10,7 +10,6 @@ import android.view.View;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.techart.writersblock.CommentActivity;
@@ -25,13 +24,9 @@ import com.techart.writersblock.utils.NumberUtils;
 import com.techart.writersblock.utils.TimeUtils;
 import com.techart.writersblock.viewholders.PoemViewHolder;
 
-import java.util.Date;
-
 
 public class AuthorsDevotionsListActivity extends AppCompatActivity {
     private RecyclerView mPoemList;
-    private DatabaseReference mDatabaseDevotions;
-    private DatabaseReference mDatabaseLike;
     private FirebaseRecyclerAdapter<Devotion,PoemViewHolder> firebaseRecyclerAdapter;
     private String postTitle;
     private String postContent;
@@ -46,10 +41,8 @@ public class AuthorsDevotionsListActivity extends AppCompatActivity {
 
         author = getIntent().getStringExtra("author");
         setTitle(author + "'s devotions");
-        mDatabaseDevotions = FireBaseUtils.mDatabaseDevotions;
-        mDatabaseLike = FireBaseUtils.mDatabaseLike;
-        mDatabaseLike.keepSynced(true);
-        mDatabaseDevotions.keepSynced(true);
+        FireBaseUtils.mDatabaseLike.keepSynced(true);
+        FireBaseUtils.mDatabaseDevotions.keepSynced(true);
 
         mPoemList = findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
@@ -62,7 +55,7 @@ public class AuthorsDevotionsListActivity extends AppCompatActivity {
 
     private void bindView()
     {
-        Query query = mDatabaseDevotions.orderByChild(Constants.POST_AUTHOR).equalTo(author);
+        Query query = FireBaseUtils.mDatabaseDevotions.orderByChild(Constants.POST_AUTHOR).equalTo(author);
         firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Devotion, PoemViewHolder>(
                 Devotion.class,R.layout.item_article,PoemViewHolder.class, query) {
             @Override
@@ -89,7 +82,7 @@ public class AuthorsDevotionsListActivity extends AppCompatActivity {
                 }
                 if (model.getTimeCreated() != null)
                 {
-                    String time = TimeUtils.timeElapsed(currentTime() - model.getTimeCreated());
+                    String time = TimeUtils.timeElapsed(TimeUtils.currentTime() - model.getTimeCreated());
                     viewHolder.timeTextView.setText(time);
                 }
                 viewHolder.setLikeBtn(post_key);
@@ -110,12 +103,12 @@ public class AuthorsDevotionsListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         mProcessLike = true;
-                        mDatabaseLike.addValueEventListener(new ValueEventListener() {
+                        FireBaseUtils.mDatabaseLike.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (mProcessLike) {
                                     if (dataSnapshot.child(post_key).hasChild(Constants.AUTHOR_URL)) {
-                                        mDatabaseLike.child(post_key).child(FireBaseUtils.mAuth.getCurrentUser().getUid()).removeValue();
+                                        FireBaseUtils.mDatabaseLike.child(post_key).child(FireBaseUtils.getUiD()).removeValue();
                                         FireBaseUtils.onDevotionDisliked(post_key);
                                         mProcessLike = false;
                                     } else {
@@ -155,12 +148,6 @@ public class AuthorsDevotionsListActivity extends AppCompatActivity {
         };
         mPoemList.setAdapter(firebaseRecyclerAdapter);
         firebaseRecyclerAdapter.notifyDataSetChanged();
-    }
-
-    private long currentTime()
-    {
-        Date date = new Date();
-        return date.getTime();
     }
 
 

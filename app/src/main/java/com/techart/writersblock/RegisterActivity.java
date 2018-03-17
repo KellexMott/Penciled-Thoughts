@@ -41,7 +41,6 @@ public class RegisterActivity extends AppCompatActivity {
     private String repeatedPassword;
     private String name;
     private String email;
-    private FirebaseAuth mAuth;
     private ProgressDialog mProgress;
     private Button btRegister;
     private String signingInAs;
@@ -50,7 +49,6 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        mAuth = FirebaseAuth.getInstance();
         etUsername = findViewById(R.id.et_username);
         etLogin = findViewById(R.id.et_login);
         etPassword = findViewById(R.id.et_password);
@@ -90,18 +88,17 @@ public class RegisterActivity extends AppCompatActivity {
         mProgress.setCanceledOnTouchOutside(false);
         mProgress.show();
 
-        mAuth.createUserWithEmailAndPassword(email,firstPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        FireBaseUtils.mAuth.createUserWithEmailAndPassword(email,firstPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        String userId = mAuth.getCurrentUser().getUid();
                         Map<String,Object> values = new HashMap<>();
                         values.put("name",name);
                         values.put("imageUrl","default");
                         values.put("signedAs",signingInAs);
                         values.put(Constants.TIME_CREATED, ServerValue.TIMESTAMP);
 
-                    FireBaseUtils.mDatabaseUsers.child(userId).setValue(values);
+                    FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).setValue(values);
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                             .setDisplayName(name)

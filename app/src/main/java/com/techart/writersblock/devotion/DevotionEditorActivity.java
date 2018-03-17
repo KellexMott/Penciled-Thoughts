@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ServerValue;
 import com.techart.writersblock.R;
 import com.techart.writersblock.sqliteutils.WritersBlockContract;
@@ -29,7 +28,6 @@ import java.util.Map;
 public class DevotionEditorActivity extends AppCompatActivity {
 
     private ProgressDialog mProgress;
-    private FirebaseAuth mAuth;
 
     private String action;
     private EditText editor;
@@ -49,7 +47,6 @@ public class DevotionEditorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
-        mAuth = FirebaseAuth.getInstance();
         editor = findViewById(R.id.editText);
         title = findViewById(R.id.editTitle);
         mProgress = new ProgressDialog(this);
@@ -247,7 +244,7 @@ public class DevotionEditorActivity extends AppCompatActivity {
         values.put(Constants.NUM_LIKES,0);
         values.put(Constants.NUM_COMMENTS,0);
         values.put(Constants.NUM_VIEWS,0);
-        values.put(Constants.AUTHOR_URL,mAuth.getCurrentUser().getUid());
+        values.put(Constants.AUTHOR_URL,FireBaseUtils.getUiD());
         values.put(Constants.POST_AUTHOR,FireBaseUtils.getAuthor());
         values.put(Constants.TIME_CREATED,ServerValue.TIMESTAMP);
         FireBaseUtils.mDatabaseDevotions.child(devotionUrl).setValue(values);

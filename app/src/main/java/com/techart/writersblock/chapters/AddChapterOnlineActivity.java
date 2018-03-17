@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseReference;
 import com.techart.writersblock.R;
 import com.techart.writersblock.utils.Constants;
 import com.techart.writersblock.utils.EditorUtils;
@@ -23,7 +22,6 @@ import java.util.Map;
 public class AddChapterOnlineActivity extends AppCompatActivity {
 
     private ProgressDialog mProgress;
-    private DatabaseReference mDatabaseChapters;
     private EditText editor;
 
     private String newText;
@@ -86,12 +84,11 @@ public class AddChapterOnlineActivity extends AppCompatActivity {
         mProgress.setMessage("Posting ...");
         mProgress.show();
         chapters = String.valueOf(chaptersNum);
-        mDatabaseChapters = FireBaseUtils.mDatabaseChapters.child(storyUrl);
-        String  chapterUrl = mDatabaseChapters.push().getKey();
+        String  chapterUrl = FireBaseUtils.mDatabaseChapters.child(storyUrl).push().getKey();
         Map<String,Object> values = new HashMap<>();
         values.put(Constants.CHAPTER_CONTENT,newText);
         values.put(Constants.CHAPTER_TITLE,chapters);
-        mDatabaseChapters.child(chapterUrl).setValue(values);
+        FireBaseUtils.mDatabaseChapters.child(storyUrl).child(chapterUrl).setValue(values);
         mProgress.dismiss();
         Toast.makeText(getApplicationContext(),"Chapter Added", Toast.LENGTH_LONG).show();
         finish();
