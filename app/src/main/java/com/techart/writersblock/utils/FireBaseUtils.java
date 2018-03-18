@@ -87,8 +87,6 @@ public final class FireBaseUtils {
         return mAuth.getCurrentUser().getUid();
     }
 
-
-
     public static void setLikeBtn(final String post_key, final ImageView btnLiked)
     {
         mDatabaseLike.child(post_key).addValueEventListener(new ValueEventListener() {

@@ -16,10 +16,16 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.techart.writersblock.models.Users;
 import com.techart.writersblock.tabs.Tab1Poems;
 import com.techart.writersblock.tabs.Tab2Stories;
 import com.techart.writersblock.tabs.Tab3Devotion;
 import com.techart.writersblock.utils.FireBaseUtils;
+
+import static android.widget.Toast.LENGTH_LONG;
 
 /**
  * Landing page.
@@ -89,14 +95,38 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                         startActivity(dialogIntent);
                         break;
                     case R.id.navigation_profile:
-                        Intent accountIntent = new Intent(MainActivity.this, ProfileActivity.class);
-                        startActivity(accountIntent);
+                        startLibraryActivity();
                         break;
                 }
                 return true;
                 }
             });
         //End bottom naviagtion
+    }
+
+    private void startLibraryActivity(){
+        FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Users user = dataSnapshot.getValue(Users.class);
+                if (user != null){
+                    if (user.getSignedAs().trim().equals("Writer")){
+                        Intent accountIntent = new Intent(MainActivity.this, ProfileActivity.class);
+                        startActivity(accountIntent);
+                    } else if (user.getSignedAs().trim().equals("Reader")) {
+                        Intent accountIntent = new Intent(MainActivity.this, LibraryActivity.class);
+                        startActivity(accountIntent);
+                    } else {
+                        Toast.makeText(MainActivity.this,"Could not open library "+ user.getSignedAs(),LENGTH_LONG).show();
+                    }
+                }else {
+                    Toast.makeText(MainActivity.this,"Error...! Try later",LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     @Override
@@ -178,10 +208,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             NetworkInfo netWorkInfo = cm.getActiveNetworkInfo();
             if (netWorkInfo != null && netWorkInfo.getState() == NetworkInfo.State.CONNECTED)
             {
-                Toast.makeText(MainActivity.this,"Connected", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this,"Connected", LENGTH_LONG).show();
             }
             else {
-                Toast.makeText(MainActivity.this,"No internet Connection", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this,"No internet Connection", LENGTH_LONG).show();
             }
         }
     }
