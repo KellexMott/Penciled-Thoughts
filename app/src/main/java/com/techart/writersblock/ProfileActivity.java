@@ -190,7 +190,7 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_account, menu);
+        getMenuInflater().inflate(R.menu.menu_writer, menu);
         return true;
     }
 
@@ -202,12 +202,15 @@ public class ProfileActivity extends AppCompatActivity {
         } else if (id == R.id.action_changedp) {
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 onGetPermission();
-            } else {
+            }  else {
                 Intent imageIntent = new Intent();
                 imageIntent.setType("image/*");
                 imageIntent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(imageIntent,GALLERY_REQUEST);
             }
+        }  else if (id == R.id.action_edit_name) {
+            Intent readIntent = new Intent(ProfileActivity.this,EditNameDialog.class);
+            startActivity(readIntent);
         }
         return super.onOptionsItemSelected(item);
     }

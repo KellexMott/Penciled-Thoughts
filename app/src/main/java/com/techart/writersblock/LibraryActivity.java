@@ -7,11 +7,14 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -33,8 +36,8 @@ public class LibraryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.items_listview);
-        setTitle("Shelf");
+        setContentView(R.layout.library_activity);
+        setTitle(FireBaseUtils.getAuthor());
         FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.getUiD()).keepSynced(true);
         mPoemList = findViewById(R.id.lvItems);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(LibraryActivity.this);
@@ -43,8 +46,7 @@ public class LibraryActivity extends AppCompatActivity {
         bindView();
     }
 
-    private void bindView()
-    {
+    private void bindView() {
         FirebaseListAdapter<Library> fireBaseRecyclerAdapter = new FirebaseListAdapter<Library>(
                this,Library.class,R.layout.item_library, FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.getUiD())
         ) {
@@ -62,6 +64,26 @@ public class LibraryActivity extends AppCompatActivity {
             }
         };
         mPoemList.setAdapter(fireBaseRecyclerAdapter);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_reader, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_logout) {
+            logOut();
+        } else if (id == R.id.action_edit_name) {
+            Intent readIntent = new Intent(LibraryActivity.this,EditNameDialog.class);
+            startActivity(readIntent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -130,6 +152,24 @@ public class LibraryActivity extends AppCompatActivity {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void logOut() {
+        DialogInterface.OnClickListener dialogClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int button) {
+                        if (button == DialogInterface.BUTTON_POSITIVE)
+                        {
+                            FirebaseAuth.getInstance().signOut();
+                        }
+                    }
+                };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.are_you_sure))
+                .setPositiveButton(getString(android.R.string.yes), dialogClickListener)
+                .setNegativeButton(getString(android.R.string.no), dialogClickListener)
+                .show();
     }
 
     @Override

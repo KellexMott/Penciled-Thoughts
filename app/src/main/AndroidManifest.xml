@@ -87,6 +87,12 @@
             android:theme="@style/dialogTheme" />
 
         <activity
+            android:name=".EditNameDialog"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@style/dialogTheme" />
+
+        <activity
             android:name=".stories.StoryDescriptionEditDialog"
             android:excludeFromRecents="true"
             android:noHistory="true"

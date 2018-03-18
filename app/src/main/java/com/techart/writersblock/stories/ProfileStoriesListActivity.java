@@ -66,8 +66,7 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
         Toast.makeText(this,"Story marked as " + ((ToggleButton) view).getText(),Toast.LENGTH_LONG).show();
     }
 
-    private void bindView()
-    {
+    private void bindView() {
         Query query = mDatabaseStory.orderByChild(Constants.POST_AUTHOR).equalTo(FireBaseUtils.getAuthor());
         FirebaseRecyclerAdapter<Story,StoryViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Story, StoryViewHolder>(
                 Story.class,R.layout.item_storyrow_del,StoryViewHolder.class, query) {

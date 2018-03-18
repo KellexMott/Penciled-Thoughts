@@ -18,7 +18,7 @@
     <string name="item_create">Create</string>
     <string name="item_search">Search</string>
     <string name="item_library">Library</string>
-    <string name="item_reading">Currently reading</string>
+    <string name="item_reading">Reading List</string>
     <string name="log_out">Log Out</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="devotion_deleted">Devotion Deleted</string>
@@ -214,6 +214,8 @@
     <string name="title_devotion_writer">Writer - Devotion</string>
     <string name="about">About</string>
     <string name="number_placeholder">#</string>
+    <string name="edit_name">Edit name</string>
+    <string name="default_key">default</string>
 
 
 </resources>

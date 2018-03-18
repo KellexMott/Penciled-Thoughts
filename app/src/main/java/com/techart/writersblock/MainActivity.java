@@ -143,8 +143,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         mAuth.addAuthStateListener(mAuthListener);
     }
 
-    private void addPages()
-    {
+    private void addPages() {
         MyPageAdapter pagerAdapter=new MyPageAdapter(this.getSupportFragmentManager());
         pagerAdapter.addFragment(new Tab2Stories());
         pagerAdapter.addFragment(new Tab1Poems());
@@ -181,11 +180,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-       /* SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));*/
         return true;
     }
 
@@ -203,14 +198,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private void haveNetworkConnection() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (cm != null)
-        {
+        if (cm != null) {
             NetworkInfo netWorkInfo = cm.getActiveNetworkInfo();
-            if (netWorkInfo != null && netWorkInfo.getState() == NetworkInfo.State.CONNECTED)
-            {
+            if (netWorkInfo != null && netWorkInfo.getState() == NetworkInfo.State.CONNECTED) {
                 Toast.makeText(MainActivity.this,"Connected", LENGTH_LONG).show();
-            }
-            else {
+            } else {
                 Toast.makeText(MainActivity.this,"No internet Connection", LENGTH_LONG).show();
             }
         }

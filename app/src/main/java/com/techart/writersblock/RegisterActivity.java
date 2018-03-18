@@ -93,9 +93,9 @@ public class RegisterActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         Map<String,Object> values = new HashMap<>();
-                        values.put("name",name);
-                        values.put("imageUrl","default");
-                        values.put("signedAs",signingInAs);
+                        values.put(Constants.USER_NAME,name);
+                        values.put(Constants.IMAGE_URL,getString(R.string.default_key));
+                        values.put(Constants.SIGNED_IN_AS,signingInAs);
                         values.put(Constants.TIME_CREATED, ServerValue.TIMESTAMP);
 
                     FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).setValue(values);
