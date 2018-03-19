@@ -55,127 +55,98 @@
         <activity
             android:name=".devotion.DevotionEditorActivity"
             android:excludeFromRecents="true" />
-
         <activity
             android:name=".RegisterActivity"
-            android:noHistory="true"
             android:autoRemoveFromRecents="true"
+            android:noHistory="true"
             android:theme="@style/FullScreen" />
-
         <activity
             android:name=".LoginActivity"
-            android:noHistory="true"
             android:autoRemoveFromRecents="true"
-            android:theme="@style/FullScreen"/>
-
+            android:noHistory="true"
+            android:theme="@style/FullScreen" />
         <activity
             android:name=".PostTypeDialog"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/dialogTheme" />
-
         <activity
             android:name=".stories.StoryDialogActivity"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/dialogTheme" />
-
         <activity
             android:name=".stories.StoryTitleEditDialog"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/dialogTheme" />
-
         <activity
             android:name=".EditNameDialog"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/dialogTheme" />
-
         <activity
             android:name=".stories.StoryDescriptionEditDialog"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/dialogTheme" />
-
         <activity
             android:name=".HelpActivity"
             android:parentActivityName=".InformationActivity">
             <intent-filter>
                 <action android:name="com.techart.writersblock.HelpActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ProfileActivity"
             android:launchMode="singleTop" />
         <activity
             android:name=".ActivityReadStory"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".LikesActivity"
             android:excludeFromRecents="true"
             android:parentActivityName=".MainActivity" />
-
         <activity
             android:name=".poems.MyPoemsListActivity"
-            android:parentActivityName=".ProfileActivity">
-        </activity>
-
+            android:parentActivityName=".ProfileActivity"/>
         <activity
             android:name=".stories.StoryPrologueActivity"
             android:excludeFromRecents="true"
             android:noHistory="true"
-            android:parentActivityName=".ProfileActivity">
-        </activity>
-
+            android:parentActivityName=".ProfileActivity"/>
         <activity
             android:name=".chapters.ChapterEditorActivity"
             android:excludeFromRecents="true"
-            android:parentActivityName=".ProfileActivity">
-        </activity>
-
+            android:parentActivityName=".ProfileActivity"/>
         <activity
             android:name=".chapters.ChapterEditorOnlineActivity"
             android:excludeFromRecents="true"
-            android:parentActivityName=".stories.ProfileStoriesListActivity">
-        </activity>
-
+            android:parentActivityName=".stories.ProfileStoriesListActivity"/>
         <activity
             android:name=".devotion.DevotionEditorOnlineActivity"
             android:excludeFromRecents="true"
-            android:parentActivityName=".stories.ProfileStoriesListActivity">
-        </activity>
-
+            android:parentActivityName=".stories.ProfileStoriesListActivity"/>
         <activity
             android:name=".poems.PoemEditorOnlineActivity"
             android:excludeFromRecents="true"
-            android:parentActivityName=".stories.ProfileStoriesListActivity">
-        </activity>
-
+            android:parentActivityName=".stories.ProfileStoriesListActivity"/>
         <activity
             android:name=".chapters.OnlineChapterListActivity"
             android:excludeFromRecents="true"
-            android:parentActivityName=".stories.ProfileStoriesListActivity">
-
-        </activity>
+            android:parentActivityName=".stories.ProfileStoriesListActivity"/>
 
         <activity
             android:name=".AuthorsProfileActivity"
-            android:parentActivityName=".MainActivity">
-        </activity>
-
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".chapters.AddChapterActivity"
-            android:parentActivityName=".chapters.MyChaptersListActivity">
-        </activity>
-
+            android:parentActivityName=".chapters.MyChaptersListActivity"/>
         <activity
             android:name=".chapters.AddChapterOnlineActivity"
-            android:parentActivityName=".stories.ProfileStoriesListActivity">
-        </activity>
+            android:parentActivityName=".stories.ProfileStoriesListActivity"/>
 
         <activity
             android:name=".chapters.MyChaptersListActivity"
@@ -260,6 +231,11 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
+        <activity
+            android:name=".SearchActivity"
+            android:theme="@style/FullScreen">
+        </activity>
     </application>
 
 </manifest>

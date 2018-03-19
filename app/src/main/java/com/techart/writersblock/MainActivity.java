@@ -91,7 +91,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                         //createNotification("Story", "Chapter added");
                         break;
                     case R.id.navigation_create:
-                        Intent dialogIntent = new Intent(MainActivity.this,  PostTypeDialog.class);
+                       // Intent dialogIntent = new Intent(MainActivity.this,  PostTypeDialog.class);
+                        Intent dialogIntent = new Intent(MainActivity.this,  SearchActivity.class);
                         startActivity(dialogIntent);
                         break;
                     case R.id.navigation_profile:

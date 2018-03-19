@@ -153,25 +153,25 @@ public class ProfileActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.navigation_home:
-                                Intent ma = new Intent(ProfileActivity.this, MainActivity.class);
-                                ma.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(ma);
-                                break;
-                            case R.id.navigation_create:
-                                Intent dialogIntent = new Intent(ProfileActivity.this,  LibraryActivity.class);
-                                startActivity(dialogIntent);
-                                break;
-                            case R.id.navigation_profile:
-                                break;
-                        }
-                        return true;
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.navigation_home:
+                            Intent ma = new Intent(ProfileActivity.this, MainActivity.class);
+                            ma.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(ma);
+                            break;
+                        case R.id.navigation_create:
+                            Intent dialogIntent = new Intent(ProfileActivity.this,  LibraryActivity.class);
+                            startActivity(dialogIntent);
+                            break;
+                        case R.id.navigation_profile:
+                            break;
                     }
-                });
+                    return true;
+                }
+            });
         //End bottom naviagtion
     }
 

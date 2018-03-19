@@ -15,8 +15,7 @@ import com.techart.writersblock.utils.TypefaceUtil;
 
 public class WritersBlock extends Application {
     @Override
-    public void onCreate()
-    {
+    public void onCreate() {
         super.onCreate();
         Firebase.setAndroidContext(this);
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
