@@ -1,5 +1,6 @@
 package com.techart.writersblock;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,7 +28,11 @@ public class ActivityReadStory extends AppCompatActivity {
     private List<String> pageNumbers;
     private int pageCount;
     private Spinner pages;
-
+    private String postUrl;
+    private int lastAccessedPage;
+    private int setPage;
+    private SharedPreferences mPref;
+    private SharedPreferences.Editor editor;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -37,7 +42,6 @@ public class ActivityReadStory extends AppCompatActivity {
      * {@link FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -48,11 +52,13 @@ public class ActivityReadStory extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read);
         Toolbar toolbar = findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         contents = getIntent().getStringArrayListExtra(Constants.POST_CONTENT);
+        postUrl = getIntent().getStringExtra(Constants.POST_KEY);
         pageCount = contents.size();
+        mPref = getSharedPreferences(String.format("%s",getString(R.string.app_name)),MODE_PRIVATE);
+        setPage = mPref.getInt(postUrl,0);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -71,6 +77,7 @@ public class ActivityReadStory extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 //tvTitle.setText(chapterTitles.get(position));
+                lastAccessedPage = position;
                 pages.setSelection(position);
             }
 
@@ -82,20 +89,19 @@ public class ActivityReadStory extends AppCompatActivity {
         // Setup spinner
         pages = findViewById(R.id.pages);
         pageNumbers = new ArrayList<>();
-        for(int i = 1; i <= pageCount; i++)
-        {
+        for(int i = 1; i <= pageCount; i++) {
             pageNumbers.add("Chapter " + i);//String.valueOf(i));//You should add items from db here (first spinner)
         }
 
-        ArrayAdapter<String> pagesAdapter = new ArrayAdapter<String>(ActivityReadStory.this, R.layout.chapter, pageNumbers);
+        ArrayAdapter<String> pagesAdapter = new ArrayAdapter<>(ActivityReadStory.this, R.layout.chapter, pageNumbers);
         pagesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         pagesAdapter.notifyDataSetChanged();
         pages.setAdapter(pagesAdapter);
         pages.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if ((mViewPager.getCurrentItem() != position) )
-                {
+                if ((mViewPager.getCurrentItem() != position) ) {
+                    lastAccessedPage = position;
                     mViewPager.setCurrentItem(position);
                 }
             }
@@ -103,6 +109,14 @@ public class ActivityReadStory extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        mViewPager.setCurrentItem(setPage);
     }
 
     /**
@@ -114,7 +128,6 @@ public class ActivityReadStory extends AppCompatActivity {
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
-
         public PlaceholderFragment() {
         }
 
@@ -169,4 +182,15 @@ public class ActivityReadStory extends AppCompatActivity {
             return null;
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        editor = mPref.edit();
+        editor.putInt(postUrl,lastAccessedPage);
+        editor.putInt(postUrl+1,pageCount);
+        //editor.commit();
+        editor.apply();
+        finish();
+    }
+
 }

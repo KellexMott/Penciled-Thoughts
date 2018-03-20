@@ -130,6 +130,7 @@
     <string name="liked">%1$s liked %2$s</string>
     <string name="post_category">%1$s  *  </string>
     <string name="post_status">%1$s  *  </string>
+    <string name="reading_progess">Read %1$s out of %2$d</string>
     <string name="post_chapters">%1$s</string>
     <string name="post_author">%1$s</string>
     <string name="article_author">%1$s</string>

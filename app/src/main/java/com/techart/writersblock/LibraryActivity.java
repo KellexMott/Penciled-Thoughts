@@ -3,6 +3,7 @@ package com.techart.writersblock;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import com.techart.writersblock.models.Chapter;
 import com.techart.writersblock.models.Library;
 import com.techart.writersblock.utils.Constants;
 import com.techart.writersblock.utils.FireBaseUtils;
+import com.techart.writersblock.utils.NumberUtils;
 
 import java.util.ArrayList;
 
@@ -31,7 +33,7 @@ public class LibraryActivity extends AppCompatActivity {
     private ArrayList<String> contents;
     private ArrayList<String> chapterTitles;
     private int pageCount;
-
+    private SharedPreferences mPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +59,11 @@ public class LibraryActivity extends AppCompatActivity {
             protected void populateViewHolder(LibraryViewHolder viewHolder, final Library model, int position){
                 final String post_key = model.getPostKey();
                 viewHolder.tvTitle.setText(model.getPostTitle());
-                if (model.getLastAccessed() != null){
-                    viewHolder.tvTime.setText(model.getLastAccessed().toString());
+                mPref = getSharedPreferences(String.format("%s",getString(R.string.app_name)),MODE_PRIVATE);
+                int lastAccessedPage = mPref.getInt(post_key,-1);
+                int pageCount = mPref.getInt(post_key+1,-1);
+                if (lastAccessedPage != -1 && pageCount != -1){
+                    viewHolder.tvTime.setText(getString(R.string.reading_progess, NumberUtils.setPlurality(lastAccessedPage,"chapter"), pageCount));
                 }
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -70,8 +75,7 @@ public class LibraryActivity extends AppCompatActivity {
                 viewHolder.tvRemove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                       // onStoryOpened(post_key);
-                       // storyExists(post_key);
+                        storyDeleted(post_key,"Remove story from reading list?");
                     }
                 });
             }
@@ -110,7 +114,7 @@ public class LibraryActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    storyDeleted(key);
+                    storyDeleted(key,"Story was deleted by Author");
                 }
             }
             @Override
@@ -150,14 +154,20 @@ public class LibraryActivity extends AppCompatActivity {
         });
     }
 
-    private void storyDeleted(final String key)
+    private void storyDeleted(final String key, String msg )
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Story was deleted by Author");
+        builder.setMessage(msg);
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 FireBaseUtils.deleteFromLib(key);
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
             }
         });

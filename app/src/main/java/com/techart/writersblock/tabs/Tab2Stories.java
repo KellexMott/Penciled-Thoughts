@@ -42,18 +42,17 @@ public class Tab2Stories extends Fragment {
     private DatabaseReference mDatabaseChapters;
 
     private boolean mProcessLike = false;
-    private boolean mShowPrologue = false;
     private boolean mProcessView = false;
     private ArrayList<String> contents;
     private ArrayList<String> chapterTitles;
     private int pageCount;
+
     Long timeAccessed;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.storyrecyclerviewer, container, false);
-
         FireBaseUtils.mDatabaseLike.keepSynced(true);
         FireBaseUtils.mDatabaseStory.keepSynced(true);
         FireBaseUtils.mDatabaseViews.keepSynced(true);
@@ -209,11 +208,11 @@ public class Tab2Stories extends Fragment {
         contents = new ArrayList<>();
         chapterTitles = new ArrayList<>();
         addToLibrary(model,post_key);
-        loadChapters(model.getCategory().trim());
+        loadChapters(model.getCategory().trim(),post_key);
     }
 
 
-    private void loadChapters(String status)
+    private void loadChapters(String status, final String post_key)
     {
         final ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Loading chapters");
@@ -234,6 +233,7 @@ public class Tab2Stories extends Fragment {
                     progressDialog.dismiss();
                     Intent readIntent = new Intent(getContext(),ActivityReadStory.class);
                     readIntent.putStringArrayListExtra(Constants.POST_CONTENT,contents);
+                    readIntent.putExtra(Constants.POST_KEY,post_key);
                     startActivity(readIntent);
                 }
             }
