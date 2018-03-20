@@ -7,13 +7,13 @@
 
     <TextView
         android:id="@+id/tv_author"
-        android:background="@drawable/oval"
+        android:background="@drawable/readinglist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:elevation="7dp"
-        android:padding="10dp"
-        android:textColor="@color/colorText"
+        android:padding="7dp"
+        android:textColor="@color/colorWhite"
         android:text="@string/item_reading"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="7dp"
@@ -21,8 +21,9 @@
         android:maxLines="1"
         android:ellipsize="end"/>
 
-    <ListView
-        android:id="@+id/lvItems"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_libraryBook"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v7.widget.RecyclerView>
 </LinearLayout>

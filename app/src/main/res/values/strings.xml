@@ -217,6 +217,7 @@
     <string name="edit_name">Edit name</string>
     <string name="default_key">default</string>
     <string name="search_title">Search by story title</string>
+    <string name="remove">Remove</string>
 
 
 </resources>

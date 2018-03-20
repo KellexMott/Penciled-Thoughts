@@ -18,7 +18,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.techart.writersblock.ActivityReadStory;
 import com.techart.writersblock.AuthorsProfileActivity;
 import com.techart.writersblock.CommentActivity;
@@ -43,6 +42,7 @@ public class Tab2Stories extends Fragment {
     private DatabaseReference mDatabaseChapters;
 
     private boolean mProcessLike = false;
+    private boolean mShowPrologue = false;
     private boolean mProcessView = false;
     private ArrayList<String> contents;
     private ArrayList<String> chapterTitles;
@@ -119,7 +119,7 @@ public class Tab2Stories extends Fragment {
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showDescription(model.getDescription(),post_key,model);
+                        addToViews(model.getDescription(),post_key,model);
                     }
                 });
 
@@ -131,8 +131,8 @@ public class Tab2Stories extends Fragment {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (mProcessLike) {
-                                    if (dataSnapshot.hasChild(FireBaseUtils.mAuth.getCurrentUser().getUid())) {
-                                        FireBaseUtils.mDatabaseLike.child(post_key).child(FireBaseUtils.mAuth.getCurrentUser().getUid()).removeValue();
+                                    if (dataSnapshot.hasChild(FireBaseUtils.getUiD())) {
+                                        FireBaseUtils.mDatabaseLike.child(post_key).child(FireBaseUtils.getUiD()).removeValue();
                                         FireBaseUtils.onStoryDisliked(post_key);
                                         mProcessLike = false;
                                     } else {
@@ -182,16 +182,18 @@ public class Tab2Stories extends Fragment {
         fireBaseRecyclerAdapter.notifyDataSetChanged();
     }
 
-    private void addToViews(final String post_key, final Story model) {
+    private void addToViews(final String Description, final String post_key, final Story model) {
         mProcessView = true;
         FireBaseUtils.mDatabaseViews.child(post_key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (mProcessView) {
-                    if (!dataSnapshot.hasChild(FireBaseUtils.mAuth.getCurrentUser().getUid())) {
-                        FireBaseUtils.addStoryView(model,post_key);
+                    if (dataSnapshot.hasChild(FireBaseUtils.getUiD())) {
                         mProcessView = false;
-                        FireBaseUtils.onStoryViewed(post_key);
+                        initializeChapters(post_key, model);
+                    } else {
+                        mProcessView = false;
+                        showDescription(Description,post_key,model);
                     }
                 }
             }
@@ -248,14 +250,14 @@ public class Tab2Stories extends Fragment {
         FireBaseUtils.mDatabaseLibrary.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.child(FireBaseUtils.mAuth.getCurrentUser().getUid()).hasChild(post_key))
+                if (!dataSnapshot.child(FireBaseUtils.getUiD()).hasChild(post_key))
                 {
                     Map<String,Object> values = new HashMap<>();
                     values.put(Constants.POST_KEY,  post_key);
                     values.put(Constants.POST_TITLE, model.getTitle());
                     values.put(Constants.CHAPTER_ADDED, 0);
                     values.put("lastAccessed", timeAccessed);
-                    FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.mAuth.getCurrentUser().getUid()).child(post_key).setValue(values);
+                    FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.getUiD()).child(post_key).setValue(values);
                     Toast.makeText(getContext(),model.getTitle() + " added to library",Toast.LENGTH_LONG).show();
                 }
             }
@@ -273,21 +275,21 @@ public class Tab2Stories extends Fragment {
 
     private void showDescription(String description, final String post_key, final Story model) {
         DialogInterface.OnClickListener dialogClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int button) {
-                        if (button == DialogInterface.BUTTON_POSITIVE)
-                        {
-                            FirebaseMessaging.getInstance().subscribeToTopic(post_key);
-                            addToViews(post_key, model);
-                            initializeChapters(post_key, model);
-                        }
-                        else
-                        {
-                            dialog.dismiss();
-                        }
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int button) {
+                    if (button == DialogInterface.BUTTON_POSITIVE)
+                    {
+                        FireBaseUtils.addStoryView(model,post_key);
+                        FireBaseUtils.onStoryViewed(post_key);
+                        initializeChapters(post_key, model);
                     }
-                };
+                    else
+                    {
+                        dialog.dismiss();
+                    }
+                }
+            };
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage(description)
                 .setPositiveButton("Start Reading", dialogClickListener)

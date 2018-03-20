@@ -7,13 +7,13 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.firebase.ui.database.FirebaseListAdapter;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 
 public class LibraryActivity extends AppCompatActivity {
-    private ListView mPoemList;
+    private RecyclerView rvReadingList;
     private ArrayList<String> contents;
     private ArrayList<String> chapterTitles;
     private int pageCount;
@@ -39,31 +39,44 @@ public class LibraryActivity extends AppCompatActivity {
         setContentView(R.layout.library_activity);
         setTitle(FireBaseUtils.getAuthor());
         FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.getUiD()).keepSynced(true);
-        mPoemList = findViewById(R.id.lvItems);
+        rvReadingList = findViewById(R.id.rv_libraryBook);
+        rvReadingList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(LibraryActivity.this);
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
+        rvReadingList.setLayoutManager(linearLayoutManager);
         bindView();
     }
 
     private void bindView() {
-        FirebaseListAdapter<Library> fireBaseRecyclerAdapter = new FirebaseListAdapter<Library>(
-               this,Library.class,R.layout.item_library, FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.getUiD())
-        ) {
+
+        FirebaseRecyclerAdapter<Library,LibraryViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Library, LibraryViewHolder>(
+                Library.class,R.layout.items_library,LibraryViewHolder.class, FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.getUiD()))
+        {
             @Override
-            protected void populateView(View v, Library model, int position) {
+            protected void populateViewHolder(LibraryViewHolder viewHolder, final Library model, int position){
                 final String post_key = model.getPostKey();
-                ((TextView)v.findViewById(R.id.tv_title)).setText(model.getPostTitle());
-                 v.setOnClickListener(new View.OnClickListener() {
+                viewHolder.tvTitle.setText(model.getPostTitle());
+                if (model.getLastAccessed() != null){
+                    viewHolder.tvTime.setText(model.getLastAccessed().toString());
+                }
+                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // onStoryOpened(post_key);
+                        storyExists(post_key);
+                    }
+                });
+                viewHolder.tvRemove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                        // onStoryOpened(post_key);
-                        storyExists(post_key);
+                       // storyExists(post_key);
                     }
                 });
             }
         };
-        mPoemList.setAdapter(fireBaseRecyclerAdapter);
+        rvReadingList.setAdapter(firebaseRecyclerAdapter);
     }
 
 
@@ -87,8 +100,7 @@ public class LibraryActivity extends AppCompatActivity {
     }
 
 
-    private void storyExists(final String key)
-    {
+    private void storyExists(final String key) {
         FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.getUiD()).child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -105,7 +117,6 @@ public class LibraryActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-
     }
 
     private void loadChapters(final String key) {
@@ -175,5 +186,21 @@ public class LibraryActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    public static class LibraryViewHolder extends RecyclerView.ViewHolder
+    {
+        TextView tvTitle;
+        TextView tvTime;
+        TextView tvRemove;
+        View mView;
+
+        public LibraryViewHolder(View itemView) {
+            super(itemView);
+            tvTitle = itemView.findViewById(R.id.tv_title);
+            tvTime =  itemView.findViewById(R.id.tv_timeAdded);
+            tvRemove =  itemView.findViewById(R.id.tv_remove);
+            this.mView = itemView;
+        }
     }
 }
