@@ -82,6 +82,12 @@ public final class StoryViewHolder extends RecyclerView.ViewHolder {
                 .load(resourceValue)
                 .into(ivStory);
     }
+
+    public void setIvImage(Context context, String imageUrl) {
+        Glide.with(context)
+                .load(imageUrl)
+                .into(ivStory);
+    }
     public void setLikeBtn(String post_key) {
         FireBaseUtils.setLikeBtn(post_key,btnLiked);
     }

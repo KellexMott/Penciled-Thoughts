@@ -273,7 +273,6 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
             mAUth = FirebaseAuth.getInstance();
             mDatabaseLike.keepSynced(true);
         }
-
         public void setLikeBtn(String post_key) {
             FireBaseUtils.setLikeBtn(post_key,btnLiked);
         }

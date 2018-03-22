@@ -10,6 +10,7 @@ public class Story {
     private String author;
     private Long chapters;
     private String category;
+    private String imageUrl;
     private String status;
     private Long lastUpdate;
     private String description;
@@ -113,5 +114,13 @@ public class Story {
 
     public void setLastUpdate(Long lastUpdate) {
         this.lastUpdate = lastUpdate;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

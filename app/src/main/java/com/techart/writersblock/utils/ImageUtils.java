@@ -27,11 +27,11 @@ public final class ImageUtils {
             case "Action":
                 return R.drawable.action;
             case "Drama":
-                return getDramaImage(title);
+                return R.drawable.drama;
             case "Fiction":
                 return getFictionImage(title);
             case "Romance":
-                return getRomanceImage(title);
+                return R.drawable.romance1;
             default: return R.drawable.fiction;
         }
     }
@@ -40,23 +40,7 @@ public final class ImageUtils {
         switch (title) {
             case "The Tumans":
                 return R.drawable.fiction;
-            case "JUSTICE MUST BE SERVED":
-                return R.drawable.fiction1;
-            case "HALLELUJAH; You Are Home":
-                return R.drawable.fiction2;
-            case "A PRAYER AND A DOLLAR":
-                return R.drawable.adollar;
-            case "SILENCE":
-                return R.drawable.fiction3;
             default: return R.drawable.fiction4;
-        }
-    }
-
-    private static int getDramaImage(String title) {
-        switch (title) {
-            case "A PRAYER AND A DOLLAR":
-                return R.drawable.adollar;
-            default: return R.drawable.drama;
         }
     }
 
