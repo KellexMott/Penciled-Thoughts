@@ -29,30 +29,12 @@ public final class ImageUtils {
             case "Drama":
                 return R.drawable.drama;
             case "Fiction":
-                return getFictionImage(title);
+                return R.drawable.fiction;
             case "Romance":
-                return R.drawable.romance1;
+                return R.drawable.romance;
             default: return R.drawable.fiction;
         }
     }
-
-    private static int getFictionImage(String title) {
-        switch (title) {
-            case "The Tumans":
-                return R.drawable.fiction;
-            default: return R.drawable.fiction4;
-        }
-    }
-
-    private static int getRomanceImage(String title) {
-        switch (title)
-        {
-            case "EMOTIONALLY DETACHED":
-                return R.drawable.romance;
-            default: return R.drawable.romance1;
-        }
-    }
-
 
     public static int getPoemUrl(int category) {
         switch (category) {
@@ -85,8 +67,8 @@ public final class ImageUtils {
     public static String getRealPathFromUrl(Context context, Uri imageUrl) {
         Cursor cursor = null;
         try {
-            String[] proj = {MediaStore.Images.Media.DATA};
-            cursor = context.getContentResolver().query(imageUrl,proj,null,null,null);
+            String[] projection = {MediaStore.Images.Media.DATA};
+            cursor = context.getContentResolver().query(imageUrl,projection,null,null,null);
             int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
             return cursor.getString(columnIndex);

@@ -44,7 +44,6 @@ public class Tab2Stories extends Fragment {
     private boolean mProcessLike = false;
     private boolean mProcessView = false;
     private ArrayList<String> contents;
-    private ArrayList<String> chapterTitles;
     private int pageCount;
 
     Long timeAccessed;
@@ -211,14 +210,12 @@ public class Tab2Stories extends Fragment {
     private void initializeChapters(String post_key, Story model) {
         mDatabaseChapters = FireBaseUtils.mDatabaseChapters.child(post_key);
         contents = new ArrayList<>();
-        chapterTitles = new ArrayList<>();
         addToLibrary(model,post_key);
         loadChapters(model.getCategory().trim(),post_key);
     }
 
 
-    private void loadChapters(String status, final String post_key)
-    {
+    private void loadChapters(String status, final String post_key) {
         final ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Loading chapters");
         progressDialog.setCancelable(true);
@@ -250,8 +247,7 @@ public class Tab2Stories extends Fragment {
     }
 
 
-    private void addToLibrary(final Story model, final String post_key)
-    {
+    private void addToLibrary(final Story model, final String post_key) {
         FireBaseUtils.mDatabaseLibrary.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
