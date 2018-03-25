@@ -10,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -27,12 +25,11 @@ import com.techart.writersblock.utils.FireBaseUtils;
 import com.techart.writersblock.utils.ImageUtils;
 import com.techart.writersblock.utils.NumberUtils;
 import com.techart.writersblock.utils.TimeUtils;
-import com.techart.writersblock.viewholders.PoemViewHolder;
+import com.techart.writersblock.viewholders.ArticleViewHolder;
 
 
 public class Tab1Poems extends Fragment {
     private RecyclerView mPoemList;
-    private FirebaseAuth mAuth;
 
     private boolean mProcessView = false;
 
@@ -41,7 +38,6 @@ public class Tab1Poems extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tabrecyclerviewer, container, false);
-        mAuth = FirebaseAuth.getInstance();
         FireBaseUtils.mDatabaseLike.keepSynced(true);
         FireBaseUtils.mDatabasePoems.keepSynced(true);
         FireBaseUtils.mDatabaseViews.keepSynced(true);
@@ -63,10 +59,10 @@ public class Tab1Poems extends Fragment {
     }
 
     private void bindView() {
-        FirebaseRecyclerAdapter<Poem,PoemViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Poem, PoemViewHolder>(
-                Poem.class,R.layout.item_article,PoemViewHolder.class, FireBaseUtils.mDatabasePoems) {
+        FirebaseRecyclerAdapter<Poem,ArticleViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Poem, ArticleViewHolder>(
+                Poem.class,R.layout.item_article,ArticleViewHolder.class, FireBaseUtils.mDatabasePoems) {
             @Override
-            protected void populateViewHolder(PoemViewHolder viewHolder, final Poem model, int position) {
+            protected void populateViewHolder(ArticleViewHolder viewHolder, final Poem model, int position) {
                 final String post_key = getRef(position).getKey();
                 viewHolder.post_title.setText(model.getTitle());
                 viewHolder.setTint(getContext());
@@ -103,7 +99,7 @@ public class Tab1Poems extends Fragment {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (mProcessView) {
-                                    if (!dataSnapshot.hasChild(FireBaseUtils.mAuth.getCurrentUser().getUid()))
+                                    if (!dataSnapshot.hasChild(FireBaseUtils.getUiD()))
                                     {
                                         FireBaseUtils.addPoemView(model,post_key);
                                         mProcessView = false;
@@ -140,9 +136,9 @@ public class Tab1Poems extends Fragment {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (mProcessLike) {
-                                    if (dataSnapshot.hasChild(FireBaseUtils.mAuth.getCurrentUser().getUid()))
+                                    if (dataSnapshot.hasChild(FireBaseUtils.getUiD()))
                                     {
-                                        FireBaseUtils.mDatabaseLike.child(post_key).child(FireBaseUtils.mAuth.getCurrentUser().getUid()).removeValue();
+                                        FireBaseUtils.mDatabaseLike.child(post_key).child(FireBaseUtils.getUiD()).removeValue();
                                         FireBaseUtils.onPoemDisliked(post_key);
                                         mProcessLike = false;
                                     } else {
@@ -193,11 +189,5 @@ public class Tab1Poems extends Fragment {
 
         mPoemList.setAdapter(firebaseRecyclerAdapter);
         firebaseRecyclerAdapter.notifyDataSetChanged();
-    }
-
-    public String getAuthor()
-    {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        return user.getDisplayName();
     }
 }

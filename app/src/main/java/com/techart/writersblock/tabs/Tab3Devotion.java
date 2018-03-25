@@ -27,14 +27,14 @@ import com.techart.writersblock.utils.FireBaseUtils;
 import com.techart.writersblock.utils.ImageUtils;
 import com.techart.writersblock.utils.NumberUtils;
 import com.techart.writersblock.utils.TimeUtils;
-import com.techart.writersblock.viewholders.PoemViewHolder;
+import com.techart.writersblock.viewholders.ArticleViewHolder;
 
 /**
  * Devotion fragment
  */
 public class Tab3Devotion extends Fragment {
     private RecyclerView mPoemList;
-    private FirebaseRecyclerAdapter<Devotion,PoemViewHolder> fireBaseRecyclerAdapter;
+    private FirebaseRecyclerAdapter<Devotion,ArticleViewHolder> fireBaseRecyclerAdapter;
     private FirebaseAuth mAuth;
     RecyclerView.LayoutManager recyclerViewLayoutManager;
     private boolean mProcessView = false;
@@ -77,10 +77,10 @@ public class Tab3Devotion extends Fragment {
      */
     private void bindView()
     {
-        fireBaseRecyclerAdapter = new FirebaseRecyclerAdapter<Devotion, PoemViewHolder>(
-                Devotion.class,R.layout.item_article,PoemViewHolder.class, FireBaseUtils.mDatabaseDevotions) {
+        fireBaseRecyclerAdapter = new FirebaseRecyclerAdapter<Devotion, ArticleViewHolder>(
+                Devotion.class,R.layout.item_article,ArticleViewHolder.class, FireBaseUtils.mDatabaseDevotions) {
             @Override
-            protected void populateViewHolder(PoemViewHolder viewHolder, final Devotion model, int position) {
+            protected void populateViewHolder(ArticleViewHolder viewHolder, final Devotion model, int position) {
                 final String post_key = getRef(position).getKey();
                 FireBaseUtils.mDatabaseLike.child(post_key).keepSynced(true);
                 viewHolder.post_title.setText(model.getTitle());
@@ -118,7 +118,7 @@ public class Tab3Devotion extends Fragment {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (mProcessView) {
-                                    if (!dataSnapshot.hasChild(FireBaseUtils.mAuth.getCurrentUser().getUid()))
+                                    if (!dataSnapshot.hasChild(FireBaseUtils.getUiD()))
                                     {
                                         FireBaseUtils.addDevotionView(model,post_key);
                                         mProcessView = false;
@@ -155,9 +155,9 @@ public class Tab3Devotion extends Fragment {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (mProcessLike) {
-                                    if (dataSnapshot.hasChild(FireBaseUtils.mAuth.getCurrentUser().getUid()))
+                                    if (dataSnapshot.hasChild(FireBaseUtils.getUiD()))
                                     {
-                                        FireBaseUtils.mDatabaseLike.child(post_key).child(FireBaseUtils.mAuth.getCurrentUser().getUid()).removeValue();
+                                        FireBaseUtils.mDatabaseLike.child(post_key).child(FireBaseUtils.getUiD()).removeValue();
                                         FireBaseUtils.onDevotionDisliked(post_key);
                                         mProcessLike = false;
                                     } else {

@@ -23,6 +23,13 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.Translucent" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+
+    </style>
+
     <style name="FullScreen" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     </style>
@@ -93,9 +100,9 @@
     </style>
 
     <style name="ImageViewChevron">
-        <item name="android:layout_width">36dp</item>
-        <item name="android:layout_height">36dp</item>
-        <item name="android:padding">@dimen/activity_horizontal</item>
+        <item name="android:layout_width">28dp</item>
+        <item name="android:layout_height">28dp</item>
+        <item name="android:padding">3dp</item>
         <item name="android:layout_alignParentRight">true</item>
     </style>
 

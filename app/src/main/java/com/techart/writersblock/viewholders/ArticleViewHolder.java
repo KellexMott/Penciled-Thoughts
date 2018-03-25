@@ -19,7 +19,7 @@ import com.techart.writersblock.utils.FireBaseUtils;
  * Created by kelvin on 2/12/18.
  */
 
-public final class PoemViewHolder extends RecyclerView.ViewHolder
+public final class ArticleViewHolder extends RecyclerView.ViewHolder
 {
     public TextView post_title;
     public TextView numLikes;
@@ -39,7 +39,7 @@ public final class PoemViewHolder extends RecyclerView.ViewHolder
     public ImageButton btnComment;
     public ImageButton btnViews;
 
-    public PoemViewHolder(View itemView) {
+    public ArticleViewHolder(View itemView) {
         super(itemView);
         post_title = itemView.findViewById(R.id.post_title);
         post_author = itemView.findViewById(R.id.post_author);

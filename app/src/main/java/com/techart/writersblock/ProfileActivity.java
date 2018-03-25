@@ -12,12 +12,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,12 +61,10 @@ public class ProfileActivity extends AppCompatActivity {
     private RelativeLayout mypoems;
     private RelativeLayout myspirituals;
     private RelativeLayout mystories;
-
     private RelativeLayout postedPoems;
     private RelativeLayout postedSpirituals;
     private RelativeLayout postedStories;
-
-    private ImageButton imProfilePicture;
+    private ImageView imProfilePicture;
     private String currentPhotoUrl;
     private boolean isAttached;
     // GALLERY_REQUEST is a constant integer
@@ -73,7 +73,6 @@ public class ProfileActivity extends AppCompatActivity {
     // and returned in the Activity's onRequestPermissionsResult()
     private int PERMISSION_ALL = 1;
     private String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
     private BottomNavigationView bottomNavigationView;
     private Uri uri;
 
@@ -82,8 +81,12 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         setTitle(FireBaseUtils.getAuthor());
+        Toolbar toolbar = findViewById(R.id.toolbar);
+
+
+        setSupportActionBar(toolbar);
         loadProfilePicture();
-        tvSetPhoto = findViewById(R.id.tv_setImage);
+        tvSetPhoto = findViewById(R.id.tv_readingList);
         imProfilePicture = findViewById(R.id.ib_profile);
         mypoems = findViewById(R.id.mypoems);
         myspirituals = findViewById(R.id.rv_myspirituals);
@@ -163,7 +166,7 @@ public class ProfileActivity extends AppCompatActivity {
                             startActivity(ma);
                             break;
                         case R.id.navigation_create:
-                            Intent dialogIntent = new Intent(ProfileActivity.this,  LibraryActivity.class);
+                            Intent dialogIntent = new Intent(ProfileActivity.this,  PostTypeDialog.class);
                             startActivity(dialogIntent);
                             break;
                         case R.id.navigation_profile:
@@ -291,7 +294,9 @@ public class ProfileActivity extends AppCompatActivity {
         if (isAttached){
             Glide.with(this)
                 .load(url)
+                    .centerCrop()
                 .into(imProfilePicture);
+            imProfilePicture.setColorFilter(ContextCompat.getColor(this, R.color.colorTint));
         }
     }
 
@@ -305,27 +310,27 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void deletePrompt() {
         DialogInterface.OnClickListener dialogClickListener =
-            new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int button) {
-                    if (button == DialogInterface.BUTTON_POSITIVE) {
-                        StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(currentPhotoUrl);
-                        photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                startPosting();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception exception) {
-                            }
-                        });
-                    }
-                    if (button == DialogInterface.BUTTON_NEGATIVE) {
-                        dialog.dismiss();
-                    }
+        new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int button) {
+                if (button == DialogInterface.BUTTON_POSITIVE) {
+                    StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(currentPhotoUrl);
+                    photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            startPosting();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                        }
+                    });
                 }
-            };
+                if (button == DialogInterface.BUTTON_NEGATIVE) {
+                    dialog.dismiss();
+                }
+            }
+        };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Current display picture will be permanently deleted")
                 .setPositiveButton("UPLOAD", dialogClickListener)

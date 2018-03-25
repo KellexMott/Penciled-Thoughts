@@ -6,8 +6,8 @@
         android:title="@string/item_home" />
     <item
         android:id="@+id/navigation_create"
-        android:icon="@drawable/ic_local_library_black_24dp"
-        android:title="@string/item_reading" />
+        android:icon="@drawable/ic_create_black_24dp"
+        android:title="@string/item_create" />
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_library"

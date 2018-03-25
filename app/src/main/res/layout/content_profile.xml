@@ -13,25 +13,19 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/ib_profile"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:layout_gravity="center"
-            android:contentDescription="@string/profile_picture"
-            app:srcCompat="@drawable/img_circle_placeholder"
-            />
         <TextView
-            android:id="@+id/tv_setImage"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_readingList"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/readinglist"
             android:padding="@dimen/activity_horizontal"
+            android:elevation="@dimen/activity_horizontal"
+            android:layout_margin="@dimen/activity_horizontal"
             android:layout_gravity="center"
-            android:textColor="@color/colorPrimary"
-            android:visibility="invisible"
-            android:text="@string/set_photo"
-            android:textAllCaps="true"
-            />
+            android:textColor="@color/colorWhite"
+            android:textAlignment="center"
+            android:text="@string/item_reading"
+            android:textAllCaps="true" />
 
         <TextView
             android:id="@+id/tvMyPosts"

@@ -23,7 +23,7 @@ import com.techart.writersblock.utils.FireBaseUtils;
 import com.techart.writersblock.utils.ImageUtils;
 import com.techart.writersblock.utils.NumberUtils;
 import com.techart.writersblock.utils.TimeUtils;
-import com.techart.writersblock.viewholders.PoemViewHolder;
+import com.techart.writersblock.viewholders.ArticleViewHolder;
 
 import java.util.Date;
 
@@ -63,11 +63,11 @@ public class AuthorsPoemsListActivity extends AppCompatActivity {
     private void bindView()
     {
         Query query = mDatabasePoems.orderByChild(Constants.POST_AUTHOR).equalTo(author);
-        FirebaseRecyclerAdapter<Poem,PoemViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Poem, PoemViewHolder>(
-                Poem.class,R.layout.item_article,PoemViewHolder.class, query)
+        FirebaseRecyclerAdapter<Poem,ArticleViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Poem, ArticleViewHolder>(
+                Poem.class,R.layout.item_article,ArticleViewHolder.class, query)
         {
             @Override
-            protected void populateViewHolder(PoemViewHolder viewHolder, final Poem model, int position) {
+            protected void populateViewHolder(ArticleViewHolder viewHolder, final Poem model, int position) {
                 final String post_key = getRef(position).getKey();
                 viewHolder.post_title.setText(model.getTitle());
 
@@ -118,7 +118,7 @@ public class AuthorsPoemsListActivity extends AppCompatActivity {
 
                                 if (mProcessLike) {
                                     if (dataSnapshot.child(post_key).hasChild(Constants.AUTHOR_URL)) {
-                                        mDatabaseLike.child(post_key).child(FireBaseUtils.mAuth.getCurrentUser().getUid()).removeValue();
+                                        mDatabaseLike.child(post_key).child(FireBaseUtils.getUiD()).removeValue();
                                         FireBaseUtils.onPoemDisliked(post_key);
                                         mProcessLike = false;
                                     } else {

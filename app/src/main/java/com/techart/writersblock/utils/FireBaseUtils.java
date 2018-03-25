@@ -41,8 +41,8 @@ public final class FireBaseUtils {
    public static DatabaseReference mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child(Constants.USERS);
    public static DatabaseReference mDatabaseLibrary = FirebaseDatabase.getInstance().getReference().child(Constants.LIBRARY);
    private static DatabaseReference mSubscriptions = FirebaseDatabase.getInstance().getReference().child(Constants.SUBSCRIPTIONS_KEY);
-   public static FirebaseAuth mAuth  = FirebaseAuth.getInstance();
-   public static FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+   private static FirebaseAuth mAuth  = FirebaseAuth.getInstance();
+    private static FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     public static StorageReference mStoragePhotos = FirebaseStorage.getInstance().getReference();
 

@@ -101,6 +101,7 @@
         </activity>
         <activity
             android:name=".ProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop" />
         <activity
             android:name=".ActivityReadStory"
@@ -111,7 +112,8 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".poems.MyPoemsListActivity"
-            android:parentActivityName=".ProfileActivity"/>
+            android:parentActivityName=".ProfileActivity"
+            />
         <activity
             android:name=".stories.StoryPrologueActivity"
             android:excludeFromRecents="true"

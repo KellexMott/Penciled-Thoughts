@@ -22,12 +22,12 @@ import com.techart.writersblock.utils.FireBaseUtils;
 import com.techart.writersblock.utils.ImageUtils;
 import com.techart.writersblock.utils.NumberUtils;
 import com.techart.writersblock.utils.TimeUtils;
-import com.techart.writersblock.viewholders.PoemViewHolder;
+import com.techart.writersblock.viewholders.ArticleViewHolder;
 
 
 public class AuthorsDevotionsListActivity extends AppCompatActivity {
     private RecyclerView mPoemList;
-    private FirebaseRecyclerAdapter<Devotion,PoemViewHolder> firebaseRecyclerAdapter;
+    private FirebaseRecyclerAdapter<Devotion,ArticleViewHolder> firebaseRecyclerAdapter;
     private String postTitle;
     private String postContent;
     private String author;
@@ -56,10 +56,10 @@ public class AuthorsDevotionsListActivity extends AppCompatActivity {
     private void bindView()
     {
         Query query = FireBaseUtils.mDatabaseDevotions.orderByChild(Constants.POST_AUTHOR).equalTo(author);
-        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Devotion, PoemViewHolder>(
-                Devotion.class,R.layout.item_article,PoemViewHolder.class, query) {
+        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Devotion, ArticleViewHolder>(
+                Devotion.class,R.layout.item_article,ArticleViewHolder.class, query) {
             @Override
-            protected void populateViewHolder(PoemViewHolder viewHolder, final Devotion model, int position) {
+            protected void populateViewHolder(ArticleViewHolder viewHolder, final Devotion model, int position) {
                 final String post_key = getRef(position).getKey();
                 viewHolder.post_title.setText(model.getTitle());
                 viewHolder.post_author.setText(getString(R.string.article_author,model.getAuthor()));

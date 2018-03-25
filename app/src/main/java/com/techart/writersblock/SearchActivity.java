@@ -20,12 +20,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.techart.writersblock.models.Chapter;
+import com.techart.writersblock.models.Poem;
 import com.techart.writersblock.models.Story;
 import com.techart.writersblock.utils.Constants;
 import com.techart.writersblock.utils.FireBaseUtils;
 import com.techart.writersblock.utils.ImageUtils;
 import com.techart.writersblock.utils.NumberUtils;
 import com.techart.writersblock.utils.TimeUtils;
+import com.techart.writersblock.viewholders.ArticleViewHolder;
 import com.techart.writersblock.viewholders.StoryViewHolder;
 
 import java.util.ArrayList;
@@ -38,7 +40,10 @@ public class SearchActivity extends AppCompatActivity {
     private EditText etSearch;
     private RecyclerView rvSearchResults;
     private String searchText;
+    private String postType = "poem";
     private ArrayList<String> contents;
+    Query storyRef;
+    Query articleRef;
     private int pageCount;
 
     @Override
@@ -52,7 +57,7 @@ public class SearchActivity extends AppCompatActivity {
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
         rvSearchResults.setLayoutManager(linearLayoutManager);
-        initSearch();
+        initSearchFor("poem");
         etSearch.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
             }
@@ -65,7 +70,7 @@ public class SearchActivity extends AppCompatActivity {
                                       int before, int count) {
                 searchText = etSearch.getText().toString().trim();
                 if (searchText.isEmpty()){
-                    initSearch();
+                    initSearchFor("poem");
                 } else {
                     firebaseSearch();
                 }
@@ -73,62 +78,103 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    private void initSearch() {
-        FirebaseRecyclerAdapter<Story,StoryViewHolder> fireBaseRecyclerAdapter = new FirebaseRecyclerAdapter<Story, StoryViewHolder>(
-                Story.class,R.layout.item_storyrow,StoryViewHolder.class, FireBaseUtils.mDatabaseStory) {
+    private void initSearchFor(String postType) {
+        switch (postType) {
+            case Constants.POEM_HOLDER:
+                articleRef = FireBaseUtils.mDatabasePoems.orderByChild(Constants.TIME_CREATED);
+                firebaseArticleSearch();
+                break;
+            case Constants.DEVOTION_HOLDER:
+                articleRef = FireBaseUtils.mDatabaseDevotions.orderByChild(Constants.TIME_CREATED);
+                firebaseArticleSearch();
+                break;
+            case Constants.STORY_HOLDER:
+                storyRef = FireBaseUtils.mDatabaseStory.orderByChild(Constants.TIME_CREATED);
+                firebaseStorySearch();
+                break;
+        }
+    }
+
+    private void firebaseSearch() {
+        if (postType.equals(Constants.STORY_HOLDER)){
+            storyRef = searchForArticleWith();
+            firebaseStorySearch();
+        } else {
+            articleRef = searchForArticleWith();
+            firebaseArticleSearch();
+        }
+    }
+
+    private Query searchForArticleWith(){
+        if (postType.equals(Constants.DEVOTION_HOLDER)){
+            return FireBaseUtils.mDatabaseDevotions.orderByChild("title").startAt(searchText).endAt(searchText + "\uf8ff");
+        } else {
+            return FireBaseUtils.mDatabasePoems.orderByChild("title").startAt(searchText).endAt(searchText + "\uf8ff");
+        }
+    }
+
+    private void firebaseArticleSearch() {
+        FirebaseRecyclerAdapter<Poem,ArticleViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Poem, ArticleViewHolder>(
+                Poem.class,R.layout.item_article_search,ArticleViewHolder.class, articleRef) {
             @Override
-            protected void populateViewHolder(StoryViewHolder viewHolder, final Story model, int position) {
+            protected void populateViewHolder(ArticleViewHolder viewHolder, final Poem model, int position) {
                 final String post_key = getRef(position).getKey();
-                FireBaseUtils.mDatabaseLike.child(post_key).keepSynced(true);
-                viewHolder.tvTitle.setText(model.getTitle());
+                viewHolder.post_title.setText(model.getTitle());
                 viewHolder.setTint(SearchActivity.this);
-                viewHolder.tvCategory.setText(getString(R.string.post_category,model.getCategory()));
-                viewHolder.tvStatus.setText(getString(R.string.post_status,model.getStatus()));
-                viewHolder.tvChapters.setText(getString(R.string.post_chapters, NumberUtils.setPlurality(model.getChapters(),"Chapter")));
-                if (model.getImageUrl() == null){
-                    viewHolder.setIvImage(SearchActivity.this, ImageUtils.getStoryUrl(model.getCategory().trim(),model.getTitle()));
-                } else {
-                    viewHolder.setIvImage(SearchActivity.this,model.getImageUrl());
-                }
-
-                viewHolder.tvAuthor.setText(getString(R.string.post_author,model.getAuthor()));
-
+                viewHolder.post_author.setText(getString(R.string.article_author,model.getAuthor()));
+                viewHolder.setIvImage(SearchActivity.this, ImageUtils.getPoemUrl(NumberUtils.getModuleOfTen(position)));
                 if (model.getNumLikes() != null) {
-                    viewHolder.tvNumLikes.setText(String.format("%s",model.getNumLikes().toString()));
+                    String count = NumberUtils.shortenDigit(model.getNumLikes());
+                    viewHolder.numLikes.setText(count);
                 }
-
                 if (model.getNumComments() != null) {
-                    viewHolder.tvNumComments.setText(String.format("%s",model.getNumComments().toString()));
+                    String count = NumberUtils.shortenDigit(model.getNumComments());
+                    viewHolder.numComments.setText(count);
                 }
-
                 if (model.getNumViews() != null) {
-                    viewHolder.tvNumViews.setText(String.format("%s",model.getNumViews().toString()));
+                    String count = NumberUtils.shortenDigit(model.getNumViews());
+                    viewHolder.tvNumViews.setText(getString(R.string.viewers,count));
                 }
                 if (model.getTimeCreated() != null) {
                     String time = TimeUtils.timeElapsed(model.getTimeCreated());
-                    viewHolder.tvTime.setText(time);
+                    viewHolder.timeTextView.setText(time);
                 }
+                viewHolder.setLikeBtn(post_key);
+                viewHolder.setPostViewed(post_key);
 
-                viewHolder.tvAuthor.setOnClickListener(new View.OnClickListener() {
+                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mProcessView = true;
+                        FireBaseUtils.mDatabaseViews.child(post_key).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (mProcessView) {
+                                    if (!dataSnapshot.hasChild(FireBaseUtils.getUiD())) {
+                                        FireBaseUtils.addPoemView(model,post_key);
+                                        mProcessView = false;
+                                        FireBaseUtils.onPoemViewed(post_key);
+                                    }
+                                }
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                        Intent readPoemIntent = new Intent(SearchActivity.this,ScrollingActivity.class);
+                        readPoemIntent.putExtra(Constants.POST_CONTENT, model.getPoemText());
+                        readPoemIntent.putExtra(Constants.POST_TITLE, model.getTitle());
+                        startActivity(readPoemIntent);
+                    }
+                });
+
+                viewHolder.post_author.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent readPoemIntent = new Intent(SearchActivity.this,AuthorsProfileActivity.class);
                         readPoemIntent.putExtra(Constants.POST_AUTHOR, model.getAuthor());
                         startActivity(readPoemIntent);
-                    }
-                });
-                viewHolder.setLikeBtn(post_key);
-                viewHolder.setPostViewed(post_key);
-
-                if (model.getLastUpdate() != null) {
-                    Boolean t = TimeUtils.currentTime() - model.getLastUpdate() < TimeUtils.MILLISECONDS_DAY; //&& res;
-                    viewHolder.setVisibility(t);
-                }
-
-                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        addToViews(model.getDescription(),post_key,model);
                     }
                 });
 
@@ -142,12 +188,12 @@ public class SearchActivity extends AppCompatActivity {
                                 if (mProcessLike) {
                                     if (dataSnapshot.hasChild(FireBaseUtils.getUiD())) {
                                         FireBaseUtils.mDatabaseLike.child(post_key).child(FireBaseUtils.getUiD()).removeValue();
-                                        FireBaseUtils.onStoryDisliked(post_key);
+                                        FireBaseUtils.onPoemDisliked(post_key);
                                         mProcessLike = false;
                                     } else {
-                                        FireBaseUtils.addStoryLike(model,post_key);
+                                        FireBaseUtils.addPoemLike(model, post_key);
                                         mProcessLike = false;
-                                        FireBaseUtils.onStoryLiked(post_key);
+                                        FireBaseUtils.onPoemLiked(post_key);
                                     }
                                 }
                             }
@@ -159,7 +205,7 @@ public class SearchActivity extends AppCompatActivity {
                     }
                 });
 
-                viewHolder.tvNumLikes.setOnClickListener(new View.OnClickListener() {
+                viewHolder.numLikes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent likedPostsIntent = new Intent(SearchActivity.this,LikesActivity.class);
@@ -173,10 +219,12 @@ public class SearchActivity extends AppCompatActivity {
                         Intent commentIntent = new Intent(SearchActivity.this,CommentActivity.class);
                         commentIntent.putExtra(Constants.POST_KEY,post_key);
                         commentIntent.putExtra(Constants.POST_TITLE,model.getTitle());
-                        commentIntent.putExtra(Constants.POST_TYPE,Constants.STORY_HOLDER);
+                        commentIntent.putExtra(Constants.POST_TYPE,Constants.POEM_HOLDER);
+
                         startActivity(commentIntent);
                     }
                 });
+
                 viewHolder.btnViews.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -187,13 +235,13 @@ public class SearchActivity extends AppCompatActivity {
                 });
             }
         };
-        rvSearchResults.setAdapter(fireBaseRecyclerAdapter);
-        fireBaseRecyclerAdapter.notifyDataSetChanged();
+        rvSearchResults.setAdapter(firebaseRecyclerAdapter);
+        firebaseRecyclerAdapter.notifyDataSetChanged();
     }
 
-    private void firebaseSearch() {
+    private void firebaseStorySearch() {
         FirebaseRecyclerAdapter<Story,StoryViewHolder> fireBaseRecyclerAdapter = new FirebaseRecyclerAdapter<Story, StoryViewHolder>(
-                Story.class,R.layout.item_storyrow,StoryViewHolder.class, searchIn(searchText))
+                Story.class,R.layout.item_storyrow,StoryViewHolder.class, storyRef)
         {
                 @Override
                 protected void populateViewHolder(StoryViewHolder viewHolder, final Story model, int position) {
@@ -308,11 +356,7 @@ public class SearchActivity extends AppCompatActivity {
         };
 
         rvSearchResults.setAdapter(fireBaseRecyclerAdapter);
-            fireBaseRecyclerAdapter.notifyDataSetChanged();
-    }
-
-    private Query searchIn(String searchText){
-        return FireBaseUtils.mDatabaseStory.orderByChild("title").startAt(searchText).endAt(searchText + "\uf8ff");
+        fireBaseRecyclerAdapter.notifyDataSetChanged();
     }
 
     private void addToViews(final String Description, final String post_key, final Story model) {
@@ -343,7 +387,6 @@ public class SearchActivity extends AppCompatActivity {
         loadChapters(post_key);
     }
 
-
     private void loadChapters(final String post_key) {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading chapters");
@@ -372,7 +415,6 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void addToLibrary(final Story model, final String post_key) {
         FireBaseUtils.mDatabaseLibrary.addValueEventListener(new ValueEventListener() {
