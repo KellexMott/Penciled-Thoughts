@@ -57,6 +57,7 @@ import static com.techart.writersblock.utils.ImageUtils.hasPermissions;
  */
 public class ProfileActivity extends AppCompatActivity {
     private TextView tvSetPhoto;
+    private TextView tv_readingList;
     private ProgressDialog mProgress;
     private RelativeLayout mypoems;
     private RelativeLayout myspirituals;
@@ -86,7 +87,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         loadProfilePicture();
-        tvSetPhoto = findViewById(R.id.tv_readingList);
+        tvSetPhoto = findViewById(R.id.tv_setPhoto);
+        tv_readingList = findViewById(R.id.tv_readingList);
         imProfilePicture = findViewById(R.id.ib_profile);
         mypoems = findViewById(R.id.mypoems);
         myspirituals = findViewById(R.id.rv_myspirituals);
@@ -100,6 +102,13 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setPhoto();
+            }
+        });
+        tv_readingList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, LibraryActivity.class);
+                startActivity(intent);
             }
         });
         //Handles on clicks which brings up a larger image than that displayed

@@ -190,7 +190,7 @@ public class AddChapterActivity extends AppCompatActivity {
     }
 
     public  void updateLibrary(String storyUrl) {
-        FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.mAuth.getCurrentUser().getUid()).child(storyUrl).runTransaction(new Transaction.Handler() {
+        FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.getUiD()).child(storyUrl).runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
                 Library library = mutableData.getValue(Library.class);

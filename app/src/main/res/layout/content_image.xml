@@ -25,8 +25,8 @@
             app:layout_collapseParallaxMultiplier="0.7" />
 
         <TextView
-            android:id="@+id/tv_readingList"
-            android:background="@drawable/readinglist"
+            android:id="@+id/tv_setPhoto"
+            android:background="@color/colorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
@@ -45,6 +45,5 @@
             app:layout_collapseMode="pin"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
-
     </android.support.design.widget.CollapsingToolbarLayout>
 </android.support.design.widget.AppBarLayout>

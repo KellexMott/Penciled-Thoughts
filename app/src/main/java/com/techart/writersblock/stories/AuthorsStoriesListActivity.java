@@ -116,7 +116,7 @@ public class AuthorsStoriesListActivity extends AppCompatActivity {
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (mProcessLike) {
                                     if (dataSnapshot.child(post_key).hasChild(Constants.AUTHOR_URL))  {
-                                        FireBaseUtils.mDatabaseChapters.child(post_key).child(FireBaseUtils.mAuth.getCurrentUser().getUid()).removeValue();
+                                        FireBaseUtils.mDatabaseChapters.child(post_key).child(FireBaseUtils.getUiD()).removeValue();
                                         FireBaseUtils.onStoryDisliked(post_key);
                                         mProcessLike = false;
                                     } else {
