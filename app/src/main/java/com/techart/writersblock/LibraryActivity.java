@@ -341,7 +341,7 @@ public class LibraryActivity extends AppCompatActivity {
        mProgress.setMessage("Uploading photo, please wait...");
        mProgress.setCanceledOnTouchOutside(false);
        mProgress.show();
-       StorageReference filePath = FireBaseUtils.mStoragePhotos.child(FireBaseUtils.getAuthor());
+       StorageReference filePath = FireBaseUtils.mStoragePhotos.child("stories/"+FireBaseUtils.getAuthor());
        Bitmap bmp = null;
        try {
            bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);

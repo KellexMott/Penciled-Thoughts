@@ -143,6 +143,7 @@
 
         <activity
             android:name=".AuthorsProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".chapters.AddChapterActivity"
@@ -168,6 +169,11 @@
 
         <activity
             android:name=".devotion.AuthorsDevotionsListActivity"
+            android:parentActivityName=".AuthorsProfileActivity">
+        </activity>
+
+        <activity
+            android:name=".stories.AuthorsStoriesListActivity"
             android:parentActivityName=".AuthorsProfileActivity">
         </activity>
 

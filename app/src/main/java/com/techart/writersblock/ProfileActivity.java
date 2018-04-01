@@ -63,6 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView tvSetPhoto;
     private TextView tv_readingList;
     private ProgressDialog mProgress;
+    private ProgressDialog mUploadProgress;
     private RelativeLayout mypoems;
     private RelativeLayout myspirituals;
     private RelativeLayout mystories;
@@ -87,7 +88,6 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         setTitle(FireBaseUtils.getAuthor());
         Toolbar toolbar = findViewById(R.id.toolbar);
-
 
         setSupportActionBar(toolbar);
         loadProfilePicture();
@@ -364,7 +364,7 @@ public class ProfileActivity extends AppCompatActivity {
         mProgress.setMessage("Uploading photo, please wait...");
         mProgress.setCanceledOnTouchOutside(false);
         mProgress.show();
-        StorageReference filePath = FireBaseUtils.mStoragePhotos.child(FireBaseUtils.getAuthor());
+        StorageReference filePath = FireBaseUtils.mStoragePhotos.child("profiles/"+FireBaseUtils.getAuthor());
         Bitmap bmp = null;
         try {
             bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);

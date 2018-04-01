@@ -42,7 +42,7 @@ public class AuthorsStoriesListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tabrecyclerviewer);
+        setContentView(R.layout.activity_authorsstorylist);
 
         author = getIntent().getStringExtra("author");
         setTitle(author + "'s stories");
