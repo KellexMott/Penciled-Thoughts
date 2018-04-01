@@ -6,9 +6,11 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -44,7 +46,9 @@ import com.techart.writersblock.stories.ProfileStoriesListActivity;
 import com.techart.writersblock.utils.FireBaseUtils;
 import com.techart.writersblock.utils.ImageUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -327,7 +331,7 @@ public class ProfileActivity extends AppCompatActivity {
                     photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            startPosting();
+                            upload();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -351,29 +355,44 @@ public class ProfileActivity extends AppCompatActivity {
         if (currentPhotoUrl != null) {
             deletePrompt();
         }else {
-            startPosting();
+            upload();
         }
     }
 
-    @NonNull
-    private void startPosting() {
+    private void upload() {
         mProgress = new ProgressDialog(ProfileActivity.this);
         mProgress.setMessage("Uploading photo, please wait...");
         mProgress.setCanceledOnTouchOutside(false);
         mProgress.show();
-        StorageReference filePath = FireBaseUtils.mStoragePhotos.child(uri.getLastPathSegment());
-        filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        StorageReference filePath = FireBaseUtils.mStoragePhotos.child(FireBaseUtils.getAuthor());
+        Bitmap bmp = null;
+        try {
+            bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
+        byte[] data = byteArrayOutputStream.toByteArray();
+        //uploading the image
+        UploadTask uploadTask2 = filePath.putBytes(data);
+        uploadTask2.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-            Toast.makeText(getApplicationContext(),"Profile picture changed successfully",Toast.LENGTH_LONG).show();
-            currentPhotoUrl = taskSnapshot.getDownloadUrl().toString();
-            Map<String,Object> values = new HashMap<>();
-            values.put("imageUrl",taskSnapshot.getDownloadUrl().toString());
-            FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).updateChildren(values);
-            tvSetPhoto.setVisibility(View.INVISIBLE);
-            mProgress.dismiss();
+                currentPhotoUrl = taskSnapshot.getDownloadUrl().toString();
+                Map<String,Object> values = new HashMap<>();
+                values.put("imageUrl",taskSnapshot.getDownloadUrl().toString());
+                FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).updateChildren(values);
+                tvSetPhoto.setVisibility(View.INVISIBLE);
+                mProgress.dismiss();
+                Toast.makeText(ProfileActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
 
+                Toast.makeText(ProfileActivity.this, "Upload Failed -> " + e, Toast.LENGTH_LONG).show();
+            }
         });
     }
 

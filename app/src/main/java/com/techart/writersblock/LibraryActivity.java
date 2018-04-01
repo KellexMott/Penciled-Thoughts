@@ -7,9 +7,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -44,7 +46,9 @@ import com.techart.writersblock.utils.FireBaseUtils;
 import com.techart.writersblock.utils.ImageUtils;
 import com.techart.writersblock.utils.NumberUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,6 +64,7 @@ public class LibraryActivity extends AppCompatActivity {
     private SharedPreferences mPref;
 
     private TextView tvSetPhoto;
+    String realPath;
     private TextView tv_readingList;
     private ProgressDialog mProgress;
 
@@ -95,6 +100,12 @@ public class LibraryActivity extends AppCompatActivity {
         linearLayoutManager.setStackFromEnd(true);
         rvReadingList.setLayoutManager(linearLayoutManager);
         bindView();
+        tvSetPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setPhoto();
+            }
+        });
     }
 
     private void bindView() {
@@ -325,6 +336,43 @@ public class LibraryActivity extends AppCompatActivity {
         tvSetPhoto.setVisibility(View.VISIBLE);
     }
 
+   private void upload(){
+       mProgress = new ProgressDialog(LibraryActivity.this);
+       mProgress.setMessage("Uploading photo, please wait...");
+       mProgress.setCanceledOnTouchOutside(false);
+       mProgress.show();
+       StorageReference filePath = FireBaseUtils.mStoragePhotos.child(FireBaseUtils.getAuthor());
+       Bitmap bmp = null;
+       try {
+           bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
+       ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+       bmp.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
+       byte[] data = byteArrayOutputStream.toByteArray();
+       //uploading the image
+       UploadTask uploadTask2 = filePath.putBytes(data);
+       uploadTask2.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+           @Override
+           public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+               currentPhotoUrl = taskSnapshot.getDownloadUrl().toString();
+               Map<String,Object> values = new HashMap<>();
+               values.put("imageUrl",taskSnapshot.getDownloadUrl().toString());
+               FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).updateChildren(values);
+               tvSetPhoto.setVisibility(View.INVISIBLE);
+               mProgress.dismiss();
+               Toast.makeText(LibraryActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
+           }
+       }).addOnFailureListener(new OnFailureListener() {
+           @Override
+           public void onFailure(@NonNull Exception e) {
+
+               Toast.makeText(LibraryActivity.this, "Upload Failed -> " + e, Toast.LENGTH_LONG).show();
+           }
+       });
+   }
+
     private void deletePrompt() {
         DialogInterface.OnClickListener dialogClickListener =
                 new DialogInterface.OnClickListener() {
@@ -335,7 +383,7 @@ public class LibraryActivity extends AppCompatActivity {
                             photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    startPosting();
+                                    upload();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -359,30 +407,8 @@ public class LibraryActivity extends AppCompatActivity {
         if (currentPhotoUrl != null) {
             deletePrompt();
         }else {
-            startPosting();
+            upload();
         }
-    }
-
-    @NonNull
-    private void startPosting() {
-        mProgress = new ProgressDialog(LibraryActivity.this);
-        mProgress.setMessage("Uploading photo, please wait...");
-        mProgress.setCanceledOnTouchOutside(false);
-        mProgress.show();
-        StorageReference filePath = FireBaseUtils.mStoragePhotos.child(uri.getLastPathSegment());
-        filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(getApplicationContext(),"Profile picture changed successfully",Toast.LENGTH_LONG).show();
-                currentPhotoUrl = taskSnapshot.getDownloadUrl().toString();
-                Map<String,Object> values = new HashMap<>();
-                values.put("imageUrl",taskSnapshot.getDownloadUrl().toString());
-                FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).updateChildren(values);
-                tvSetPhoto.setVisibility(View.INVISIBLE);
-                mProgress.dismiss();
-            }
-
-        });
     }
 
     @Override
@@ -391,7 +417,7 @@ public class LibraryActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && data != null){
             uri = data.getData();
             if (uri != null){
-                String realPath = ImageUtils.getRealPathFromUrl(this, uri);
+                 realPath = ImageUtils.getRealPathFromUrl(this, uri);
                 Uri uriFromPath = Uri.fromFile(new File(realPath));
                 setPicture(uriFromPath);
             }
