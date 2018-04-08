@@ -8,6 +8,7 @@ package com.techart.writersblock.models;
 public class Story {
     private String title;
     private String author;
+    private String authorUrl;
     private Long chapters;
     private String category;
     private String imageUrl;
@@ -122,5 +123,13 @@ public class Story {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getAuthorUrl() {
+        return authorUrl;
+    }
+
+    public void setAuthorUrl(String authorUrl) {
+        this.authorUrl = authorUrl;
     }
 }

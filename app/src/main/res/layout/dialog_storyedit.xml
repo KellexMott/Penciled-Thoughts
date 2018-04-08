@@ -43,6 +43,7 @@
             android:textColor="@color/colorPrimary"
             android:textAllCaps="true"
             android:clickable="true"
+            android:focusable="true"
             android:text="@string/update" />
 
         <TextView
@@ -56,6 +57,7 @@
             android:textColor="@color/colorPrimary"
             android:textAllCaps="true"
             android:clickable="true"
+            android:focusable="true"
             android:text="@string/cancel" />
     </LinearLayout>
 </LinearLayout>

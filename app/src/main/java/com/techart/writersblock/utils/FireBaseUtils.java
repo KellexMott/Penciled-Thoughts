@@ -79,7 +79,7 @@ public final class FireBaseUtils {
     }
 
     public static String getAuthor() {
-        return user != null ? user.getDisplayName() : "User"; //(a > b) ? a : b
+        return user.getDisplayName(); //(a > b) ? a : b
     }
 
     @NonNull

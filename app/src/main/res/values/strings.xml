@@ -111,8 +111,6 @@
     <string name="story_deleted">Story Deleted</string>
     <string name="delete_all">Delete all</string>
 
-    <string name="chapter_added_notification_title_template">Chapter added: %1$s</string>
-
     <string name="aim">Thoughts worth Sharing</string>
     <string name="reader">Reader</string>
     <string name="writer">Writer</string>
@@ -205,7 +203,6 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="url_privacy">https://www.androidhive.info/privacy-policy/</string>
     <string name="title_terms">Terms &amp; Conditions</string>
-    <string name="url_terms">https://www.androidhive.info/terms-of-service/</string>
     <string name="title_version">Version</string>
     <string name="key_app_version">key_app_version</string>
     <string name="title_help">Help</string>
@@ -219,6 +216,6 @@
     <string name="default_key">default</string>
     <string name="search_title">Search by story title</string>
     <string name="remove">Remove</string>
-
-
+    <string name="file">File</string>
+    <string name="book">Book</string>
 </resources>

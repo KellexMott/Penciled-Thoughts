@@ -30,6 +30,7 @@ public class AuthorsProfileActivity extends AppCompatActivity
     private RelativeLayout postedStories;
     private FirebaseAuth mAuth;
     static String author;
+    static String authorUrl;
 
     private ImageView imProfilePicture;
     private String currentPhotoUrl;
@@ -42,6 +43,7 @@ public class AuthorsProfileActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         author = getIntent().getStringExtra(Constants.POST_AUTHOR);
+        authorUrl = getIntent().getStringExtra(Constants.AUTHOR_URL);
         setTitle(author);
         setContentView(R.layout.activity_author);
         mAuth = FirebaseAuth.getInstance();
@@ -99,7 +101,7 @@ public class AuthorsProfileActivity extends AppCompatActivity
     }
 
     private void loadProfilePicture(){
-        FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).addValueEventListener(new ValueEventListener() {
+        FireBaseUtils.mDatabaseUsers.child(authorUrl).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Users users = dataSnapshot.getValue(Users.class);
