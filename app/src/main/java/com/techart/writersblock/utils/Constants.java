@@ -54,6 +54,8 @@ public class Constants {
     public static final String DEVOTION = "devotionText";
 
     public static final String STORY_KEY = "Stories";
+    //public static final String STORY_KEY = "Story";
+
     public static final String STORY_TITLE = "title";
     public static final String STORY_CATEGORY = "category";
     public static final String STORY_STATUS = "status";
@@ -62,6 +64,7 @@ public class Constants {
     public static final String STORY_REFID = "storyRefId";
 
     public static final String CHAPTER_KEY = "Chapters";
+    //public static final String CHAPTER_KEY = "Episodes";
     public static final String CHAPTER = "Chapter";
     public static final String CHAPTER_TITLE = "chapterTitle";
     public static final String CHAPTER_CONTENT = "Content";

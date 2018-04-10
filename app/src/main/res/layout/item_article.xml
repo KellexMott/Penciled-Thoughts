@@ -41,25 +41,27 @@
                     android:textStyle="bold"
                     android:textSize="16sp" />
 
-                    <TextView
-                        android:id="@+id/post_author"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/oval"
-                        android:textColor="@color/colorText"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:padding="5dp"
-                        android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/post_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/oval"
+                    android:textColor="@color/colorText"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:padding="5dp"
+                    android:textSize="14sp" />
 
-                    <TextView
-                        android:id="@+id/tv_numviews"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorWhite"
-                        android:padding="5dp"
-                        android:text="@string/initial_count"
-                        android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/tv_numviews"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
+                    android:padding="5dp"
+                    android:text="@string/initial_count"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <TextView

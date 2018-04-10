@@ -1,8 +1,19 @@
 package com.techart.writersblock.stories;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,23 +25,31 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-import com.techart.writersblock.CommentActivity;
-import com.techart.writersblock.LikesActivity;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.techart.writersblock.R;
 import com.techart.writersblock.models.Story;
 import com.techart.writersblock.utils.Constants;
 import com.techart.writersblock.utils.FireBaseUtils;
-import com.techart.writersblock.utils.TimeUtils;
+import com.techart.writersblock.utils.ImageUtils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.techart.writersblock.utils.ImageUtils.hasPermissions;
 
 public class ProfileStoriesListActivity extends AppCompatActivity {
     private RecyclerView mPoemList;
@@ -39,8 +58,18 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
     private AlertDialog updateDialog;
     private ArrayList<String> contents = new ArrayList<>(Arrays.asList("Action", "Drama", "Fiction","Romance"));
 
+    ProgressDialog mProgress;
+
+    private static final int GALLERY_REQUEST = 1;
+    private int PERMISSION_ALL = 1;
+    private String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+    private Uri uriFromPath;
+    private Uri uri;
+
+
+
     String[] categories = {"Action", "Drama", "Fiction","Romance"};
-    private boolean mProcessLike = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,32 +100,61 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
         FirebaseRecyclerAdapter<Story,StoryViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Story, StoryViewHolder>(
                 Story.class,R.layout.item_storyrow_del,StoryViewHolder.class, query) {
             @Override
-            protected void populateViewHolder(StoryViewHolder viewHolder, final Story model, int position) {
+            protected void populateViewHolder(final StoryViewHolder viewHolder, final Story model, int position) {
                 final String post_key = getRef(position).getKey();
                 viewHolder.tvTitle.setText(model.getTitle());
                 viewHolder.tvCategory.setText(model.getCategory());
                 viewHolder.tbStatus.setChecked(model.getStatus().equals("Complete"));
                 viewHolder.tbStatus.setTextColor(setColor(model.getStatus().equals("Complete")));
-                if (model.getNumLikes() != null)
-                {
-                    viewHolder.tvNumLikes.setText(getString(R.string.num_likes,model.getNumLikes()));
+
+
+                if (model.getImageUrl() != null) {
+                    viewHolder.setIvImage(ProfileStoriesListActivity.this,model.getImageUrl());
+                } else {
+                    viewHolder.setIvImage(ProfileStoriesListActivity.this, ImageUtils.getStoryUrl(model.getCategory().trim()));
                 }
-                if (model.getNumComments() != null)
-                {
-                    viewHolder.tvNumComments.setText(getString(R.string.num_comments,model.getNumComments()));
-                }
-                if (model.getTimeCreated() != null)
-                {
-                    String time = TimeUtils.timeElapsed(TimeUtils.currentTime() - model.getTimeCreated());
-                    viewHolder.tvTime.setText(time);
-                }
-                viewHolder.setLikeBtn(post_key);
+
                 viewHolder.tvCategory.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         updateStoryDialog(post_key, model.getCategory().trim());
                     }
                 });
+
+
+                viewHolder.btCover.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            onGetPermission();
+                        }  else {
+                            Intent imageIntent = new Intent();
+                            imageIntent.setType("image/*");
+                            imageIntent.setAction(Intent.ACTION_GET_CONTENT);
+                            startActivityForResult(imageIntent,GALLERY_REQUEST);
+                        }
+                    }
+                });
+
+                viewHolder.tvSetCover.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        setPhoto(post_key,model.getImageUrl(), model.getTitle());
+                        //Toast.makeText(getApplicationContext(),"Not yet implemented",Toast.LENGTH_LONG).show();
+                    }
+                });
+
+                viewHolder.tvView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (uriFromPath != null) {
+                            viewHolder.setIvImage(ProfileStoriesListActivity.this,uriFromPath);
+                        } else {
+                            Toast.makeText(ProfileStoriesListActivity.this,"Tap on image to upload new image",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
                 viewHolder.tbStatus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -118,42 +176,6 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
                     }
                 });
 
-                viewHolder.btnLiked.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mProcessLike = true;
-                        mDatabaseLike.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                if (mProcessLike) {
-                                    if (dataSnapshot.child(post_key).hasChild(Constants.AUTHOR_URL))  {
-                                        mDatabaseLike.child(post_key).child(FireBaseUtils.getUiD()).removeValue();
-                                        FireBaseUtils.onStoryDisliked(post_key);
-                                        mProcessLike = false;
-                                    } else {
-                                        FireBaseUtils.addStoryLike(model,post_key);
-                                        mProcessLike = false;
-                                        FireBaseUtils.onStoryLiked(post_key);
-                                    }
-                                }
-                            }
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                });
-
-                viewHolder.tvNumLikes.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent likedPostsIntent = new Intent(ProfileStoriesListActivity.this,LikesActivity.class);
-                        likedPostsIntent.putExtra(Constants.POST_KEY,post_key);
-                        startActivity(likedPostsIntent);
-                    }
-                });
-
                 viewHolder.btEdit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -161,17 +183,6 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
                         likedPostsIntent.putExtra(Constants.POST_KEY,post_key);
                         likedPostsIntent.putExtra(Constants.STORY_CHAPTERCOUNT,model.getChapters().toString());
                         startActivity(likedPostsIntent);
-                    }
-                });
-
-                viewHolder.btnComment.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent commentIntent = new Intent(ProfileStoriesListActivity.this,CommentActivity.class);
-                        commentIntent.putExtra(Constants.POST_KEY,post_key);
-                        commentIntent.putExtra(Constants.POST_TITLE,model.getTitle());
-                        commentIntent.putExtra(Constants.POST_TYPE,Constants.STORY_HOLDER);
-                        startActivity(commentIntent);
                     }
                 });
             }
@@ -189,6 +200,57 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
         }
     }
 
+
+    @TargetApi(23)
+    private void onGetPermission() {
+        // only for MarshMallow and newer versions
+        if(!hasPermissions(this, PERMISSIONS)){
+            if (!shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                onPermissionDenied();
+            } else {
+                ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+            }
+        } else {
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(galleryIntent, GALLERY_REQUEST);
+        }
+    }
+
+    // Trigger gallery selection for a photo
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(galleryIntent, GALLERY_REQUEST);
+        } else {
+            //do something like displaying a message that he did not allow the app to access gallery and you wont be able to let him select from gallery
+            onPermissionDenied();
+        }
+    }
+
+    private void onPermissionDenied() {
+        DialogInterface.OnClickListener dialogClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int button) {
+                        if (button == DialogInterface.BUTTON_POSITIVE) {
+                            ActivityCompat.requestPermissions(ProfileStoriesListActivity.this, PERMISSIONS, PERMISSION_ALL);
+                        }
+                        if (button == DialogInterface.BUTTON_NEGATIVE) {
+                            dialog.dismiss();
+                        }
+                    }
+                };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("YOU NEED TO ALLOW ACCESS TO MEDIA STORAGE")
+                .setMessage("Without this permission you can not upload an image")
+                .setPositiveButton("ALLOW", dialogClickListener)
+                .setNegativeButton("DENY", dialogClickListener)
+                .show();
+    }
+
+
+
     public void updateStoryDialog(final String post_key, String category)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfileStoriesListActivity.this);
@@ -203,6 +265,90 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
         updateDialog = builder.create();
         updateDialog.show();
     }
+
+
+    private void setPhoto(final String post_key, final String imageUrl, final String storyTitle) {
+        if (imageUrl != null) {
+            deletePrompt(post_key,imageUrl,storyTitle);
+        }else {
+            upload(post_key,storyTitle);
+        }
+    }
+
+    private void upload(final String post_key,final String storyTitle) {
+        mProgress = new ProgressDialog(ProfileStoriesListActivity.this);
+        mProgress.setMessage("Uploading photo, please wait...");
+        mProgress.setCanceledOnTouchOutside(false);
+        mProgress.show();
+        StorageReference filePath = FireBaseUtils.mStoragePhotos.child("stories/"+reformatStoryTitle(storyTitle));
+        Bitmap bmp = null;
+        try {
+            bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
+        byte[] data = byteArrayOutputStream.toByteArray();
+        //uploading the image
+        UploadTask uploadTask2 = filePath.putBytes(data);
+        uploadTask2.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                mProgress.dismiss();
+                Toast.makeText(getApplicationContext(),"Story cover changed successfully",Toast.LENGTH_LONG).show();
+                coverCover(taskSnapshot, post_key);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Toast.makeText(ProfileStoriesListActivity.this, "Upload Failed -> " + e, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private String reformatStoryTitle(String storyTitle) {
+        return storyTitle.replace(" ","_").toLowerCase();
+    }
+
+    private void coverCover(UploadTask.TaskSnapshot taskSnapshot, String post_key) {
+        Map<String,Object> values = new HashMap<>();
+        values.put("imageUrl",taskSnapshot.getDownloadUrl().toString());
+        FireBaseUtils.mDatabaseStory.child(post_key).updateChildren(values);
+    }
+
+    private void deletePrompt(final String post_key, final String imageUrl,final String storyTitle) {
+        DialogInterface.OnClickListener dialogClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int button) {
+                        if (button == DialogInterface.BUTTON_POSITIVE) {
+                            StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl);
+                            photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    upload(post_key,storyTitle);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                }
+                            });
+                        }
+                        if (button == DialogInterface.BUTTON_NEGATIVE) {
+                            dialog.dismiss();
+                        }
+                    }
+                };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Current display picture will be permanently deleted")
+                .setPositiveButton("UPLOAD", dialogClickListener)
+                .setNegativeButton("CANCEL", dialogClickListener)
+                .show();
+    }
+
 
     public void deleteCaution(final String post_key)
     {
@@ -233,50 +379,68 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
                 .show();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode,int resultCode,Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data != null){
+            uri = data.getData();
+            if (uri != null){
+                String realPath = ImageUtils.getRealPathFromUrl(this, uri);
+                uriFromPath = Uri.fromFile(new File(realPath));
+            }
+        }
+    }
+
     public static class StoryViewHolder extends RecyclerView.ViewHolder
     {
         TextView tvTitle;
+        TextView tvSetCover;
+        TextView tvView;
         Button tvCategory;
         Button btEdit;
-        TextView tvNumLikes;
-        TextView tvNumComments;
-        TextView tvNumViews;
-        TextView tvTime;
         View mView;
+        ImageButton btCover;
 
-        DatabaseReference mDatabaseLike;
         FirebaseAuth mAUth;
 
         ImageButton btnDelete;
+
         ToggleButton tbStatus;
-        ImageButton btnLiked;
-        ImageButton btnComment;
-        ImageButton btnViews;
 
         public StoryViewHolder(View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_title);
+            tvSetCover = itemView.findViewById(R.id.tv_setCover);
+            tvView = itemView.findViewById(R.id.tv_view);
             tbStatus = itemView.findViewById(R.id.tb_status);
             tvCategory = itemView.findViewById(R.id.tv_category);
             btEdit = itemView.findViewById(R.id.bt_edit);
+            btCover = itemView.findViewById(R.id.btCover);
 
             btnDelete = itemView.findViewById(R.id.im_delete);
-            btnLiked = itemView.findViewById(R.id.likeBtn);
-            btnComment = itemView.findViewById(R.id.commentBtn);
-            btnViews = itemView.findViewById(R.id.bt_views);
-            tvTime = itemView.findViewById(R.id.tv_time);
-            tvNumLikes = itemView.findViewById(R.id.tv_numlikes);
-            tvNumComments = itemView.findViewById(R.id.tv_numcomments);
-            tvNumViews = itemView.findViewById(R.id.tv_numviews);
             this.mView = itemView;
-            mDatabaseLike = FireBaseUtils.mDatabaseLike;
             mAUth = FirebaseAuth.getInstance();
-            mDatabaseLike.keepSynced(true);
         }
-        public void setLikeBtn(String post_key) {
-            FireBaseUtils.setLikeBtn(post_key,btnLiked);
+
+        public void setIvImage(Context context, String image) {
+            Glide.with(context)
+                    .load(image)
+                    .into(btCover);
+        }
+
+        public void setIvImage(Context context, int resourceValue) {
+            Glide.with(context)
+                    .load(resourceValue)
+                    .into(btCover);
+        }
+
+        public void setIvImage(Context context, Uri image)
+        {
+            Glide.with(context)
+                    .load(image)
+                    .into(btCover);
+            tvSetCover.setVisibility(View.VISIBLE);
         }
     }
-
 }
 

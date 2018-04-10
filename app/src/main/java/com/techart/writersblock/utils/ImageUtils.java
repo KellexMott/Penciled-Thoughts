@@ -22,7 +22,7 @@ public final class ImageUtils {
     private ImageUtils() {
     }
 
-    public static int getStoryUrl(String category, String title) {
+    public static int getStoryUrl(String category) {
         switch (category) {
             case "Action":
                 return R.drawable.action;

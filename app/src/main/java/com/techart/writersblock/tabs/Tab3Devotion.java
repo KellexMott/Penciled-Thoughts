@@ -143,6 +143,7 @@ public class Tab3Devotion extends Fragment {
                     public void onClick(View v) {
                         Intent readPoemIntent = new Intent(getContext(),AuthorsProfileActivity.class);
                         readPoemIntent.putExtra(Constants.POST_AUTHOR, model.getAuthor());
+                        readPoemIntent.putExtra(Constants.AUTHOR_URL, model.getAuthorUrl());
                         startActivity(readPoemIntent);
                     }
                 });

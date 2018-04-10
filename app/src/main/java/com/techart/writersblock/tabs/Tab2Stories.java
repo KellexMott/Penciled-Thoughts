@@ -80,7 +80,7 @@ public class Tab2Stories extends Fragment {
                 viewHolder.tvStatus.setText(getString(R.string.post_status,model.getStatus()));
                 viewHolder.tvChapters.setText(getString(R.string.post_chapters, NumberUtils.setPlurality(model.getChapters(),"Chapter")));
                 if (model.getImageUrl() == null){
-                    viewHolder.setIvImage(getContext(), ImageUtils.getStoryUrl(model.getCategory().trim(),model.getTitle()));
+                    viewHolder.setIvImage(getContext(), ImageUtils.getStoryUrl(model.getCategory().trim()));
                 } else {
                     viewHolder.setIvImage(getContext(),model.getImageUrl());
                 }

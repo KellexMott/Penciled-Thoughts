@@ -122,9 +122,9 @@ public class AuthorsProfileActivity extends AppCompatActivity
     private void setPicture(String url) {
         if (isAttached){
             Glide.with(this)
-                    .load(url)
-                    .centerCrop()
-                    .into(imProfilePicture);
+            .load(url)
+            .centerCrop()
+            .into(imProfilePicture);
             imProfilePicture.setColorFilter(ContextCompat.getColor(this, R.color.colorTint));
         }
     }

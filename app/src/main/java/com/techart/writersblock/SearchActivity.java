@@ -12,6 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -20,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.techart.writersblock.models.Chapter;
+import com.techart.writersblock.models.Devotion;
 import com.techart.writersblock.models.Poem;
 import com.techart.writersblock.models.Story;
 import com.techart.writersblock.utils.Constants;
@@ -31,6 +33,7 @@ import com.techart.writersblock.viewholders.ArticleViewHolder;
 import com.techart.writersblock.viewholders.StoryViewHolder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,12 +42,16 @@ public class SearchActivity extends AppCompatActivity {
     private boolean mProcessView = false;
     private EditText etSearch;
     private RecyclerView rvSearchResults;
+    private ImageView imFilter;
     private String searchText;
     private String postType = "poem";
-    private ArrayList<String> contents;
+    private ArrayList<String> contents= new ArrayList<>(Arrays.asList(Constants.STORY_HOLDER, Constants.POEM_HOLDER, Constants.DEVOTION_HOLDER));
     Query storyRef;
     Query articleRef;
     private int pageCount;
+    private AlertDialog updateDialog;
+    String[] categories = {Constants.STORY_HOLDER, Constants.POEM_HOLDER, Constants.DEVOTION_HOLDER};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +59,20 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         etSearch = findViewById(R.id.et_search);
         rvSearchResults = findViewById(R.id.rv_search);
+        imFilter = findViewById(R.id.iv_filter);
         rvSearchResults.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
         rvSearchResults.setLayoutManager(linearLayoutManager);
-        initSearchFor("poem");
+
+        imFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectSearchField();
+            }
+        });
+
         etSearch.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
             }
@@ -86,7 +101,7 @@ public class SearchActivity extends AppCompatActivity {
                 break;
             case Constants.DEVOTION_HOLDER:
                 articleRef = FireBaseUtils.mDatabaseDevotions.orderByChild(Constants.TIME_CREATED);
-                firebaseArticleSearch();
+                firebaseDevotionSearch();
                 break;
             case Constants.STORY_HOLDER:
                 storyRef = FireBaseUtils.mDatabaseStory.orderByChild(Constants.TIME_CREATED);
@@ -220,7 +235,6 @@ public class SearchActivity extends AppCompatActivity {
                         commentIntent.putExtra(Constants.POST_KEY,post_key);
                         commentIntent.putExtra(Constants.POST_TITLE,model.getTitle());
                         commentIntent.putExtra(Constants.POST_TYPE,Constants.POEM_HOLDER);
-
                         startActivity(commentIntent);
                     }
                 });
@@ -239,6 +253,153 @@ public class SearchActivity extends AppCompatActivity {
         firebaseRecyclerAdapter.notifyDataSetChanged();
     }
 
+    private void firebaseDevotionSearch() {
+        FirebaseRecyclerAdapter<Devotion,ArticleViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Devotion, ArticleViewHolder>(
+                Devotion.class,R.layout.item_article_search,ArticleViewHolder.class, articleRef) {
+            @Override
+            protected void populateViewHolder(ArticleViewHolder viewHolder, final Devotion model, int position) {
+                final String post_key = getRef(position).getKey();
+                viewHolder.post_title.setText(model.getTitle());
+                viewHolder.setTint(SearchActivity.this);
+                viewHolder.post_author.setText(getString(R.string.article_author,model.getAuthor()));
+                viewHolder.setIvImage(SearchActivity.this, ImageUtils.getPoemUrl(NumberUtils.getModuleOfTen(position)));
+                if (model.getNumLikes() != null) {
+                    String count = NumberUtils.shortenDigit(model.getNumLikes());
+                    viewHolder.numLikes.setText(count);
+                }
+                if (model.getNumComments() != null) {
+                    String count = NumberUtils.shortenDigit(model.getNumComments());
+                    viewHolder.numComments.setText(count);
+                }
+                if (model.getNumViews() != null) {
+                    String count = NumberUtils.shortenDigit(model.getNumViews());
+                    viewHolder.tvNumViews.setText(getString(R.string.viewers,count));
+                }
+                if (model.getTimeCreated() != null) {
+                    String time = TimeUtils.timeElapsed(model.getTimeCreated());
+                    viewHolder.timeTextView.setText(time);
+                }
+                viewHolder.setLikeBtn(post_key);
+                viewHolder.setPostViewed(post_key);
+
+                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mProcessView = true;
+                        FireBaseUtils.mDatabaseViews.child(post_key).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (mProcessView) {
+                                    if (!dataSnapshot.hasChild(FireBaseUtils.getUiD())) {
+                                        FireBaseUtils.addDevotionView(model,post_key);
+                                        mProcessView = false;
+                                        FireBaseUtils.onPoemViewed(post_key);
+                                    }
+                                }
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                        Intent readPoemIntent = new Intent(SearchActivity.this,ScrollingActivity.class);
+                        readPoemIntent.putExtra(Constants.POST_CONTENT, model.getDevotionText());
+                        readPoemIntent.putExtra(Constants.POST_TITLE, model.getTitle());
+                        startActivity(readPoemIntent);
+                    }
+                });
+
+                viewHolder.post_author.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent readPoemIntent = new Intent(SearchActivity.this,AuthorsProfileActivity.class);
+                        readPoemIntent.putExtra(Constants.POST_AUTHOR, model.getAuthor());
+                        startActivity(readPoemIntent);
+                    }
+                });
+
+                viewHolder.btnLiked.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mProcessLike = true;
+                        FireBaseUtils.mDatabaseLike.child(post_key).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (mProcessLike) {
+                                    if (dataSnapshot.hasChild(FireBaseUtils.getUiD())) {
+                                        FireBaseUtils.mDatabaseLike.child(post_key).child(FireBaseUtils.getUiD()).removeValue();
+                                        FireBaseUtils.onPoemDisliked(post_key);
+                                        mProcessLike = false;
+                                    } else {
+                                        FireBaseUtils.addDevotionLike(model, post_key);
+                                        mProcessLike = false;
+                                        FireBaseUtils.onPoemLiked(post_key);
+                                    }
+                                }
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                });
+
+                viewHolder.numLikes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent likedPostsIntent = new Intent(SearchActivity.this,LikesActivity.class);
+                        likedPostsIntent.putExtra(Constants.POST_KEY,post_key);
+                        startActivity(likedPostsIntent);
+                    }
+                });
+                viewHolder.btnComment.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent commentIntent = new Intent(SearchActivity.this,CommentActivity.class);
+                        commentIntent.putExtra(Constants.POST_KEY,post_key);
+                        commentIntent.putExtra(Constants.POST_TITLE,model.getTitle());
+                        commentIntent.putExtra(Constants.POST_TYPE,Constants.POEM_HOLDER);
+                        startActivity(commentIntent);
+                    }
+                });
+
+                viewHolder.btnViews.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent likedPostsIntent = new Intent(SearchActivity.this,ViewsActivity.class);
+                        likedPostsIntent.putExtra(Constants.POST_KEY,post_key);
+                        startActivity(likedPostsIntent);
+                    }
+                });
+            }
+        };
+        rvSearchResults.setAdapter(firebaseRecyclerAdapter);
+        firebaseRecyclerAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+        selectSearchField();
+    }
+
+    public void selectSearchField()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(SearchActivity.this);
+        builder.setSingleChoiceItems(categories, -1, new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int item) {
+                updateDialog.dismiss();
+                etSearch.setHint(getString(R.string.search_title,contents.get(item)));
+                initSearchFor(contents.get(item));
+            }
+        });
+        updateDialog = builder.create();
+        updateDialog.show();
+    }
+
     private void firebaseStorySearch() {
         FirebaseRecyclerAdapter<Story,StoryViewHolder> fireBaseRecyclerAdapter = new FirebaseRecyclerAdapter<Story, StoryViewHolder>(
                 Story.class,R.layout.item_storyrow,StoryViewHolder.class, storyRef)
@@ -253,7 +414,7 @@ public class SearchActivity extends AppCompatActivity {
                 viewHolder.tvStatus.setText(getString(R.string.post_status,model.getStatus()));
                 viewHolder.tvChapters.setText(getString(R.string.post_chapters, NumberUtils.setPlurality(model.getChapters(),"Chapter")));
                 if (model.getImageUrl() == null){
-                    viewHolder.setIvImage(SearchActivity.this, ImageUtils.getStoryUrl(model.getCategory().trim(),model.getTitle()));
+                    viewHolder.setIvImage(SearchActivity.this, ImageUtils.getStoryUrl(model.getCategory().trim()));
                 } else {
                     viewHolder.setIvImage(SearchActivity.this,model.getImageUrl());
                 }

@@ -74,8 +74,7 @@ public class StoryEditorActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_post:
-                if ( EditorUtils.isEmpty(this,newTitle, "chapter") && EditorUtils.validateMainText(this,editor.getLayout().getLineCount()))
-                {
+                if ( EditorUtils.isEmpty(this,newTitle, "chapter") && EditorUtils.validateMainText(this,editor.getLayout().getLineCount())) {
                     postStory();
                 }
                 break;
@@ -141,7 +140,7 @@ public class StoryEditorActivity extends AppCompatActivity {
         DatabaseReference newPost = FireBaseUtils.mDatabaseStory.push();
         storyUrl = newPost.getKey();
         Map<String,Object> values = new HashMap<>();
-        values.put(Constants.STORY_TITLE,storyTitle);
+        values.put(Constants.STORY_TITLE,storyTitle.toUpperCase());
         values.put(Constants.STORY_DESCRIPTION,storyDescription);
         values.put(Constants.STORY_CATEGORY,storyCategory);
         values.put(Constants.STORY_STATUS,status);

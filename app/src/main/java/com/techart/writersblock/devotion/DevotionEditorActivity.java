@@ -238,7 +238,7 @@ public class DevotionEditorActivity extends AppCompatActivity {
         mProgress.show();
         devotionUrl = FireBaseUtils.mDatabaseDevotions.push().getKey();
         Map<String,Object> values = new HashMap<>();
-        values.put(Constants.DEVOTION_TITLE,newTitle);
+        values.put(Constants.DEVOTION_TITLE,newTitle.toUpperCase());
         values.put(Constants.DEVOTION,newText);
         values.put(Constants.IS_EDITED,isPostEdited);
         values.put(Constants.NUM_LIKES,0);

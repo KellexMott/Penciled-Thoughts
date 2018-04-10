@@ -203,7 +203,7 @@ public class PoemEditorActivity extends AppCompatActivity {
         mProgress.show();
         Map<String,Object> values = new HashMap<>();
         values.put(Constants.POEM,newText);
-        values.put(Constants.POEM_TITLE,newTitle);
+        values.put(Constants.POEM_TITLE,newTitle.toUpperCase());
         FireBaseUtils.mDatabasePoems.child(poemUrl).updateChildren(values);
         mProgress.dismiss();
         Toast.makeText(getApplicationContext(),"Poem updates", Toast.LENGTH_LONG).show();
@@ -215,7 +215,7 @@ public class PoemEditorActivity extends AppCompatActivity {
         mProgress.show();
         poemUrl = FireBaseUtils.mDatabasePoems.push().getKey();
         Map<String,Object> values = new HashMap<>();
-        values.put(Constants.POEM_TITLE,newTitle);
+        values.put(Constants.POEM_TITLE,newTitle.toUpperCase());
         values.put(Constants.POEM,newText);
         values.put(Constants.NUM_LIKES,0);
         values.put(Constants.NUM_COMMENTS,0);

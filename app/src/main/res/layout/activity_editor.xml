@@ -11,6 +11,7 @@
     <EditText
         android:id="@+id/editTitle"
         android:inputType="textCapWords"
+        android:hint="@string/tap_to_write"
         style="@style/ButtonEditor" />
 
     <EditText

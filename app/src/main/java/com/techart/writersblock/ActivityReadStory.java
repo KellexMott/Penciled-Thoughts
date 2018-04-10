@@ -186,7 +186,7 @@ public class ActivityReadStory extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         editor = mPref.edit();
-        editor.putInt(postUrl,lastAccessedPage);
+        editor.putInt(postUrl,lastAccessedPage + 1);
         editor.putInt(postUrl+1,pageCount);
         //editor.commit();
         editor.apply();

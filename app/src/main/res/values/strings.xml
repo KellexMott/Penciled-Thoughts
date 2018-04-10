@@ -214,8 +214,9 @@
     <string name="number_placeholder">#</string>
     <string name="edit_name">Edit name</string>
     <string name="default_key">default</string>
-    <string name="search_title">Search by story title</string>
+    <string name="search_title">Search by %1$s title</string>
     <string name="remove">Remove</string>
     <string name="file">File</string>
     <string name="book">Book</string>
+    <string name="story_cover">Story cover</string>
 </resources>
