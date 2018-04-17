@@ -17,7 +17,7 @@ import com.techart.writersblock.utils.TimeUtils;
 
 public class LikesActivity extends AppCompatActivity
 {
-    String postKey;
+    private String postKey;
     private RecyclerView mLikeList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

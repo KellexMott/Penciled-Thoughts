@@ -147,14 +147,14 @@ public class AddChapterActivity extends AppCompatActivity {
         }
         else
         {
-            showErrorDialog("Error...! You have not written anything");
+            showErrorDialog();
         }
     }
 
-    private void showErrorDialog(String errorMsg)
+    private void showErrorDialog()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(errorMsg);
+        builder.setMessage("Error...! You have not written anything");
         builder.setPositiveButton("Stay in editor", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
@@ -189,7 +189,7 @@ public class AddChapterActivity extends AppCompatActivity {
         finishEditing();
     }
 
-    public  void updateLibrary(String storyUrl) {
+    private void updateLibrary(String storyUrl) {
         FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.getUiD()).child(storyUrl).runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {

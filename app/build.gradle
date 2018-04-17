@@ -6,8 +6,8 @@ android {
         applicationId "com.techart.writersblock"
         minSdkVersion 18
         targetSdkVersion 23
-        versionCode 7
-        versionName "1.6.0"
+        versionCode 8
+        versionName "1.7.0"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -28,6 +28,7 @@ android {
         exclude 'META-INF/NOTICE'
     }
     productFlavors {
+
     }
 }
 

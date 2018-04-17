@@ -138,9 +138,7 @@ public class RegisterActivity extends AppCompatActivity {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm != null) {
             NetworkInfo netWorkInfo = cm.getActiveNetworkInfo();
-            if (netWorkInfo != null && netWorkInfo.getState() == NetworkInfo.State.CONNECTED) {
-                return true;
-            }
+            return netWorkInfo != null && netWorkInfo.getState() == NetworkInfo.State.CONNECTED;
         }
         return false;
     }

@@ -209,9 +209,9 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public static class CommentHolder extends RecyclerView.ViewHolder {
-        TextView authorTextView;
-        TextView commentTextView;
-        TextView timeTextView;
+        final TextView authorTextView;
+        final TextView commentTextView;
+        final TextView timeTextView;
 
         public CommentHolder(View itemView) {
             super(itemView);

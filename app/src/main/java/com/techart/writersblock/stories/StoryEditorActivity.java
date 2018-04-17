@@ -41,10 +41,10 @@ public class StoryEditorActivity extends AppCompatActivity {
     private String storyTitle;
     private String storyCategory;
     private String storyDescription;
-    String storyUrl ="null";
+    private String storyUrl ="null";
 
-    String newText;
-    String newTitle;
+    private String newText;
+    private String newTitle;
     private String status = "Ongoing";
 
     @Override
@@ -152,7 +152,6 @@ public class StoryEditorActivity extends AppCompatActivity {
         values.put(Constants.POST_AUTHOR,FireBaseUtils.getAuthor());
         values.put(Constants.TIME_CREATED,ServerValue.TIMESTAMP);
         FireBaseUtils.mDatabaseStory.child(storyUrl).setValue(values);
-        FireBaseUtils.subscribeTopic(storyUrl);
         postStoryChapter();
         Toast.makeText(getApplicationContext(),"Story successfully posted", Toast.LENGTH_LONG).show();
     }

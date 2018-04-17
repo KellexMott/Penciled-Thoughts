@@ -3,18 +3,14 @@
     <string name="poem_deleted">Poem deleted</string>
     <string name="poem_updated">Poem updated</string>
 
-    <item name="is_true" type="bool">true</item>
-    <item name="is_false" type="bool">false</item>
 
 
     <!--activity login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-    <string name="title_activity_login">Sign in</string>
 
     <!--bottom menu -->
     <string name="item_home">Home</string>
-    <string name="item_account">Library</string>
     <string name="item_create">Create</string>
     <string name="item_search">Search</string>
     <string name="item_library">Library</string>
@@ -27,11 +23,6 @@
     <string name="repeat_password">Repeat Password</string>
     <string name="prompt_username">User Name</string>
 
-    <string name="search_hint">Poem Title</string>
-
-
-    <string name="action_fontsize">Font Size</string>
-    <string name="action_background">Mode</string>
 
     <string name="help"><![CDATA[<b>How to create a post</b>
         <ol>
@@ -103,9 +94,7 @@
     for any claim, damages or other liablity, whether in an action or contract, tort or otherwise, arising from,out
         of or in connection with the software or the use or other dealings in the software.</string>
     <string name="log_help">How to</string>
-    <string name="item_starred">Notification</string>
     <string name="chapter_updated">Chapter Updated</string>
-    <string name="chapter_saved">Chapter Saved</string>
     <string name="chapter_posted">Chapter Posted</string>
     <string name="chapter_deleted">Chapter Deleted</string>
     <string name="story_deleted">Story Deleted</string>
@@ -123,8 +112,6 @@
     <string name="next">Next</string>
     <string name="photo">Photo</string>
     <string name="add_post">Add Post</string>
-    <string name="num_likes">%1$d</string>
-    <string name="num_comments">%1$d</string>
     <string name="liked">%1$s liked %2$s</string>
     <string name="post_category">%1$s  *  </string>
     <string name="post_status">%1$s  *  </string>
@@ -160,8 +147,6 @@
     <string name="stories">Stories</string>
     <string name="type_comment">Type comment &#230;</string>
     <string name="send_icon">send icon</string>
-    <string name="book_image">book image</string>
-    <string name="updated">+</string>
     <string name="edit_description">Edit Description</string>
     <string name="cancel">Cancel</string>
 
@@ -170,7 +155,6 @@
 
 
     <string name="choose_email_client">Choose email client</string>
-    <string name="key_send_feedback">key_send_feedback</string>
 
     <string name="summary_about">Penciled Thoughts initially called Writers\' Block is a non-profit making and free
         Android Application meant to help talented writers in Zambia and all over the world by not only providing a platform that organizes Stories, Poems and Devotion in
@@ -178,31 +162,18 @@
         have formed but to people who are not on their friend or contact lists as well
    </string>
     <string name="app_version">1.0.0</string>
-    <string name="summary_support">Got any queries? We are happy to help!</string>
-    <string name="title_send_feedback">Send Feedback</string>
-    <string name="title_faq">FAQ</string>
-    <string name="summary_faq">View frequently asked questions</string>
 
-    <string name="winnie">Winnie</string>
-    <string name="readers">Readers</string>
-    <string name="view_stories">View Stories</string>
-    <string name="title_author">Author</string>
-    <string name="summary_author">Know more about Winnie</string>
     <string name="title_developer">Developer</string>
     <string name="summary_developer">Know more about the Developer</string>
     <string name="summary_story_writer">Know more about the Major Story Contributor</string>
     <string name="summary_poem_writer">Know more about the Major Poem Contributor</string>
     <string name="summary_devotion_writer">Know more about the Major Devotion Contributor</string>
 
-    <string name="url_faq">https://www.androidhive.info/privacy-policy/</string>
     <string name="url_developer">https://web.facebook.com/kelvin.chiwele</string>
     <string name="url_story_writer">https://web.facebook.com/hildahphiri11/</string>
     <string name="url_poem_writer">https://web.facebook.com/terrykasanga.kahangu</string>
     <string name="url_devotion_writer">https://web.facebook.com/lele.sinkala</string>
 
-    <string name="privacy_policy">Privacy Policy</string>
-    <string name="url_privacy">https://www.androidhive.info/privacy-policy/</string>
-    <string name="title_terms">Terms &amp; Conditions</string>
     <string name="title_version">Version</string>
     <string name="key_app_version">key_app_version</string>
     <string name="title_help">Help</string>

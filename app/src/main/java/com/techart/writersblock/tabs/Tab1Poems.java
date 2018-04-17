@@ -60,7 +60,7 @@ public class Tab1Poems extends Fragment {
 
     private void bindView() {
         FirebaseRecyclerAdapter<Poem,ArticleViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Poem, ArticleViewHolder>(
-                Poem.class,R.layout.item_article,ArticleViewHolder.class, FireBaseUtils.mDatabasePoems) {
+                Poem.class,R.layout.item_article,ArticleViewHolder.class, FireBaseUtils.mDatabasePoems.orderByChild(Constants.TIME_CREATED)) {
             @Override
             protected void populateViewHolder(ArticleViewHolder viewHolder, final Poem model, int position) {
                 final String post_key = getRef(position).getKey();

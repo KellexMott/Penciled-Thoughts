@@ -16,7 +16,7 @@ import com.techart.writersblock.utils.TimeUtils;
  * Retrieves and displays list of people who have viewed a particular post
  */
 public class ViewsActivity extends AppCompatActivity {
-    String postKey;
+    private String postKey;
     private RecyclerView mPoemList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

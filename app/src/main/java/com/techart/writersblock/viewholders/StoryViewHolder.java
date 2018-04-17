@@ -34,7 +34,6 @@ public final class StoryViewHolder extends RecyclerView.ViewHolder {
     public View mView;
 
     public DatabaseReference mDatabaseLike;
-    FirebaseAuth mAUth;
 
     public ImageButton btnDelete;
     public ImageButton btnLiked;
@@ -85,8 +84,8 @@ public final class StoryViewHolder extends RecyclerView.ViewHolder {
 
     public void setIvImage(Context context, String imageUrl) {
         Glide.with(context)
-                .load(imageUrl)
-                .into(ivStory);
+        .load(imageUrl)
+        .into(ivStory);
     }
     public void setLikeBtn(String post_key) {
         FireBaseUtils.setLikeBtn(post_key,btnLiked);

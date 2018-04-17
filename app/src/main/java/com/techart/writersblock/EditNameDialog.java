@@ -71,7 +71,7 @@ public class EditNameDialog extends AppCompatActivity {
         finish();
     }
 
-    public static boolean validate(Context context,String title)
+    private static boolean validate(Context context, String title)
     {
         if (title.isEmpty()) {
             Toast.makeText(context,"User name can not be empty",Toast.LENGTH_LONG).show();

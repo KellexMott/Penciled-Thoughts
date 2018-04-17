@@ -29,8 +29,8 @@ public class AuthorsProfileActivity extends AppCompatActivity
     private RelativeLayout postedSpirituals;
     private RelativeLayout postedStories;
     private FirebaseAuth mAuth;
-    static String author;
-    static String authorUrl;
+    private static String author;
+    private static String authorUrl;
 
     private ImageView imProfilePicture;
     private String currentPhotoUrl;

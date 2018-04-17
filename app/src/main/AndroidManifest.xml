@@ -13,12 +13,9 @@
 
     <application
         android:name=".WritersBlock"
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:installLocation="auto"
+        android:roundIcon="@mipmap/ic_launcher"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
@@ -26,15 +23,13 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <provider
             android:name=".sqliteutils.WritersBlockProvider"
-            android:authorities="com.techart.writersblock.writersblockprovider"
-            android:exported="false" />
+            android:authorities="com.techart.writersblock.writersblockprovider" />
 
         <activity
             android:name=".CommentActivity"
@@ -96,7 +91,6 @@
             android:parentActivityName=".InformationActivity">
             <intent-filter>
                 <action android:name="com.techart.writersblock.HelpActivity" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

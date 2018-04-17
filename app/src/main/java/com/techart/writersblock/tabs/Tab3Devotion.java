@@ -36,7 +36,7 @@ public class Tab3Devotion extends Fragment {
     private RecyclerView mPoemList;
     private FirebaseRecyclerAdapter<Devotion,ArticleViewHolder> fireBaseRecyclerAdapter;
     private FirebaseAuth mAuth;
-    RecyclerView.LayoutManager recyclerViewLayoutManager;
+    private RecyclerView.LayoutManager recyclerViewLayoutManager;
     private boolean mProcessView = false;
     private boolean mProcessLike = false;
 

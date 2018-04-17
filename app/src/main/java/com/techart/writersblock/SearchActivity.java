@@ -43,14 +43,15 @@ public class SearchActivity extends AppCompatActivity {
     private EditText etSearch;
     private RecyclerView rvSearchResults;
     private ImageView imFilter;
+    private ImageView imBack;
     private String searchText;
-    private String postType = "poem";
     private ArrayList<String> contents= new ArrayList<>(Arrays.asList(Constants.STORY_HOLDER, Constants.POEM_HOLDER, Constants.DEVOTION_HOLDER));
-    Query storyRef;
-    Query articleRef;
+    private Query storyRef;
+    private Query articleRef;
     private int pageCount;
+    private String postType;
     private AlertDialog updateDialog;
-    String[] categories = {Constants.STORY_HOLDER, Constants.POEM_HOLDER, Constants.DEVOTION_HOLDER};
+    private final String[] categories = {Constants.STORY_HOLDER, Constants.POEM_HOLDER, Constants.DEVOTION_HOLDER};
 
 
     @Override
@@ -60,11 +61,19 @@ public class SearchActivity extends AppCompatActivity {
         etSearch = findViewById(R.id.et_search);
         rvSearchResults = findViewById(R.id.rv_search);
         imFilter = findViewById(R.id.iv_filter);
+        imBack = findViewById(R.id.iv_back);
         rvSearchResults.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
         rvSearchResults.setLayoutManager(linearLayoutManager);
+
+        imBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         imFilter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +94,7 @@ public class SearchActivity extends AppCompatActivity {
                                       int before, int count) {
                 searchText = etSearch.getText().toString().trim();
                 if (searchText.isEmpty()){
-                    initSearchFor("poem");
+                    initSearchFor();
                 } else {
                     firebaseSearch();
                 }
@@ -93,7 +102,7 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    private void initSearchFor(String postType) {
+    private void initSearchFor() {
         switch (postType) {
             case Constants.POEM_HOLDER:
                 articleRef = FireBaseUtils.mDatabasePoems.orderByChild(Constants.TIME_CREATED);
@@ -112,7 +121,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void firebaseSearch() {
         if (postType.equals(Constants.STORY_HOLDER)){
-            storyRef = searchForArticleWith();
+            storyRef = FireBaseUtils.mDatabaseStory.orderByChild("title").startAt(searchText).endAt(searchText + "\uf8ff");
             firebaseStorySearch();
         } else {
             articleRef = searchForArticleWith();
@@ -385,7 +394,7 @@ public class SearchActivity extends AppCompatActivity {
         selectSearchField();
     }
 
-    public void selectSearchField()
+    private void selectSearchField()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(SearchActivity.this);
         builder.setSingleChoiceItems(categories, -1, new DialogInterface.OnClickListener() {
@@ -393,9 +402,11 @@ public class SearchActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int item) {
                 updateDialog.dismiss();
                 etSearch.setHint(getString(R.string.search_title,contents.get(item)));
-                initSearchFor(contents.get(item));
+                postType = contents.get(item);
+                initSearchFor();
             }
         });
+        builder.setTitle("Search for?");
         updateDialog = builder.create();
         updateDialog.show();
     }

@@ -248,7 +248,6 @@ public class DevotionEditorActivity extends AppCompatActivity {
         values.put(Constants.POST_AUTHOR,FireBaseUtils.getAuthor());
         values.put(Constants.TIME_CREATED,ServerValue.TIMESTAMP);
         FireBaseUtils.mDatabaseDevotions.child(devotionUrl).setValue(values);
-        FireBaseUtils.subscribeTopic(devotionUrl);
         mProgress.dismiss();
         Toast.makeText(getApplicationContext(),"Devotion posted", Toast.LENGTH_LONG).show();
         finishEditing();

@@ -46,7 +46,7 @@ public class Tab2Stories extends Fragment {
     private ArrayList<String> contents;
     private int pageCount;
 
-    Long timeAccessed;
+    private Long timeAccessed;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

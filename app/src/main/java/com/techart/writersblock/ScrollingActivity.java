@@ -10,7 +10,7 @@ import com.techart.writersblock.utils.Constants;
  * Presents the view for reading items
  */
 public class ScrollingActivity extends AppCompatActivity {
-    TextView tvPoem;
+    private TextView tvPoem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

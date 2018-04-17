@@ -64,8 +64,7 @@ public class LibraryActivity extends AppCompatActivity {
     private SharedPreferences mPref;
 
     private TextView tvSetPhoto;
-    String realPath;
-    private TextView tv_readingList;
+    private String realPath;
     private ProgressDialog mProgress;
 
     private ImageView imProfilePicture;
@@ -75,8 +74,8 @@ public class LibraryActivity extends AppCompatActivity {
     private static final int GALLERY_REQUEST = 1;
     // The request code used in ActivityCompat.requestPermissions()
     // and returned in the Activity's onRequestPermissionsResult()
-    private int PERMISSION_ALL = 1;
-    private String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private final int PERMISSION_ALL = 1;
+    private final String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private Uri uri;
 
     @Override
@@ -121,7 +120,7 @@ public class LibraryActivity extends AppCompatActivity {
                 int lastAccessedPage = mPref.getInt(post_key,-1);
                 int pageCount = mPref.getInt(post_key+1,-1);
                 if (lastAccessedPage != -1 && pageCount != -1){
-                    viewHolder.tvTime.setText(getString(R.string.reading_progess, NumberUtils.setPlurality(lastAccessedPage,"chapter"), pageCount));
+                    viewHolder.tvTime.setText(getString(R.string.reading_progess, NumberUtils.setPlurality(lastAccessedPage + 1,"chapter"), pageCount));
                 }
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -450,10 +449,10 @@ public class LibraryActivity extends AppCompatActivity {
 
     public static class LibraryViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvTitle;
-        TextView tvTime;
-        TextView tvRemove;
-        View mView;
+        final TextView tvTitle;
+        final TextView tvTime;
+        final TextView tvRemove;
+        final View mView;
 
         public LibraryViewHolder(View itemView) {
             super(itemView);

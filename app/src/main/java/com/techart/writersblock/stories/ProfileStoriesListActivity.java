@@ -69,7 +69,7 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
 
 
 
-    String[] categories = {"Action", "Drama", "Fiction","Romance"};
+    private String[] categories = {"Action", "Drama", "Fiction","Romance"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +89,7 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
         bindView();
     }
 
-    public void onToggleButtonClicked(View view, String  postKey) {
+    private void onToggleButtonClicked(View view, String postKey) {
         ((ToggleButton) view).setChecked(((ToggleButton) view).isChecked());
         FireBaseUtils.updateStatus(((ToggleButton) view).getText().toString(),postKey);
         Toast.makeText(this,"Story marked as " + ((ToggleButton) view).getText(),Toast.LENGTH_LONG).show();
@@ -251,7 +251,7 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
 
 
 
-    public void updateStoryDialog(final String post_key, String category)
+    private void updateStoryDialog(final String post_key, String category)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfileStoriesListActivity.this);
         builder.setSingleChoiceItems(categories, contents.indexOf(category), new DialogInterface.OnClickListener() {
@@ -350,7 +350,7 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
     }
 
 
-    public void deleteCaution(final String post_key)
+    private void deleteCaution(final String post_key)
     {
         DialogInterface.OnClickListener dialogClickListener =
             new DialogInterface.OnClickListener() {
@@ -422,19 +422,19 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
             mAUth = FirebaseAuth.getInstance();
         }
 
-        public void setIvImage(Context context, String image) {
+        void setIvImage(Context context, String image) {
             Glide.with(context)
                     .load(image)
                     .into(btCover);
         }
 
-        public void setIvImage(Context context, int resourceValue) {
+        void setIvImage(Context context, int resourceValue) {
             Glide.with(context)
                     .load(resourceValue)
                     .into(btCover);
         }
 
-        public void setIvImage(Context context, Uri image)
+        void setIvImage(Context context, Uri image)
         {
             Glide.with(context)
                     .load(image)

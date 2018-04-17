@@ -17,7 +17,7 @@ import com.techart.writersblock.sqliteutils.WritersBlockContract;
  */
 
 public class PoemsCursorAdapter extends CursorAdapter {
-    Context context;
+    private Context context;
     public PoemsCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         this.context = context;

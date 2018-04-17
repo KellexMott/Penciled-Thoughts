@@ -31,7 +31,7 @@ public class InformationActivity extends AppCompatInformationActivity {
             try {
                 String body = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
                 preferenceAppVersion.setSummary(body);
-            } catch (PackageManager.NameNotFoundException e) {
+            } catch (PackageManager.NameNotFoundException ignored) {
             }
 
             // feedback preference click listener

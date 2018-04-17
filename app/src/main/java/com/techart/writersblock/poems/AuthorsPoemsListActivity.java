@@ -32,7 +32,7 @@ public class AuthorsPoemsListActivity extends AppCompatActivity {
     private RecyclerView mPoemList;
     private DatabaseReference mDatabasePoems;
     private DatabaseReference mDatabaseLike;
-    String author;
+    private String author;
     private String postTitle;
     private String postContent;
 
