@@ -4,6 +4,15 @@
     <string name="poem_updated">Poem updated</string>
 
 
+    <string-array name="categories">
+        <item>Action</item>
+        <item>Comedy</item>
+        <item>Drama</item>
+        <item>Fiction</item>
+        <item>Horror</item>
+        <item>Thriller</item>
+        <item>Romance</item>
+    </string-array>
 
     <!--activity login -->
     <string name="prompt_email">Email</string>

@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.techart.writersblock.R;
 import com.techart.writersblock.utils.FireBaseUtils;
@@ -60,7 +59,6 @@ public final class StoryViewHolder extends RecyclerView.ViewHolder {
         tvNumViews = itemView.findViewById(R.id.tv_numviews);
         this.mView = itemView;
         mDatabaseLike = FireBaseUtils.mDatabaseLike;
-        mAUth = FirebaseAuth.getInstance();
         mDatabaseLike.keepSynced(true);
     }
 

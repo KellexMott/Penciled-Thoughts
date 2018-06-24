@@ -56,20 +56,16 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseStory;
     private DatabaseReference mDatabaseLike;
     private AlertDialog updateDialog;
-    private ArrayList<String> contents = new ArrayList<>(Arrays.asList("Action", "Drama", "Fiction","Romance"));
+    private ArrayList<String> contents = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.categories)));
 
     ProgressDialog mProgress;
-
     private static final int GALLERY_REQUEST = 1;
     private int PERMISSION_ALL = 1;
     private String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
     private Uri uriFromPath;
     private Uri uri;
 
-
-
-    private String[] categories = {"Action", "Drama", "Fiction","Romance"};
+    private String[] categories = getResources().getStringArray(R.array.categories);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -251,8 +247,7 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
 
 
 
-    private void updateStoryDialog(final String post_key, String category)
-    {
+    private void updateStoryDialog(final String post_key, String category){
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfileStoriesListActivity.this);
         builder.setSingleChoiceItems(categories, contents.indexOf(category), new DialogInterface.OnClickListener() {
 

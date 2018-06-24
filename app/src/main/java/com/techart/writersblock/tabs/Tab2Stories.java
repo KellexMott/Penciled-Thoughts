@@ -18,6 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.techart.writersblock.ActivityReadStory;
 import com.techart.writersblock.AuthorsProfileActivity;
 import com.techart.writersblock.CommentActivity;
@@ -197,6 +198,7 @@ public class Tab2Stories extends Fragment {
                         initializeChapters(post_key, model);
                     } else {
                         mProcessView = false;
+                        FirebaseMessaging.getInstance().subscribeToTopic(post_key);
                         showDescription(Description,post_key,model);
                     }
                 }
@@ -227,8 +229,7 @@ public class Tab2Stories extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 pageCount = ((int) dataSnapshot.getChildrenCount());
-                for (DataSnapshot chapterSnapShot: dataSnapshot.getChildren())
-                {
+                for (DataSnapshot chapterSnapShot: dataSnapshot.getChildren()) {
                     Chapter chapter = chapterSnapShot.getValue(Chapter.class);
                     contents.add(chapter.getContent());
                 }
@@ -252,8 +253,7 @@ public class Tab2Stories extends Fragment {
         FireBaseUtils.mDatabaseLibrary.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.child(FireBaseUtils.getUiD()).hasChild(post_key))
-                {
+                if (!dataSnapshot.child(FireBaseUtils.getUiD()).hasChild(post_key)) {
                     Map<String,Object> values = new HashMap<>();
                     values.put(Constants.POST_KEY,  post_key);
                     values.put(Constants.POST_TITLE, model.getTitle());

@@ -24,7 +24,7 @@ public class Constants {
     public static final String IMAGE_URL = "imageUrl";
     public static final String USER_NAME = "name";
 
-    public static final String NEW_POST_SUBSCRIPTION = "newPost";
+    public static final String NEW_POST_SUBSCRIPTION = "all";
 
     public static final String CREATE_STORY = "Create Story";
     public static final String POEM_HOLDER = "poem";

@@ -34,12 +34,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         taskStackBuilder.addNextIntent(intent);
         PendingIntent pendingIntent  = taskStackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
 
-
         NotificationCompat.Builder notificationBuilder = new   NotificationCompat.Builder(this)
-                .setContentTitle(payload.get("title")) //the "title" value you sent in your notification
-                .setContentText(payload.get("body")) //ditto
-                .setAutoCancel(true) //dismisses the notification on click
-                .setContentIntent(pendingIntent);
+        .setContentTitle(payload.get("title")) //the "title" value you sent in your notification
+        .setContentText(payload.get("body")) //ditto
+        .setAutoCancel(true) //dismisses the notification on click
+        .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

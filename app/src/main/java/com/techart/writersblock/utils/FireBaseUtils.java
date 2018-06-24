@@ -13,6 +13,7 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.techart.writersblock.R;
@@ -55,6 +56,7 @@ public final class FireBaseUtils {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (FireBaseUtils.mAuth.getCurrentUser() != null && !dataSnapshot.hasChild(getUiD()))  {
+                    FirebaseMessaging.getInstance().subscribeToTopic(Constants.NEW_POST_SUBSCRIPTION);
                     mSubscriptions.child(getUiD()).setValue(Constants.NEW_POST_SUBSCRIPTION);
                 }
             }
