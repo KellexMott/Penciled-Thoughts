@@ -18,8 +18,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.techart.writersblock.R;
+import com.techart.writersblock.constants.Constants;
 import com.techart.writersblock.sqliteutils.WritersBlockContract;
-import com.techart.writersblock.utils.Constants;
 
 public class MyChaptersListActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor>
@@ -125,10 +125,6 @@ public class MyChaptersListActivity extends AppCompatActivity
         dialog.show();
     }
 
-
-    private void restartLoader() {
-        getLoaderManager().restartLoader(0, null, this);
-    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {

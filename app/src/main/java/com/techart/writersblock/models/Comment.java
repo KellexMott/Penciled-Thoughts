@@ -8,6 +8,8 @@ package com.techart.writersblock.models;
 public class Comment {
     private String user;
     private String author;
+    private String authorUrl;
+    private Long replies;
     private String commentText;
     private Long timeCreated;
 
@@ -41,5 +43,21 @@ public class Comment {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public Long getReplies() {
+        return replies;
+    }
+
+    public void setReplies(Long replies) {
+        this.replies = replies;
+    }
+
+    public String getAuthorUrl() {
+        return authorUrl;
+    }
+
+    public void setAuthorUrl(String authorUrl) {
+        this.authorUrl = authorUrl;
     }
 }

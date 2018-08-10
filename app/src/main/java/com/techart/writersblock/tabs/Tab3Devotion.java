@@ -3,7 +3,7 @@ package com.techart.writersblock.tabs;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +21,9 @@ import com.techart.writersblock.LikesActivity;
 import com.techart.writersblock.R;
 import com.techart.writersblock.ScrollingActivity;
 import com.techart.writersblock.ViewsActivity;
+import com.techart.writersblock.constants.Constants;
+import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.models.Devotion;
-import com.techart.writersblock.utils.Constants;
-import com.techart.writersblock.utils.FireBaseUtils;
 import com.techart.writersblock.utils.ImageUtils;
 import com.techart.writersblock.utils.NumberUtils;
 import com.techart.writersblock.utils.TimeUtils;
@@ -34,9 +34,6 @@ import com.techart.writersblock.viewholders.ArticleViewHolder;
  */
 public class Tab3Devotion extends Fragment {
     private RecyclerView mPoemList;
-    private FirebaseRecyclerAdapter<Devotion,ArticleViewHolder> fireBaseRecyclerAdapter;
-    private FirebaseAuth mAuth;
-    private RecyclerView.LayoutManager recyclerViewLayoutManager;
     private boolean mProcessView = false;
     private boolean mProcessLike = false;
 
@@ -44,7 +41,7 @@ public class Tab3Devotion extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tabrecyclerviewer, container, false);
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FireBaseUtils.mDatabaseLike.keepSynced(true);
         FireBaseUtils.mDatabaseDevotions.keepSynced(true);
         FireBaseUtils.mDatabaseViews.keepSynced(true);
@@ -53,9 +50,10 @@ public class Tab3Devotion extends Fragment {
         mPoemList = rootView.findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
 
-        recyclerViewLayoutManager = new GridLayoutManager(getContext(),2);
-
-        mPoemList.setLayoutManager(recyclerViewLayoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        mPoemList.setLayoutManager(linearLayoutManager);
         bindView();
         return rootView;
     }
@@ -77,33 +75,29 @@ public class Tab3Devotion extends Fragment {
      */
     private void bindView()
     {
-        fireBaseRecyclerAdapter = new FirebaseRecyclerAdapter<Devotion, ArticleViewHolder>(
-                Devotion.class,R.layout.item_article,ArticleViewHolder.class, FireBaseUtils.mDatabaseDevotions) {
+        FirebaseRecyclerAdapter<Devotion, ArticleViewHolder> fireBaseRecyclerAdapter = new FirebaseRecyclerAdapter<Devotion, ArticleViewHolder>(
+                Devotion.class, R.layout.item_article, ArticleViewHolder.class, FireBaseUtils.mDatabaseDevotions) {
             @Override
             protected void populateViewHolder(ArticleViewHolder viewHolder, final Devotion model, int position) {
                 final String post_key = getRef(position).getKey();
                 FireBaseUtils.mDatabaseLike.child(post_key).keepSynced(true);
                 viewHolder.post_title.setText(model.getTitle());
                 viewHolder.setTint(getContext());
-                viewHolder.post_author.setText(getString(R.string.article_author,model.getAuthor()));
+                viewHolder.post_author.setText(getString(R.string.article_author, model.getAuthor()));
                 viewHolder.setIvImage(getContext(), ImageUtils.getDevotionUrl(NumberUtils.getModuleOfTen(position)));
-                if (model.getNumLikes() != null)
-                {
+                if (model.getNumLikes() != null) {
                     String count = NumberUtils.shortenDigit(model.getNumLikes());
                     viewHolder.numLikes.setText(count);
                 }
-                if (model.getNumComments() != null)
-                {
+                if (model.getNumComments() != null) {
                     String count = NumberUtils.shortenDigit(model.getNumComments());
                     viewHolder.numComments.setText(count);
                 }
-                if (model.getNumViews() != null)
-                {
+                if (model.getNumViews() != null) {
                     String count = NumberUtils.shortenDigit(model.getNumViews());
-                    viewHolder.tvNumViews.setText(getString(R.string.viewers,count));
+                    viewHolder.tvNumViews.setText(getString(R.string.viewers, count));
                 }
-                if (model.getTimeCreated() != null)
-                {
+                if (model.getTimeCreated() != null) {
                     String time = TimeUtils.timeElapsed(model.getTimeCreated());
                     viewHolder.timeTextView.setText(time);
                 }
@@ -118,20 +112,20 @@ public class Tab3Devotion extends Fragment {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (mProcessView) {
-                                    if (!dataSnapshot.hasChild(FireBaseUtils.getUiD()))
-                                    {
-                                        FireBaseUtils.addDevotionView(model,post_key);
+                                    if (!dataSnapshot.hasChild(FireBaseUtils.getUiD())) {
+                                        FireBaseUtils.addDevotionView(model, post_key);
                                         mProcessView = false;
                                         FireBaseUtils.onDevotionViewed(post_key);
                                     }
                                 }
                             }
+
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
 
                             }
                         });
-                        Intent readPoemIntent = new Intent(getContext(),ScrollingActivity.class);
+                        Intent readPoemIntent = new Intent(getContext(), ScrollingActivity.class);
                         readPoemIntent.putExtra(Constants.POST_CONTENT, model.getDevotionText());
                         readPoemIntent.putExtra(Constants.POST_TITLE, model.getTitle());
                         startActivity(readPoemIntent);
@@ -141,7 +135,7 @@ public class Tab3Devotion extends Fragment {
                 viewHolder.post_author.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent readPoemIntent = new Intent(getContext(),AuthorsProfileActivity.class);
+                        Intent readPoemIntent = new Intent(getContext(), AuthorsProfileActivity.class);
                         readPoemIntent.putExtra(Constants.POST_AUTHOR, model.getAuthor());
                         readPoemIntent.putExtra(Constants.AUTHOR_URL, model.getAuthorUrl());
                         startActivity(readPoemIntent);
@@ -156,8 +150,7 @@ public class Tab3Devotion extends Fragment {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (mProcessLike) {
-                                    if (dataSnapshot.hasChild(FireBaseUtils.getUiD()))
-                                    {
+                                    if (dataSnapshot.hasChild(FireBaseUtils.getUiD())) {
                                         FireBaseUtils.mDatabaseLike.child(post_key).child(FireBaseUtils.getUiD()).removeValue();
                                         FireBaseUtils.onDevotionDisliked(post_key);
                                         mProcessLike = false;
@@ -168,6 +161,7 @@ public class Tab3Devotion extends Fragment {
                                     }
                                 }
                             }
+
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
 
@@ -178,8 +172,8 @@ public class Tab3Devotion extends Fragment {
                 viewHolder.numLikes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent likedPostsIntent = new Intent(getContext(),LikesActivity.class);
-                        likedPostsIntent.putExtra(Constants.POST_KEY,post_key);
+                        Intent likedPostsIntent = new Intent(getContext(), LikesActivity.class);
+                        likedPostsIntent.putExtra(Constants.POST_KEY, post_key);
                         startActivity(likedPostsIntent);
                     }
                 });
@@ -187,10 +181,10 @@ public class Tab3Devotion extends Fragment {
                 viewHolder.btnComment.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent commentIntent = new Intent(getContext(),CommentActivity.class);
-                        commentIntent.putExtra(Constants.POST_KEY,post_key);
-                        commentIntent.putExtra(Constants.POST_TITLE,model.getTitle());
-                        commentIntent.putExtra(Constants.POST_TYPE,Constants.DEVOTION_HOLDER);
+                        Intent commentIntent = new Intent(getContext(), CommentActivity.class);
+                        commentIntent.putExtra(Constants.POST_KEY, post_key);
+                        commentIntent.putExtra(Constants.POST_TITLE, model.getTitle());
+                        commentIntent.putExtra(Constants.POST_TYPE, Constants.DEVOTION_HOLDER);
                         startActivity(commentIntent);
                     }
                 });
@@ -198,8 +192,8 @@ public class Tab3Devotion extends Fragment {
                 viewHolder.btnViews.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent likedPostsIntent = new Intent(getContext(),ViewsActivity.class);
-                        likedPostsIntent.putExtra(Constants.POST_KEY,post_key);
+                        Intent likedPostsIntent = new Intent(getContext(), ViewsActivity.class);
+                        likedPostsIntent.putExtra(Constants.POST_KEY, post_key);
                         startActivity(likedPostsIntent);
                     }
                 });

@@ -20,12 +20,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.techart.writersblock.constants.Constants;
+import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.models.Chapter;
 import com.techart.writersblock.models.Devotion;
 import com.techart.writersblock.models.Poem;
 import com.techart.writersblock.models.Story;
-import com.techart.writersblock.utils.Constants;
-import com.techart.writersblock.utils.FireBaseUtils;
 import com.techart.writersblock.utils.ImageUtils;
 import com.techart.writersblock.utils.NumberUtils;
 import com.techart.writersblock.utils.TimeUtils;
@@ -42,8 +43,6 @@ public class SearchActivity extends AppCompatActivity {
     private boolean mProcessView = false;
     private EditText etSearch;
     private RecyclerView rvSearchResults;
-    private ImageView imFilter;
-    private ImageView imBack;
     private String searchText;
     private ArrayList<String> contents= new ArrayList<>(Arrays.asList(Constants.STORY_HOLDER, Constants.POEM_HOLDER, Constants.DEVOTION_HOLDER));
     private Query storyRef;
@@ -60,8 +59,8 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         etSearch = findViewById(R.id.et_search);
         rvSearchResults = findViewById(R.id.rv_search);
-        imFilter = findViewById(R.id.iv_filter);
-        imBack = findViewById(R.id.iv_back);
+        ImageView imFilter = findViewById(R.id.iv_filter);
+        ImageView imBack = findViewById(R.id.iv_back);
         rvSearchResults.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setReverseLayout(true);
@@ -95,7 +94,7 @@ public class SearchActivity extends AppCompatActivity {
                 searchText = etSearch.getText().toString().trim();
                 if (searchText.isEmpty()){
                     initSearchFor();
-                } else {
+                } else if (searchText != null) {
                     firebaseSearch();
                 }
             }
@@ -120,7 +119,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void firebaseSearch() {
-        if (postType.equals(Constants.STORY_HOLDER)){
+        if (postType.equals(Constants.STORY_HOLDER )){
             storyRef = FireBaseUtils.mDatabaseStory.orderByChild("title").startAt(searchText).endAt(searchText + "\uf8ff");
             firebaseStorySearch();
         } else {
@@ -139,7 +138,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void firebaseArticleSearch() {
         FirebaseRecyclerAdapter<Poem,ArticleViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Poem, ArticleViewHolder>(
-                Poem.class,R.layout.item_article_search,ArticleViewHolder.class, articleRef) {
+                Poem.class,R.layout.item_article,ArticleViewHolder.class, articleRef) {
             @Override
             protected void populateViewHolder(ArticleViewHolder viewHolder, final Poem model, int position) {
                 final String post_key = getRef(position).getKey();
@@ -264,7 +263,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void firebaseDevotionSearch() {
         FirebaseRecyclerAdapter<Devotion,ArticleViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Devotion, ArticleViewHolder>(
-                Devotion.class,R.layout.item_article_search,ArticleViewHolder.class, articleRef) {
+                Devotion.class,R.layout.item_article,ArticleViewHolder.class, articleRef) {
             @Override
             protected void populateViewHolder(ArticleViewHolder viewHolder, final Devotion model, int position) {
                 final String post_key = getRef(position).getKey();
@@ -388,11 +387,23 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart()
-    {
+    protected void onStart(){
         super.onStart();
         selectSearchField();
+        //onNewIntent(getIntent());
     }
+    /*
+    @Override
+    public void onNewIntent(Intent intent){
+        Bundle extra = intent.getExtras();
+        if (extra != null){
+            postType = extra.getString(Constants.POST_TYPE);
+            searchText = extra.getString("heading");
+            firebaseSearch();
+        } else {
+            selectSearchField();
+        }
+    }*/
 
     private void selectSearchField()
     {
@@ -531,7 +542,7 @@ public class SearchActivity extends AppCompatActivity {
         fireBaseRecyclerAdapter.notifyDataSetChanged();
     }
 
-    private void addToViews(final String Description, final String post_key, final Story model) {
+    private void addToViews(final String description, final String post_key, final Story model) {
         mProcessView = true;
         FireBaseUtils.mDatabaseViews.child(post_key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -540,9 +551,16 @@ public class SearchActivity extends AppCompatActivity {
                     if (dataSnapshot.hasChild(FireBaseUtils.getUiD())) {
                         mProcessView = false;
                         initializeChapters(post_key, model);
+                    } else if (description.isEmpty()) {
+                        mProcessView = false;
+                        FirebaseMessaging.getInstance().subscribeToTopic(post_key);
+                        FireBaseUtils.addStoryView(model,post_key);
+                        FireBaseUtils.onStoryViewed(post_key);
+                        initializeChapters(post_key, model);
                     } else {
                         mProcessView = false;
-                        showDescription(Description,post_key,model);
+                        FirebaseMessaging.getInstance().subscribeToTopic(post_key);
+                        showDescription(description,post_key,model);
                     }
                 }
             }

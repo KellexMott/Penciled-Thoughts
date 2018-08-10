@@ -15,9 +15,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.techart.writersblock.CommentActivity;
 import com.techart.writersblock.LikesActivity;
 import com.techart.writersblock.R;
+import com.techart.writersblock.constants.Constants;
+import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.models.Poem;
-import com.techart.writersblock.utils.Constants;
-import com.techart.writersblock.utils.FireBaseUtils;
 import com.techart.writersblock.utils.TimeUtils;
 import com.techart.writersblock.viewholders.ArticleEditViewHolder;
 

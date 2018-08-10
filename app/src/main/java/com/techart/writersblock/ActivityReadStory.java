@@ -1,15 +1,20 @@
 package com.techart.writersblock;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -17,7 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.techart.writersblock.utils.Constants;
+import com.techart.writersblock.constants.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,23 +30,13 @@ import java.util.List;
 public class ActivityReadStory extends AppCompatActivity {
 
     private List<String> contents;
-    private List<String> pageNumbers;
     private int pageCount;
     private Spinner pages;
     private String postUrl;
     private int lastAccessedPage;
     private int setPage;
     private SharedPreferences mPref;
-    private SharedPreferences.Editor editor;
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ShareActionProvider mShareActionProvider;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -61,7 +56,15 @@ public class ActivityReadStory extends AppCompatActivity {
         setPage = mPref.getInt(postUrl,0);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        /*
+      The {@link android.support.v4.view.PagerAdapter} that will provide
+      fragments for each of the sections. We use a
+      {@link FragmentPagerAdapter} derivative, which will keep every
+      loaded fragment in memory. If this becomes too memory intensive, it
+      may be best to switch to a
+      {@link FragmentStatePagerAdapter}.
+     */
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = findViewById(R.id.container);
@@ -88,7 +91,7 @@ public class ActivityReadStory extends AppCompatActivity {
 
         // Setup spinner
         pages = findViewById(R.id.pages);
-        pageNumbers = new ArrayList<>();
+        List<String> pageNumbers = new ArrayList<>();
         for(int i = 1; i <= pageCount; i++) {
             pageNumbers.add("Chapter " + i);//String.valueOf(i));//You should add items from db here (first spinner)
         }
@@ -111,6 +114,29 @@ public class ActivityReadStory extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_share, menu);
+        MenuItem item = menu.findItem(R.id.action_share);
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        setShareIntent(createShareIntent());
+        return true;
+    }
+
+    private Intent createShareIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND)
+                .setType("text/plain")
+                .putExtra(Intent.EXTRA_TEXT,  Constants.SENT_FROM +contents.get(lastAccessedPage));
+        mShareActionProvider.setShareIntent(shareIntent);
+        return shareIntent;
+    }
+
+    private void setShareIntent(Intent shareIntent){
+        if (mShareActionProvider != null){
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
     }
 
     @Override
@@ -185,7 +211,7 @@ public class ActivityReadStory extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        editor = mPref.edit();
+        SharedPreferences.Editor editor = mPref.edit();
         editor.putInt(postUrl,lastAccessedPage);
         editor.putInt(postUrl+1,pageCount);
         //editor.commit();

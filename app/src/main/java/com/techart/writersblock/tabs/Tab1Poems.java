@@ -3,7 +3,7 @@ package com.techart.writersblock.tabs;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +19,9 @@ import com.techart.writersblock.LikesActivity;
 import com.techart.writersblock.R;
 import com.techart.writersblock.ScrollingActivity;
 import com.techart.writersblock.ViewsActivity;
+import com.techart.writersblock.constants.Constants;
+import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.models.Poem;
-import com.techart.writersblock.utils.Constants;
-import com.techart.writersblock.utils.FireBaseUtils;
 import com.techart.writersblock.utils.ImageUtils;
 import com.techart.writersblock.utils.NumberUtils;
 import com.techart.writersblock.utils.TimeUtils;
@@ -44,10 +44,11 @@ public class Tab1Poems extends Fragment {
         FireBaseUtils.mDatabaseComment.keepSynced(true);
         mPoemList = rootView.findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        mPoemList.setLayoutManager(linearLayoutManager);
 
-        GridLayoutManager recyclerViewLayoutManager = new GridLayoutManager(getContext(),2);
-
-        mPoemList.setLayoutManager(recyclerViewLayoutManager);
         bindView();
         return rootView;
     }
@@ -60,7 +61,7 @@ public class Tab1Poems extends Fragment {
 
     private void bindView() {
         FirebaseRecyclerAdapter<Poem,ArticleViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Poem, ArticleViewHolder>(
-                Poem.class,R.layout.item_article,ArticleViewHolder.class, FireBaseUtils.mDatabasePoems.orderByChild(Constants.TIME_CREATED)) {
+                Poem.class,R.layout.item_article,ArticleViewHolder.class, FireBaseUtils.mDatabasePoems) {
             @Override
             protected void populateViewHolder(ArticleViewHolder viewHolder, final Poem model, int position) {
                 final String post_key = getRef(position).getKey();

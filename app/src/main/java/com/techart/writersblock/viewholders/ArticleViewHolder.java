@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.techart.writersblock.R;
-import com.techart.writersblock.utils.FireBaseUtils;
+import com.techart.writersblock.constants.FireBaseUtils;
 
 /**
  * ViewHolder for Articles: Poems & devotion

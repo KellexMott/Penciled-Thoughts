@@ -22,7 +22,8 @@
         android:id="@+id/et_dialog_editor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/tap_to_write"/>
+        android:hint="@string/tap_to_write"
+        android:inputType="textCapSentences" />
 
     <LinearLayout
         android:layout_width="wrap_content"

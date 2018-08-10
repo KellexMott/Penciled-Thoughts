@@ -12,9 +12,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.techart.writersblock.R;
-import com.techart.writersblock.utils.Constants;
+import com.techart.writersblock.constants.Constants;
+import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.utils.EditorUtils;
-import com.techart.writersblock.utils.FireBaseUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,8 +28,6 @@ public class PoemEditorOnlineActivity extends AppCompatActivity {
 
     private EditText editor;
     private EditText title;
-    private String oldText;
-    private String oldTitle;
 
     private String newText;
     private String newTitle;
@@ -46,8 +44,8 @@ public class PoemEditorOnlineActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         poemUrl = intent.getStringExtra(Constants.POST_KEY);
-        oldText = intent.getStringExtra(Constants.POEM);
-        oldTitle = intent.getStringExtra(Constants.POEM_TITLE);
+        String oldText = intent.getStringExtra(Constants.POEM);
+        String oldTitle = intent.getStringExtra(Constants.POEM_TITLE);
 
         title.setText(oldTitle);
         editor.setText(oldText);

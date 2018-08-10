@@ -18,11 +18,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.techart.writersblock.R;
+import com.techart.writersblock.constants.Constants;
+import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.models.Library;
 import com.techart.writersblock.sqliteutils.WritersBlockContract;
-import com.techart.writersblock.utils.Constants;
 import com.techart.writersblock.utils.EditorUtils;
-import com.techart.writersblock.utils.FireBaseUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +30,6 @@ import java.util.Map;
 public class AddChapterActivity extends AppCompatActivity {
 
     private ProgressDialog mProgress;
-    private DatabaseReference mDatabaseChapters;
     private EditText editor;
     private EditText title;
     private String chapterUrl = "null";
@@ -177,7 +176,7 @@ public class AddChapterActivity extends AppCompatActivity {
         mProgress = new ProgressDialog(this);
         mProgress.setMessage("Posting ...");
         mProgress.show();
-        mDatabaseChapters = FireBaseUtils.mDatabaseChapters.child(storyUrl);
+        DatabaseReference mDatabaseChapters = FireBaseUtils.mDatabaseChapters.child(storyUrl);
         chapterUrl = mDatabaseChapters.push().getKey();
         Map<String,Object> values = new HashMap<>();
         values.put(Constants.CHAPTER_CONTENT,newText);

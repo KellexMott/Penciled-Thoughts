@@ -12,9 +12,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.techart.writersblock.R;
-import com.techart.writersblock.utils.Constants;
+import com.techart.writersblock.constants.Constants;
 import com.techart.writersblock.utils.EditorUtils;
 
 /**
@@ -25,7 +26,6 @@ public class StoryPrologueActivity extends AppCompatActivity {
 
     private Spinner spCategory;
 
-    private int iTemPosition;
     private String category;
 
     private EditText etStoryTitle;
@@ -33,6 +33,10 @@ public class StoryPrologueActivity extends AppCompatActivity {
 
     private String title;
     private String description;
+
+
+    private TextView tvCategoryError;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +53,6 @@ public class StoryPrologueActivity extends AppCompatActivity {
         spCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                iTemPosition = position;
                 category = spCategory.getSelectedItem().toString();
             }
             @Override
@@ -75,21 +78,30 @@ public class StoryPrologueActivity extends AppCompatActivity {
         setValues();
         switch (id) {
             case R.id.action_next:
-                if (EditorUtils.validateEntry(this,iTemPosition,title, etStoryDescription))
-                {
-                    Intent intent = new Intent(StoryPrologueActivity.this, StoryEditorActivity.class);
-                    intent.putExtra("Category",category);
-                    intent.putExtra("Title",title);
-                    intent.putExtra("Description", description);
-                    startActivity(intent);
-                }
+                startWriting();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void setValues()
-    {
+    private boolean validate() {
+        tvCategoryError = (TextView)spCategory.getSelectedView();
+        return EditorUtils.dropDownValidator(category,getResources().getString(R.string.default_category),tvCategoryError) &&
+             EditorUtils.editTextValidator(title,etStoryTitle,"Kindly set story title");
+    }
+
+    private void startWriting() {
+        if (validate()){
+            Intent intent = new Intent(StoryPrologueActivity.this, StoryEditorActivity.class);
+            intent.putExtra("Category",category);
+            intent.putExtra("Title",title);
+            intent.putExtra("Description", description);
+            startActivity(intent);
+        }
+
+    }
+
+    private void setValues() {
         title = etStoryTitle.getText().toString().trim();
         description = etStoryDescription.getText().toString().trim();
     }

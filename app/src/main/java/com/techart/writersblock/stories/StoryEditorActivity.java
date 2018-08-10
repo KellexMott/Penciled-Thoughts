@@ -15,10 +15,10 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ServerValue;
 import com.techart.writersblock.R;
+import com.techart.writersblock.constants.Constants;
+import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.sqliteutils.WritersBlockContract;
-import com.techart.writersblock.utils.Constants;
 import com.techart.writersblock.utils.EditorUtils;
-import com.techart.writersblock.utils.FireBaseUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +45,6 @@ public class StoryEditorActivity extends AppCompatActivity {
 
     private String newText;
     private String newTitle;
-    private String status = "Ongoing";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +142,8 @@ public class StoryEditorActivity extends AppCompatActivity {
         values.put(Constants.STORY_TITLE,storyTitle.toUpperCase());
         values.put(Constants.STORY_DESCRIPTION,storyDescription);
         values.put(Constants.STORY_CATEGORY,storyCategory);
-        values.put(Constants.STORY_STATUS,status);
+        String status = "Ongoing";
+        values.put(Constants.STORY_STATUS, status);
         values.put(Constants.STORY_CHAPTERCOUNT,0);
         values.put(Constants.NUM_LIKES,0);
         values.put(Constants.NUM_COMMENTS,0);

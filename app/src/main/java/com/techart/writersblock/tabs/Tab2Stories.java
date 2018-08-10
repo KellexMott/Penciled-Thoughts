@@ -25,10 +25,10 @@ import com.techart.writersblock.CommentActivity;
 import com.techart.writersblock.LikesActivity;
 import com.techart.writersblock.R;
 import com.techart.writersblock.ViewsActivity;
+import com.techart.writersblock.constants.Constants;
+import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.models.Chapter;
 import com.techart.writersblock.models.Story;
-import com.techart.writersblock.utils.Constants;
-import com.techart.writersblock.utils.FireBaseUtils;
 import com.techart.writersblock.utils.ImageUtils;
 import com.techart.writersblock.utils.NumberUtils;
 import com.techart.writersblock.utils.TimeUtils;
@@ -69,7 +69,7 @@ public class Tab2Stories extends Fragment {
 
     private void bindView() {
         FirebaseRecyclerAdapter<Story,StoryViewHolder> fireBaseRecyclerAdapter = new FirebaseRecyclerAdapter<Story, StoryViewHolder>(
-                Story.class,R.layout.item_storyrow,StoryViewHolder.class, FireBaseUtils.mDatabaseStory)
+                Story.class,R.layout.item_storyrow,StoryViewHolder.class, FireBaseUtils.mDatabaseStory.orderByChild("lastUpdate"))
         {
             @Override
             protected void populateViewHolder(StoryViewHolder viewHolder, final Story model, int position) {
@@ -99,18 +99,18 @@ public class Tab2Stories extends Fragment {
                 if (model.getNumViews() != null) {
                     viewHolder.tvNumViews.setText(String.format("%s",model.getNumViews().toString()));
                 }
-                if (model.getTimeCreated() != null) {
-                    String time = TimeUtils.timeElapsed(model.getTimeCreated());
-                    viewHolder.tvTime.setText(time);
+                if (model.getLastUpdate() != null) {
+                    String time = TimeUtils.timeElapsed(model.getLastUpdate());
+                    viewHolder.tvTime.setText("last insert " + time);
                 }
 
                 viewHolder.tvAuthor.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent readPoemIntent = new Intent(getContext(),AuthorsProfileActivity.class);
-                        readPoemIntent.putExtra(Constants.POST_AUTHOR, model.getAuthor());
-                        readPoemIntent.putExtra(Constants.AUTHOR_URL, model.getAuthorUrl());
-                        startActivity(readPoemIntent);
+                    Intent readPoemIntent = new Intent(getContext(),AuthorsProfileActivity.class);
+                    readPoemIntent.putExtra(Constants.POST_AUTHOR, model.getAuthor());
+                    readPoemIntent.putExtra(Constants.AUTHOR_URL, model.getAuthorUrl());
+                    startActivity(readPoemIntent);
                     }
                 });
                 viewHolder.setLikeBtn(post_key);
@@ -124,6 +124,7 @@ public class Tab2Stories extends Fragment {
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         addToViews(model.getDescription(),post_key,model);
                     }
                 });
@@ -187,7 +188,7 @@ public class Tab2Stories extends Fragment {
         fireBaseRecyclerAdapter.notifyDataSetChanged();
     }
 
-    private void addToViews(final String Description, final String post_key, final Story model) {
+    private void addToViews(final String description, final String post_key, final Story model) {
         mProcessView = true;
         FireBaseUtils.mDatabaseViews.child(post_key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -196,10 +197,16 @@ public class Tab2Stories extends Fragment {
                     if (dataSnapshot.hasChild(FireBaseUtils.getUiD())) {
                         mProcessView = false;
                         initializeChapters(post_key, model);
+                    } else if (description.isEmpty()) {
+                        mProcessView = false;
+                        FirebaseMessaging.getInstance().subscribeToTopic(post_key);
+                        FireBaseUtils.addStoryView(model,post_key);
+                        FireBaseUtils.onStoryViewed(post_key);
+                        initializeChapters(post_key, model);
                     } else {
                         mProcessView = false;
                         FirebaseMessaging.getInstance().subscribeToTopic(post_key);
-                        showDescription(Description,post_key,model);
+                        showDescription(description,post_key,model);
                     }
                 }
             }
@@ -211,6 +218,7 @@ public class Tab2Stories extends Fragment {
     }
 
     private void initializeChapters(String post_key, Story model) {
+        FireBaseUtils.mDatabaseChapters.child(post_key).keepSynced(true);
         mDatabaseChapters = FireBaseUtils.mDatabaseChapters.child(post_key);
         contents = new ArrayList<>();
         addToLibrary(model,post_key);
@@ -280,14 +288,11 @@ public class Tab2Stories extends Fragment {
             new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int button) {
-                    if (button == DialogInterface.BUTTON_POSITIVE)
-                    {
+                    if (button == DialogInterface.BUTTON_POSITIVE){
                         FireBaseUtils.addStoryView(model,post_key);
                         FireBaseUtils.onStoryViewed(post_key);
                         initializeChapters(post_key, model);
-                    }
-                    else
-                    {
+                    } else {
                         dialog.dismiss();
                     }
                 }

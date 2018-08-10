@@ -27,8 +27,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,6 +39,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.devotion.MySpiritualsListActivity;
 import com.techart.writersblock.devotion.ProfileDevotionsListActivity;
 import com.techart.writersblock.models.Users;
@@ -43,8 +47,8 @@ import com.techart.writersblock.poems.MyPoemsListActivity;
 import com.techart.writersblock.poems.ProfilePoemsListActivity;
 import com.techart.writersblock.stories.MyStoriesListActivity;
 import com.techart.writersblock.stories.ProfileStoriesListActivity;
-import com.techart.writersblock.utils.FireBaseUtils;
 import com.techart.writersblock.utils.ImageUtils;
+import com.techart.writersblock.utils.UploadUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -61,18 +65,12 @@ import static com.techart.writersblock.utils.ImageUtils.hasPermissions;
  */
 public class ProfileActivity extends AppCompatActivity {
     private TextView tvSetPhoto;
-    private TextView tv_readingList;
     private ProgressDialog mProgress;
-    private ProgressDialog mUploadProgress;
-    private RelativeLayout mypoems;
-    private RelativeLayout myspirituals;
-    private RelativeLayout mystories;
-    private RelativeLayout postedPoems;
-    private RelativeLayout postedSpirituals;
-    private RelativeLayout postedStories;
     private ImageView imProfilePicture;
     private String currentPhotoUrl;
     private boolean isAttached;
+
+    StorageReference filePath;
     // GALLERY_REQUEST is a constant integer
     private static final int GALLERY_REQUEST = 1;
     // The request code used in ActivityCompat.requestPermissions()
@@ -92,14 +90,14 @@ public class ProfileActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         loadProfilePicture();
         tvSetPhoto = findViewById(R.id.tv_setPhoto);
-        tv_readingList = findViewById(R.id.tv_readingList);
+        TextView tv_readingList = findViewById(R.id.tv_readingList);
         imProfilePicture = findViewById(R.id.ib_profile);
-        mypoems = findViewById(R.id.mypoems);
-        myspirituals = findViewById(R.id.rv_myspirituals);
-        mystories = findViewById(R.id.rv_mystories);
-        postedPoems = findViewById(R.id.rv_postedpoems);
-        postedSpirituals = findViewById(R.id.rv_postedspirituals);
-        postedStories = findViewById(R.id.rv_postedstories);
+        RelativeLayout mypoems = findViewById(R.id.mypoems);
+        RelativeLayout myspirituals = findViewById(R.id.rv_myspirituals);
+        RelativeLayout mystories = findViewById(R.id.rv_mystories);
+        RelativeLayout postedPoems = findViewById(R.id.rv_postedpoems);
+        RelativeLayout postedSpirituals = findViewById(R.id.rv_postedspirituals);
+        RelativeLayout postedStories = findViewById(R.id.rv_postedstories);
 
         //Sets new DP buy first deleting existing one
         tvSetPhoto.setOnClickListener(new View.OnClickListener() {
@@ -213,20 +211,24 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_logout) {
-            logOut();
-        } else if (id == R.id.action_changedp) {
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                onGetPermission();
-            }  else {
-                Intent imageIntent = new Intent();
-                imageIntent.setType("image/*");
-                imageIntent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(imageIntent,GALLERY_REQUEST);
-            }
-        }  else if (id == R.id.action_edit_name) {
-            Intent readIntent = new Intent(ProfileActivity.this,EditNameDialog.class);
-            startActivity(readIntent);
+        switch (id) {
+            case R.id.action_logout:
+                logOut();
+                break;
+            case R.id.action_changedp:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    onGetPermission();
+                } else {
+                    Intent imageIntent = new Intent();
+                    imageIntent.setType("image/*");
+                    imageIntent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(imageIntent, GALLERY_REQUEST);
+                }
+                break;
+            case R.id.action_edit_name:
+                Intent readIntent = new Intent(ProfileActivity.this, EditNameDialog.class);
+                startActivity(readIntent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -359,12 +361,16 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * Uploads image to cloud storage
+     */
     private void upload() {
         mProgress = new ProgressDialog(ProfileActivity.this);
         mProgress.setMessage("Uploading photo, please wait...");
         mProgress.setCanceledOnTouchOutside(false);
         mProgress.show();
-        StorageReference filePath = FireBaseUtils.mStoragePhotos.child("profiles/"+FireBaseUtils.getAuthor());
+        filePath = FireBaseUtils.mStoragePhotos.child("profiles/"+FireBaseUtils.getAuthor());
         Bitmap bmp = null;
         try {
             bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
@@ -375,23 +381,34 @@ public class ProfileActivity extends AppCompatActivity {
         bmp.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
         byte[] data = byteArrayOutputStream.toByteArray();
         //uploading the image
-        UploadTask uploadTask2 = filePath.putBytes(data);
-        uploadTask2.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                currentPhotoUrl = taskSnapshot.getDownloadUrl().toString();
-                Map<String,Object> values = new HashMap<>();
-                values.put("imageUrl",taskSnapshot.getDownloadUrl().toString());
-                FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).updateChildren(values);
-                tvSetPhoto.setVisibility(View.INVISIBLE);
-                mProgress.dismiss();
-                Toast.makeText(ProfileActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
+        UploadTask uploadTask = filePath.putBytes(data);
 
-                Toast.makeText(ProfileActivity.this, "Upload Failed -> " + e, Toast.LENGTH_LONG).show();
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                // Continue with the task to get the download URL
+                return filePath.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Map<String,Object> values = new HashMap<>();
+                    values.put("imageUrl",task.getResult().toString());
+                    FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).updateChildren(values);
+                    tvSetPhoto.setVisibility(View.INVISIBLE);
+                    mProgress.dismiss();
+                    finish();
+                    UploadUtils.makeNotification("Upload successful",ProfileActivity.this);
+
+                } else {
+                    // Handle failures
+                    UploadUtils.makeNotification("Image upload failed",ProfileActivity.this);
+                }
             }
         });
     }

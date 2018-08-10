@@ -12,19 +12,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.techart.writersblock.R;
-import com.techart.writersblock.utils.Constants;
+import com.techart.writersblock.constants.Constants;
+import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.utils.EditorUtils;
-import com.techart.writersblock.utils.FireBaseUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ChapterEditorOnlineActivity extends AppCompatActivity {
-    private ProgressDialog mProgress;
     private String chapterUrl;
     private EditText editor;
-    private String oldText;
-    private String oldTitle;
     private String storyUrl;
     private String newText;
 
@@ -37,8 +34,8 @@ public class ChapterEditorOnlineActivity extends AppCompatActivity {
         Intent intent = getIntent();
         storyUrl = intent.getStringExtra(Constants.STORY_REFID);
         chapterUrl = intent.getStringExtra(Constants.POST_KEY);
-        oldText = intent.getStringExtra(Constants.CHAPTER_CONTENT);
-        oldTitle = intent.getStringExtra(Constants.CHAPTER_TITLE);
+        String oldText = intent.getStringExtra(Constants.CHAPTER_CONTENT);
+        String oldTitle = intent.getStringExtra(Constants.CHAPTER_TITLE);
 
         setTitle("Editing Episode " + oldTitle);
         editor.setText(oldText);
@@ -82,7 +79,7 @@ public class ChapterEditorOnlineActivity extends AppCompatActivity {
     }
 
     private void postChapter() {
-        mProgress = new ProgressDialog(this);
+        ProgressDialog mProgress = new ProgressDialog(this);
         mProgress.setMessage("Posting ...");
         mProgress.show();
         Map<String,Object> values = new HashMap<>();

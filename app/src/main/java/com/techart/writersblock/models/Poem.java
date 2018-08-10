@@ -16,9 +16,7 @@ public class Poem {
     private String poemText;
     private Long timeCreated;
 
-    public Poem()
-    {
-
+    public Poem() {
     }
 
     public void setTitle(String title) {

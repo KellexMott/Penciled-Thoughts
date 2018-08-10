@@ -17,10 +17,9 @@ import com.techart.writersblock.sqliteutils.WritersBlockContract;
  */
 
 public class DevotionCursorAdapter extends CursorAdapter {
-    private Context context;
     public DevotionCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
-        this.context = context;
+        Context context1 = context;
     }
 
     @Override

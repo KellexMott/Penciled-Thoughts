@@ -10,18 +10,25 @@
      <Spinner
         android:id="@+id/categories"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:background="@drawable/et_circular_background"/>
 
     <EditText
         android:id="@+id/editStoryTitle"
         style="@style/ButtonEditor"
         android:hint="@string/story_title"
-        />
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:background="@drawable/et_circular_background"
+        android:inputType="textCapWords" />
 
     <EditText
         android:id="@+id/editStoryDescription"
         style="@style/ButtonEditor"
         android:maxLines="5"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:background="@drawable/et_circular_background"
         android:hint="@string/story_prologue"
-        />
+        android:inputType="textCapSentences|textMultiLine" />
 </LinearLayout>

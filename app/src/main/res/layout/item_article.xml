@@ -21,68 +21,47 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:adjustViewBounds="true"
-                android:tint="#6F000000"
                 android:contentDescription="@string/background_image"
                 android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/item_row"
+                android:layout_margin="7dp"
+                android:layout_centerVertical="true"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/post_title"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorAccent"
-                    android:padding="5dp"
-                    android:textAllCaps="true"
+                    android:gravity="center"
+                    android:layout_gravity="center"
                     android:textStyle="bold"
-                    android:textSize="16sp" />
+                    android:layout_margin="2dp"
+                    android:textAllCaps="true"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:padding="5dp"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/post_author"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:background="@drawable/oval"
-                    android:textColor="@color/colorText"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:padding="5dp"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tv_numviews"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite"
-                    android:padding="5dp"
-                    android:text="@string/initial_count"
-                    android:textSize="14sp" />
+                    android:layout_marginTop="7dp"
+                    android:textColor="@color/colorText"
+                    android:layout_gravity="end"
+                    android:maxLines="1"
+                    android:ellipsize="end"/>
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/tvTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:textColor="@color/colorWhite"
-                android:padding="5dp"
-                android:text="@string/just_now"
-                android:textSize="12sp" />
-
-
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/like_layout"
@@ -90,17 +69,13 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
-
                 <ImageButton
                     android:id="@+id/likeBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/like_button"
                     android:background="@android:color/transparent"
-                    android:paddingBottom="7dp"
-                    android:paddingTop="7dp"
-                    android:paddingRight="7dp"
-                    android:paddingEnd="7dp"
+                    android:contentDescription="@string/like_button"
+                    android:padding="7dp"
                     app:srcCompat="@drawable/ic_thumb_up_grey_24dp" />
 
                 <TextView
@@ -109,7 +84,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="7dp"
                     android:layout_marginLeft="7dp"
-                    android:padding="7dp"
+                    android:paddingBottom="7dp"
+                    android:paddingTop="7dp"
+                    android:paddingRight="7dp"
+                    android:paddingEnd="7dp"
                     android:text="@string/initial_count"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -119,11 +97,10 @@
                 android:id="@+id/comment_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/like_layout"
-                android:layout_toEndOf="@+id/like_layout"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
-
+                android:orientation="horizontal"
+                android:layout_toRightOf="@+id/like_layout"
+                android:layout_toEndOf="@+id/like_layout">
                 <ImageButton
                     android:id="@+id/commentBtn"
                     android:layout_width="wrap_content"
@@ -132,7 +109,6 @@
                     android:background="@android:color/transparent"
                     android:padding="7dp"
                     app:srcCompat="@drawable/ic_comment_grey_24px" />
-
                 <TextView
                     android:id="@+id/tv_comments"
                     android:layout_width="wrap_content"
@@ -143,17 +119,45 @@
                     android:textSize="14sp" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/views_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_toRightOf="@+id/comment_layout"
+                android:layout_toEndOf="@+id/comment_layout">
                 <ImageButton
                     android:id="@+id/bt_views"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
                     android:contentDescription="@string/view_icon"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:paddingTop="7dp"
-                    android:paddingBottom="7dp"
+                    android:background="@android:color/transparent"
+                    android:padding="7dp"
                     app:srcCompat="@drawable/ic_visibility_grey_24px" />
+                <TextView
+                    android:id="@+id/tv_numviews"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="7dp"
+                    android:layout_marginEnd="7dp"
+                    android:text="@string/initial_count"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:text="@string/just_now"
+                android:textColor="@color/colorText"
+                android:paddingTop="7dp"
+                android:paddingRight="7dp"
+                android:paddingEnd="7dp"
+                android:textSize="12sp" />
         </RelativeLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

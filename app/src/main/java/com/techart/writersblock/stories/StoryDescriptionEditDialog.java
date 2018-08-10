@@ -11,8 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.techart.writersblock.R;
-import com.techart.writersblock.utils.Constants;
-import com.techart.writersblock.utils.FireBaseUtils;
+import com.techart.writersblock.constants.Constants;
+import com.techart.writersblock.constants.FireBaseUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,12 +25,7 @@ import java.util.Map;
 
 public class StoryDescriptionEditDialog extends AppCompatActivity {
 
-    private String oldText;
-    private String newText;
     private EditText etDialogEditor;
-    private TextView tvTitle;
-    private TextView tvUpdate;
-    private TextView tvCancel;
     private String storyUrl;
 
     @Override
@@ -39,12 +34,12 @@ public class StoryDescriptionEditDialog extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_storyedit);
         etDialogEditor = findViewById(R.id.et_dialog_editor);
-        tvTitle = findViewById(R.id.tv_title);
-        tvUpdate = findViewById(R.id.tv_update);
-        tvCancel = findViewById(R.id.tv_cancel);
+        TextView tvTitle = findViewById(R.id.tv_title);
+        TextView tvUpdate = findViewById(R.id.tv_update);
+        TextView tvCancel = findViewById(R.id.tv_cancel);
 
         storyUrl = getIntent().getStringExtra(Constants.STORY_REFID);
-        oldText = getIntent().getStringExtra(Constants.STORY_DESCRIPTION);
+        String oldText = getIntent().getStringExtra(Constants.STORY_DESCRIPTION);
         tvTitle.setText("Edit Description");
         etDialogEditor.setText(oldText);
 
@@ -67,9 +62,9 @@ public class StoryDescriptionEditDialog extends AppCompatActivity {
 
     private void update()
     {
-        newText = etDialogEditor.getText().toString().trim();
+        String newText = etDialogEditor.getText().toString().trim();
         Map<String,Object> values = new HashMap<>();
-        values.put(Constants.STORY_DESCRIPTION,newText);
+        values.put(Constants.STORY_DESCRIPTION, newText);
         FireBaseUtils.mDatabaseStory.child(storyUrl).updateChildren(values);
         finish();
     }

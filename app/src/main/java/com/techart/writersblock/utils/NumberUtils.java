@@ -50,12 +50,23 @@ public final class NumberUtils {
      * @param word distinction
      * @return return a string
      */
-    public static  String setPlurality(long value, String word)
-    {
-        if(value == 1)
-        {
+    public static  String setPlurality(long value, String word) {
+        if(value == 1)        {
             return "a " + word;
         }
         return value + " " + word + "s";
+    }
+
+    /**
+     * Determines the sets the plurality of a word
+     * @param value count
+     * @param word distinction
+     * @return return a string
+     */
+    public static  String setUsualPlurality(long value, String word) {
+        if(value == 1)        {
+            return "a " + word;
+        }
+        return value + " " + word.replace("y","ies");
     }
 }

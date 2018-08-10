@@ -9,5 +9,6 @@
     <color name="colorActive">#5395d7</color>
     <color name="colorTint">#6F000000</color>
     <color name="colorMediumGrey">#727272</color>
+    <color name="colorLightGrey">#D3D3D3</color>
     <color name="colorRed">#da1212</color>
 </resources>

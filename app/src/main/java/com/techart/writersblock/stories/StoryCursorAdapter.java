@@ -19,10 +19,8 @@ import com.techart.writersblock.sqliteutils.WritersBlockContract;
  */
 
 public class StoryCursorAdapter extends CursorAdapter {
-    private Context context;
     public StoryCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
-        this.context = context;
     }
 
     @Override

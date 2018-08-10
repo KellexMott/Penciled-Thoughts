@@ -38,11 +38,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.techart.writersblock.constants.Constants;
+import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.models.Chapter;
 import com.techart.writersblock.models.Library;
 import com.techart.writersblock.models.Users;
-import com.techart.writersblock.utils.Constants;
-import com.techart.writersblock.utils.FireBaseUtils;
 import com.techart.writersblock.utils.ImageUtils;
 import com.techart.writersblock.utils.NumberUtils;
 
@@ -64,7 +64,6 @@ public class LibraryActivity extends AppCompatActivity {
     private SharedPreferences mPref;
 
     private TextView tvSetPhoto;
-    private String realPath;
     private ProgressDialog mProgress;
 
     private ImageView imProfilePicture;
@@ -82,7 +81,9 @@ public class LibraryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.library_activity);
-        setTitle(FireBaseUtils.getAuthor());
+        if (FireBaseUtils.getAuthor() != null){
+            setTitle(FireBaseUtils.getAuthor());
+        }
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
@@ -233,20 +234,24 @@ public class LibraryActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_logout) {
-            logOut();
-        } else if (id == R.id.action_changedp) {
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                onGetPermission();
-            }  else {
-                Intent imageIntent = new Intent();
-                imageIntent.setType("image/*");
-                imageIntent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(imageIntent,GALLERY_REQUEST);
-            }
-        }  else if (id == R.id.action_edit_name) {
-            Intent readIntent = new Intent(LibraryActivity.this,EditNameDialog.class);
-            startActivity(readIntent);
+        switch (id) {
+            case R.id.action_logout:
+                logOut();
+                break;
+            case R.id.action_changedp:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    onGetPermission();
+                } else {
+                    Intent imageIntent = new Intent();
+                    imageIntent.setType("image/*");
+                    imageIntent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(imageIntent, GALLERY_REQUEST);
+                }
+                break;
+            case R.id.action_edit_name:
+                Intent readIntent = new Intent(LibraryActivity.this, EditNameDialog.class);
+                startActivity(readIntent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -355,9 +360,9 @@ public class LibraryActivity extends AppCompatActivity {
        uploadTask2.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
            @Override
            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-               currentPhotoUrl = taskSnapshot.getDownloadUrl().toString();
+              // currentPhotoUrl = taskSnapshot.getDownloadUrl().toString();
                Map<String,Object> values = new HashMap<>();
-               values.put("imageUrl",taskSnapshot.getDownloadUrl().toString());
+              // values.put("imageUrl",taskSnapshot.getDownloadUrl().toString());
                FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).updateChildren(values);
                tvSetPhoto.setVisibility(View.INVISIBLE);
                mProgress.dismiss();
@@ -416,7 +421,7 @@ public class LibraryActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && data != null){
             uri = data.getData();
             if (uri != null){
-                 realPath = ImageUtils.getRealPathFromUrl(this, uri);
+                String realPath = ImageUtils.getRealPathFromUrl(this, uri);
                 Uri uriFromPath = Uri.fromFile(new File(realPath));
                 setPicture(uriFromPath);
             }

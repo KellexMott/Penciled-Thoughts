@@ -11,8 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.techart.writersblock.utils.Constants;
-import com.techart.writersblock.utils.FireBaseUtils;
+import com.techart.writersblock.constants.Constants;
+import com.techart.writersblock.constants.FireBaseUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,9 +27,6 @@ public class EditNameDialog extends AppCompatActivity {
 
     private String newName;
     private EditText etDialogEditor;
-    private TextView tvTitle;
-    private TextView tvUpdate;
-    private TextView tvCancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +34,9 @@ public class EditNameDialog extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_storyedit);
         etDialogEditor = findViewById(R.id.et_dialog_editor);
-        tvTitle = findViewById(R.id.tv_title);
-        tvUpdate = findViewById(R.id.tv_update);
-        tvCancel = findViewById(R.id.tv_cancel);
+        TextView tvTitle = findViewById(R.id.tv_title);
+        TextView tvUpdate = findViewById(R.id.tv_update);
+        TextView tvCancel = findViewById(R.id.tv_cancel);
 
         tvTitle.setText("Edit Name" );
         etDialogEditor.setText(FireBaseUtils.getAuthor());

@@ -19,11 +19,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.models.Users;
+import com.techart.writersblock.setup.LoginActivity;
 import com.techart.writersblock.tabs.Tab1Poems;
 import com.techart.writersblock.tabs.Tab2Stories;
 import com.techart.writersblock.tabs.Tab3Devotion;
-import com.techart.writersblock.utils.FireBaseUtils;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -43,10 +44,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private BottomNavigationView bottomNavigationView;
 
-    private ViewPager mViewPager;
-
     private ViewPager vp;
-    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         vp= findViewById(R.id.container);
         this.addPages();
         //TABLAYOUT
-        tabLayout= findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setupWithViewPager(vp);
         tabLayout.addOnTabSelectedListener(this);
@@ -111,14 +109,20 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Users user = dataSnapshot.getValue(Users.class);
                 if (user != null){
-                    if (user.getSignedAs().trim().equals("Writer")){
-                        Intent accountIntent = new Intent(MainActivity.this, ProfileActivity.class);
-                        startActivity(accountIntent);
-                    } else if (user.getSignedAs().trim().equals("Reader")) {
-                        Intent accountIntent = new Intent(MainActivity.this, LibraryActivity.class);
-                        startActivity(accountIntent);
-                    } else {
-                        Toast.makeText(MainActivity.this,"Could not open library "+ user.getSignedAs(),LENGTH_LONG).show();
+                    switch (user.getSignedAs().trim()) {
+                        case "Writer": {
+                            Intent accountIntent = new Intent(MainActivity.this, ProfileActivity.class);
+                            startActivity(accountIntent);
+                            break;
+                        }
+                        case "Reader": {
+                            Intent accountIntent = new Intent(MainActivity.this, LibraryActivity.class);
+                            startActivity(accountIntent);
+                            break;
+                        }
+                        default:
+                            Toast.makeText(MainActivity.this, "Could not open library " + user.getSignedAs(), LENGTH_LONG).show();
+                            break;
                     }
                 }else {
                     Toast.makeText(MainActivity.this,"Error...! Try later",LENGTH_LONG).show();

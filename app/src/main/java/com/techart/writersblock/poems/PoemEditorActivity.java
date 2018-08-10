@@ -14,10 +14,10 @@ import android.widget.Toast;
 
 import com.google.firebase.database.ServerValue;
 import com.techart.writersblock.R;
+import com.techart.writersblock.constants.Constants;
+import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.sqliteutils.WritersBlockContract;
-import com.techart.writersblock.utils.Constants;
 import com.techart.writersblock.utils.EditorUtils;
-import com.techart.writersblock.utils.FireBaseUtils;
 
 import java.util.HashMap;
 import java.util.Map;

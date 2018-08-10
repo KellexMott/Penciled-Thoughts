@@ -15,20 +15,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.techart.writersblock.constants.Constants;
+import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.devotion.AuthorsDevotionsListActivity;
 import com.techart.writersblock.models.Users;
 import com.techart.writersblock.poems.AuthorsPoemsListActivity;
 import com.techart.writersblock.stories.AuthorsStoriesListActivity;
-import com.techart.writersblock.utils.Constants;
-import com.techart.writersblock.utils.FireBaseUtils;
 
 
 public class AuthorsProfileActivity extends AppCompatActivity
 {
-    private RelativeLayout postedPoems;
-    private RelativeLayout postedSpirituals;
-    private RelativeLayout postedStories;
-    private FirebaseAuth mAuth;
     private static String author;
     private static String authorUrl;
 
@@ -46,16 +42,16 @@ public class AuthorsProfileActivity extends AppCompatActivity
         authorUrl = getIntent().getStringExtra(Constants.AUTHOR_URL);
         setTitle(author);
         setContentView(R.layout.activity_author);
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
         loadProfilePicture();
         imProfilePicture = findViewById(R.id.ib_profile);
 
-        postedPoems = findViewById(R.id.rv_postedpoems);
-        postedSpirituals = findViewById(R.id.rv_postedspirituals);
-        postedStories = findViewById(R.id.rv_postedstories);
+        RelativeLayout postedPoems = findViewById(R.id.rv_postedpoems);
+        RelativeLayout postedSpirituals = findViewById(R.id.rv_postedspirituals);
+        RelativeLayout postedStories = findViewById(R.id.rv_postedstories);
 
         // ibProfile = (ImageView)findViewById(R.id.ibProfile);
         postedPoems.setOnClickListener(new View.OnClickListener() {

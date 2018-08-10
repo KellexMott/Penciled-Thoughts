@@ -15,9 +15,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.techart.writersblock.R;
 import com.techart.writersblock.chapters.AddChapterOnlineActivity;
 import com.techart.writersblock.chapters.OnlineChapterListActivity;
+import com.techart.writersblock.constants.Constants;
+import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.models.Story;
-import com.techart.writersblock.utils.Constants;
-import com.techart.writersblock.utils.FireBaseUtils;
 
 /**
  * Presents Story Edit options

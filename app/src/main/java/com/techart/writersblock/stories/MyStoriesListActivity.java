@@ -16,8 +16,8 @@ import android.widget.ListView;
 
 import com.techart.writersblock.R;
 import com.techart.writersblock.chapters.MyChaptersListActivity;
+import com.techart.writersblock.constants.Constants;
 import com.techart.writersblock.sqliteutils.WritersBlockContract;
-import com.techart.writersblock.utils.Constants;
 
 public class MyStoriesListActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -77,10 +77,6 @@ public class MyStoriesListActivity extends AppCompatActivity
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void restartLoader() {
-        getLoaderManager().restartLoader(0, null, this);
     }
 
     @Override

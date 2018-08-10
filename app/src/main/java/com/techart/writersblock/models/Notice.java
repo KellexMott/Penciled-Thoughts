@@ -6,7 +6,7 @@ package com.techart.writersblock.models;
  */
 
 public class Notice {
-    private String Poems;
+    private String postType;
     private String user;
     private String postTitle;
     private String authorUrl;
@@ -50,11 +50,11 @@ public class Notice {
         this.postTitle = postTitle;
     }
 
-    public String getPoems() {
-        return Poems;
+    public String getPostType() {
+        return postType;
     }
 
-    public void setPoems(String poems) {
-        Poems = poems;
+    public void setPostType(String postType) {
+        this.postType = postType;
     }
 }

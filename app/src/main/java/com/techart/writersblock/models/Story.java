@@ -15,16 +15,12 @@ public class Story {
     private String status;
     private Long lastUpdate;
     private String description;
-
     private Long numLikes;
     private Long numComments;
     private Long numViews;
     private Long timeCreated;
 
-
-    public Story()
-    {
-
+    public Story() {
     }
 
     public String getTitle() {
@@ -34,8 +30,6 @@ public class Story {
     public void setTitle(String title) {
         this.title = title;
     }
-
-
 
     public String getAuthor() {
         return author;

@@ -15,16 +15,15 @@ import com.google.firebase.database.ValueEventListener;
 import com.techart.writersblock.CommentActivity;
 import com.techart.writersblock.LikesActivity;
 import com.techart.writersblock.R;
+import com.techart.writersblock.constants.Constants;
+import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.models.Devotion;
-import com.techart.writersblock.utils.Constants;
-import com.techart.writersblock.utils.FireBaseUtils;
 import com.techart.writersblock.utils.TimeUtils;
 import com.techart.writersblock.viewholders.ArticleEditViewHolder;
 
 
 public class ProfileDevotionsListActivity extends AppCompatActivity {
     private RecyclerView mPoemList;
-    private FirebaseRecyclerAdapter<Devotion,ArticleEditViewHolder> firebaseRecyclerAdapter;
     private String postTitle;
     private String postContent;
     private String author;
@@ -52,24 +51,21 @@ public class ProfileDevotionsListActivity extends AppCompatActivity {
     private void bindView()
     {
         Query query = FireBaseUtils.mDatabaseDevotions.orderByChild(Constants.POST_AUTHOR).equalTo(author);
-        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Devotion, ArticleEditViewHolder>(
-                Devotion.class,R.layout.item_row_del,ArticleEditViewHolder.class, query) {
+        FirebaseRecyclerAdapter<Devotion, ArticleEditViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Devotion, ArticleEditViewHolder>(
+                Devotion.class, R.layout.item_row_del, ArticleEditViewHolder.class, query) {
             @Override
             protected void populateViewHolder(ArticleEditViewHolder viewHolder, final Devotion model, int position) {
                 final String post_key = getRef(position).getKey();
                 postTitle = model.getTitle();
                 postContent = model.getDevotionText();
                 viewHolder.post_title.setText(model.getTitle());
-                if (model.getNumLikes() != null)
-                {
+                if (model.getNumLikes() != null) {
                     viewHolder.numLikes.setText(model.getNumLikes().toString());
                 }
-                if (model.getNumLikes() != null)
-                {
+                if (model.getNumLikes() != null) {
                     viewHolder.numComments.setText(model.getNumComments().toString());
                 }
-                if (model.getTimeCreated() != null)
-                {
+                if (model.getTimeCreated() != null) {
                     String time = TimeUtils.timeElapsed(TimeUtils.currentTime() - model.getTimeCreated());
                     viewHolder.tvTimeCreated.setText(time);
                 }
@@ -79,10 +75,10 @@ public class ProfileDevotionsListActivity extends AppCompatActivity {
                 viewHolder.btEdit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent readIntent = new Intent(ProfileDevotionsListActivity.this,DevotionEditorOnlineActivity.class);
-                        readIntent.putExtra(Constants.POST_KEY,post_key);
-                        readIntent.putExtra(Constants.DEVOTION_TITLE,model.getTitle());
-                        readIntent.putExtra(Constants.DEVOTION,model.getDevotionText());
+                        Intent readIntent = new Intent(ProfileDevotionsListActivity.this, DevotionEditorOnlineActivity.class);
+                        readIntent.putExtra(Constants.POST_KEY, post_key);
+                        readIntent.putExtra(Constants.DEVOTION_TITLE, model.getTitle());
+                        readIntent.putExtra(Constants.DEVOTION, model.getDevotionText());
                         startActivity(readIntent);
                     }
                 });
@@ -116,6 +112,7 @@ public class ProfileDevotionsListActivity extends AppCompatActivity {
                                     }
                                 }
                             }
+
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
 
@@ -126,8 +123,8 @@ public class ProfileDevotionsListActivity extends AppCompatActivity {
                 viewHolder.numLikes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent likedPostsIntent = new Intent(ProfileDevotionsListActivity.this,LikesActivity.class);
-                        likedPostsIntent.putExtra(Constants.POST_KEY,post_key);
+                        Intent likedPostsIntent = new Intent(ProfileDevotionsListActivity.this, LikesActivity.class);
+                        likedPostsIntent.putExtra(Constants.POST_KEY, post_key);
                         startActivity(likedPostsIntent);
                     }
                 });
@@ -135,10 +132,10 @@ public class ProfileDevotionsListActivity extends AppCompatActivity {
                 viewHolder.btnComment.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent commentIntent = new Intent(ProfileDevotionsListActivity.this,CommentActivity.class);
-                        commentIntent.putExtra(Constants.POST_KEY,post_key);
-                        commentIntent.putExtra(Constants.POST_TITLE,model.getTitle());
-                        commentIntent.putExtra(Constants.POST_TYPE,Constants.DEVOTION_HOLDER);
+                        Intent commentIntent = new Intent(ProfileDevotionsListActivity.this, CommentActivity.class);
+                        commentIntent.putExtra(Constants.POST_KEY, post_key);
+                        commentIntent.putExtra(Constants.POST_TITLE, model.getTitle());
+                        commentIntent.putExtra(Constants.POST_TYPE, Constants.DEVOTION_HOLDER);
                         startActivity(commentIntent);
                     }
                 });

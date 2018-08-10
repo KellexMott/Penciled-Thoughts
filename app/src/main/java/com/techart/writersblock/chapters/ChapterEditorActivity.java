@@ -15,10 +15,10 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ServerValue;
 import com.techart.writersblock.R;
+import com.techart.writersblock.constants.Constants;
+import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.sqliteutils.WritersBlockContract;
-import com.techart.writersblock.utils.Constants;
 import com.techart.writersblock.utils.EditorUtils;
-import com.techart.writersblock.utils.FireBaseUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,16 +30,12 @@ public class ChapterEditorActivity extends AppCompatActivity {
     private EditText editor;
     private EditText editorTitle;
     private String pageFilter;
-    private String oldText;
-    private String oldTitle;
     private String storyFilter;
-    private String status = "Ongoing";
     private String storyUrl;
     private String id;
     private String newText;
     private String newTitle;
     private Cursor cursor;
-    private Uri uri;
     private String storyTitle;
     private String storyDescription;
     private String storyCategory;
@@ -52,14 +48,14 @@ public class ChapterEditorActivity extends AppCompatActivity {
         editorTitle = findViewById(R.id.editTitle);
 
         Intent intent = getIntent();
-        uri = intent.getParcelableExtra(WritersBlockContract.ChapterEntry.CONTENT_ITEM_TYPE);
+        Uri uri = intent.getParcelableExtra(WritersBlockContract.ChapterEntry.CONTENT_ITEM_TYPE);
 
         pageFilter = WritersBlockContract.ChapterEntry.CHAPTER_ID + "=" + uri.getLastPathSegment();
         cursor = getContentResolver().query(uri,
                 WritersBlockContract.ChapterEntry.CHAPTER_COLUMNS, pageFilter, null, null);
         cursor.moveToFirst();
-        oldText = cursor.getString(cursor.getColumnIndex(WritersBlockContract.ChapterEntry.CHAPTER_CONTENT));
-        oldTitle = cursor.getString(cursor.getColumnIndex(WritersBlockContract.ChapterEntry.CHAPTER_TITLE));
+        String oldText = cursor.getString(cursor.getColumnIndex(WritersBlockContract.ChapterEntry.CHAPTER_CONTENT));
+        String oldTitle = cursor.getString(cursor.getColumnIndex(WritersBlockContract.ChapterEntry.CHAPTER_TITLE));
         chapterUrl = cursor.getString(cursor.getColumnIndex(WritersBlockContract.ChapterEntry.CHAPTER_URL));
         storyUrl = cursor.getString(cursor.getColumnIndex(WritersBlockContract.ChapterEntry.CHAPTER_FIREBASE_STORY_URL));
         id = cursor.getString(cursor.getColumnIndex(WritersBlockContract.ChapterEntry.CHAPTER_STORY_ID));
@@ -131,7 +127,8 @@ public class ChapterEditorActivity extends AppCompatActivity {
         values.put(Constants.STORY_TITLE,storyTitle);
         values.put(Constants.STORY_DESCRIPTION,storyDescription);
         values.put(Constants.STORY_CATEGORY,storyCategory);
-        values.put(Constants.STORY_STATUS,status);
+        String status = "Ongoing";
+        values.put(Constants.STORY_STATUS, status);
         values.put(Constants.STORY_CHAPTERCOUNT,0);
         values.put(Constants.NUM_LIKES,0);
         values.put(Constants.NUM_COMMENTS,0);

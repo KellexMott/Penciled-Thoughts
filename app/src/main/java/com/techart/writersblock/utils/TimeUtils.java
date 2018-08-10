@@ -67,7 +67,7 @@ public final class TimeUtils {
      * @param word distinction
      * @return return a string
      */
-    public static  String setPlurality(long value, String word) {
+    private static  String setPlurality(long value, String word) {
         if(value == 1) {
             return "a " + word;
         }
@@ -79,7 +79,7 @@ public final class TimeUtils {
      * @param timePostedInMilliseconds time to be converted
      * @return return date and time
      */
-    public static String timeStampToDate(long timePostedInMilliseconds) {
+    private static String timeStampToDate(long timePostedInMilliseconds) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, MMM d, ''yy");
         return simpleDateFormat.format(timePostedInMilliseconds);
     }

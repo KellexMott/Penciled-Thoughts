@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.techart.writersblock.R;
-import com.techart.writersblock.utils.FireBaseUtils;
+import com.techart.writersblock.constants.FireBaseUtils;
 
 /**
  * Created by kelvin on 2/12/18.
@@ -21,19 +21,19 @@ public final class ArticleEditViewHolder extends RecyclerView.ViewHolder
     public TextView post_title;
     public TextView numLikes;
     public TextView numComments;
-    public TextView tvNumViews;
+    private TextView tvNumViews;
     public TextView tvTimeCreated;
 
-    public View mView;
+    private View mView;
 
-    DatabaseReference mDatabaseLike;
-    FirebaseAuth mAUth;
+    private DatabaseReference mDatabaseLike;
+    private FirebaseAuth mAUth;
 
     public Button btEdit;
     public ImageButton btnLiked;
     public ImageButton btnDelete;
     public ImageButton btnComment;
-    public ImageButton btnViews;
+    private ImageButton btnViews;
 
     public ArticleEditViewHolder(View itemView) {
         super(itemView);

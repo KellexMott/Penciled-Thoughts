@@ -1,7 +1,9 @@
 package com.techart.writersblock.utils;
 
 import android.content.Context;
-import android.content.res.AssetManager;
+import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,15 +14,9 @@ import android.widget.Toast;
 
 public final class EditorUtils {
 
-    private static int lineCount = 10;
-    private EditorUtils()
-    {
+    private EditorUtils() {
     }
 
-    protected static AssetManager getAssets(Context context) {
-
-        return context.getAssets();
-    }
 
     /**
      * Inspects if the line count is not less than 10
@@ -29,16 +25,12 @@ public final class EditorUtils {
      * @return true if it confines to the condition
      */
     public static boolean validateMainText(Context context, int layOutLineCount) {
+        int lineCount = 10;
         if (layOutLineCount <= lineCount) {
             Toast.makeText(context, "Text too short, at least " + lineCount + " lines", Toast.LENGTH_LONG).show();
             return false;
         }
         return true;
-    }
-
-    protected static boolean compareStrings(String oldText, String newText)
-    {
-        return oldText.equals(newText);
     }
 
     public static boolean isEmpty(Context context, String title, String placeHolder)
@@ -51,62 +43,54 @@ public final class EditorUtils {
         return true;
     }
 
+    public static boolean dropDownValidator(@NonNull String stringValue, String defaultValue, @NonNull TextView textView) {
 
-    public static boolean validateEntry(Context context, int iTemPosition, String title, TextView tv)
-    {
-        if (iTemPosition == 0)
-        {
-            Toast.makeText(context,"Kindly select category",Toast.LENGTH_LONG).show();
+        if (stringValue.equals(defaultValue)){
+            textView.setTextColor(Color.RED);
+            textView.setError("Kindly select category");
             return false;
-        }
-        else if (title.length() == 0)
-        {
-            Toast.makeText(context,"Kindly set story title",Toast.LENGTH_LONG).show();
-            return false;
-        }
-        else if (tv.getLayout().getLineCount() < 2)
-        {
-            Toast.makeText(context,"Description should be at least 2 lines",Toast.LENGTH_LONG).show();
-            return false;
-        }
-        else
-        {
+        } else {
+            textView.setError(null);
             return true;
         }
     }
 
-    public static boolean dropDownValidator(Context context, String signUpAs)
-    {
-        if (signUpAs == null)
-        {
+    public static boolean editTextValidator(@NonNull String stringValue, @NonNull EditText textView, String message) {
+        if (stringValue.isEmpty()){
+            textView.setError(message);
+            return false;
+        } else {
+            textView.setError(null);
+            return true;
+        }
+    }
+
+    public static boolean dropDownValidator(Context context, String signUpAs){
+        if (signUpAs == null) {
             Toast.makeText(context, "Select either Writer or Reader", Toast.LENGTH_LONG).show();
             return false;
-        }
-        else
-        {
+        } else  {
             return true;
         }
     }
 
-    public static boolean doPassWordsMatch(Context context, String first, String second)
-    {
-        if (first.equals(second))
-        {
+    public static boolean doPassWordsMatch(String first, String second , @NonNull EditText textView)  {
+        if (first.equals(second)) {
+            textView.setError(null);
             return true;
-        }
-        else
-        {
-            Toast.makeText(context,"Ensure that passwords match",Toast.LENGTH_LONG).show();
+        } else {
+            textView.setError("Ensure that passwords match");
             return false;
         }
     }
 
-    public static boolean isEmailValid(Context context, String email) {
+    public static boolean isEmailValid(String email, @NonNull EditText textView) {
         //CharSequence target = email;
         if (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            textView.setError(null);
             return true;
         } else {
-            Toast.makeText(context, "Email address not valid", Toast.LENGTH_LONG).show();
+            textView.setError("Email address not valid");
             return false;
         }
     }

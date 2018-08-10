@@ -16,9 +16,9 @@ import com.techart.writersblock.CommentActivity;
 import com.techart.writersblock.LikesActivity;
 import com.techart.writersblock.R;
 import com.techart.writersblock.ScrollingActivity;
+import com.techart.writersblock.constants.Constants;
+import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.models.Devotion;
-import com.techart.writersblock.utils.Constants;
-import com.techart.writersblock.utils.FireBaseUtils;
 import com.techart.writersblock.utils.ImageUtils;
 import com.techart.writersblock.utils.NumberUtils;
 import com.techart.writersblock.utils.TimeUtils;
@@ -27,7 +27,6 @@ import com.techart.writersblock.viewholders.ArticleViewHolder;
 
 public class AuthorsDevotionsListActivity extends AppCompatActivity {
     private RecyclerView mPoemList;
-    private FirebaseRecyclerAdapter<Devotion,ArticleViewHolder> firebaseRecyclerAdapter;
     private String postTitle;
     private String postContent;
     private String author;
@@ -56,32 +55,28 @@ public class AuthorsDevotionsListActivity extends AppCompatActivity {
     private void bindView()
     {
         Query query = FireBaseUtils.mDatabaseDevotions.orderByChild(Constants.POST_AUTHOR).equalTo(author);
-        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Devotion, ArticleViewHolder>(
-                Devotion.class,R.layout.item_article,ArticleViewHolder.class, query) {
+        FirebaseRecyclerAdapter<Devotion, ArticleViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Devotion, ArticleViewHolder>(
+                Devotion.class, R.layout.item_article, ArticleViewHolder.class, query) {
             @Override
             protected void populateViewHolder(ArticleViewHolder viewHolder, final Devotion model, int position) {
                 final String post_key = getRef(position).getKey();
                 viewHolder.post_title.setText(model.getTitle());
-                viewHolder.post_author.setText(getString(R.string.article_author,model.getAuthor()));
+                viewHolder.post_author.setText(getString(R.string.article_author, model.getAuthor()));
                 viewHolder.setIvImage(AuthorsDevotionsListActivity.this, ImageUtils.getDevotionUrl(NumberUtils.getModuleOfTen(position)));
 
-                if (model.getNumLikes() != null)
-                {
+                if (model.getNumLikes() != null) {
                     String count = NumberUtils.shortenDigit(model.getNumLikes());
                     viewHolder.numLikes.setText(count);
                 }
-                if (model.getNumComments() != null)
-                {
+                if (model.getNumComments() != null) {
                     String count = NumberUtils.shortenDigit(model.getNumComments());
                     viewHolder.numComments.setText(count);
                 }
-                if (model.getNumViews() != null)
-                {
+                if (model.getNumViews() != null) {
                     String count = NumberUtils.shortenDigit(model.getNumViews());
-                    viewHolder.tvNumViews.setText(getString(R.string.viewers,count));
+                    viewHolder.tvNumViews.setText(getString(R.string.viewers, count));
                 }
-                if (model.getTimeCreated() != null)
-                {
+                if (model.getTimeCreated() != null) {
                     String time = TimeUtils.timeElapsed(TimeUtils.currentTime() - model.getTimeCreated());
                     viewHolder.timeTextView.setText(time);
                 }
@@ -92,7 +87,7 @@ public class AuthorsDevotionsListActivity extends AppCompatActivity {
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent readPoemIntent = new Intent(AuthorsDevotionsListActivity.this,ScrollingActivity.class);
+                        Intent readPoemIntent = new Intent(AuthorsDevotionsListActivity.this, ScrollingActivity.class);
                         readPoemIntent.putExtra(Constants.POST_CONTENT, postContent);
                         readPoemIntent.putExtra(Constants.POST_TITLE, postTitle);
                         startActivity(readPoemIntent);
@@ -118,6 +113,7 @@ public class AuthorsDevotionsListActivity extends AppCompatActivity {
                                     }
                                 }
                             }
+
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
 
@@ -128,8 +124,8 @@ public class AuthorsDevotionsListActivity extends AppCompatActivity {
                 viewHolder.numLikes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent likedPostsIntent = new Intent(AuthorsDevotionsListActivity.this,LikesActivity.class);
-                        likedPostsIntent.putExtra(Constants.POST_KEY,post_key);
+                        Intent likedPostsIntent = new Intent(AuthorsDevotionsListActivity.this, LikesActivity.class);
+                        likedPostsIntent.putExtra(Constants.POST_KEY, post_key);
                         startActivity(likedPostsIntent);
                     }
                 });
@@ -137,10 +133,10 @@ public class AuthorsDevotionsListActivity extends AppCompatActivity {
                 viewHolder.btnComment.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent commentIntent = new Intent(AuthorsDevotionsListActivity.this,CommentActivity.class);
-                        commentIntent.putExtra(Constants.POST_KEY,post_key);
-                        commentIntent.putExtra(Constants.POST_TITLE,model.getTitle());
-                        commentIntent.putExtra(Constants.POST_TYPE,Constants.DEVOTION_HOLDER);
+                        Intent commentIntent = new Intent(AuthorsDevotionsListActivity.this, CommentActivity.class);
+                        commentIntent.putExtra(Constants.POST_KEY, post_key);
+                        commentIntent.putExtra(Constants.POST_TITLE, model.getTitle());
+                        commentIntent.putExtra(Constants.POST_TYPE, Constants.DEVOTION_HOLDER);
                         startActivity(commentIntent);
                     }
                 });

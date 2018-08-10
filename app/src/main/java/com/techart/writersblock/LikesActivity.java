@@ -9,9 +9,9 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.Query;
+import com.techart.writersblock.constants.Constants;
+import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.models.Notice;
-import com.techart.writersblock.utils.Constants;
-import com.techart.writersblock.utils.FireBaseUtils;
 import com.techart.writersblock.utils.TimeUtils;
 
 
@@ -56,14 +56,12 @@ public class LikesActivity extends AppCompatActivity
     {
         TextView tvUser;
         TextView tvTime;
-        View mView;
 
         public NoticeViewHolder(View itemView) {
             super(itemView);
             tvUser = itemView.findViewById(R.id.tv_user);
             tvTime = itemView.findViewById(R.id.tv_time);
 
-            this.mView = itemView;
         }
 
     }

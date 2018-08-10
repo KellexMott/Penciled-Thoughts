@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class MyPageAdapter extends FragmentPagerAdapter {
     private ArrayList<Fragment> fragments=new ArrayList<>();
-    public MyPageAdapter(FragmentManager fm) {
+    private MyPageAdapter(FragmentManager fm) {
         super(fm);
     }
     @Override
@@ -32,7 +32,6 @@ public class MyPageAdapter extends FragmentPagerAdapter {
     //set title
     @Override
     public CharSequence getPageTitle(int position) {
-        String title=fragments.get(position).toString();
-        return title.toString();
+        return fragments.get(position).toString();
     }
 }

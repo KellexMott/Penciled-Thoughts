@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
 import com.techart.writersblock.R;
-import com.techart.writersblock.utils.FireBaseUtils;
+import com.techart.writersblock.constants.FireBaseUtils;
 
 /**
  * Created by kelvin on 2/12/18.

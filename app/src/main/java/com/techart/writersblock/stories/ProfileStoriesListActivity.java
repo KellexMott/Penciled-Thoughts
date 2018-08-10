@@ -36,9 +36,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.techart.writersblock.R;
+import com.techart.writersblock.constants.Constants;
+import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.models.Story;
-import com.techart.writersblock.utils.Constants;
-import com.techart.writersblock.utils.FireBaseUtils;
 import com.techart.writersblock.utils.ImageUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -54,9 +54,7 @@ import static com.techart.writersblock.utils.ImageUtils.hasPermissions;
 public class ProfileStoriesListActivity extends AppCompatActivity {
     private RecyclerView mPoemList;
     private DatabaseReference mDatabaseStory;
-    private DatabaseReference mDatabaseLike;
     private AlertDialog updateDialog;
-    private ArrayList<String> contents = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.categories)));
 
     ProgressDialog mProgress;
     private static final int GALLERY_REQUEST = 1;
@@ -64,8 +62,8 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
     private String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private Uri uriFromPath;
     private Uri uri;
-
-    private String[] categories = getResources().getStringArray(R.array.categories);
+    private ArrayList<String> contents;
+    private String[] categories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,11 +71,14 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
         setContentView(R.layout.tabrecyclerviewer);
         setTitle("Stories");
         mDatabaseStory = FireBaseUtils.mDatabaseStory;
-        mDatabaseLike = FireBaseUtils.mDatabaseLike;
+        DatabaseReference mDatabaseLike = FireBaseUtils.mDatabaseLike;
         mDatabaseLike.keepSynced(true);
         mDatabaseStory.keepSynced(true);
         mPoemList = findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
+        contents = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.categories)));
+        categories = getResources().getStringArray(R.array.categories);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ProfileStoriesListActivity.this);
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
@@ -103,7 +104,6 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
                 viewHolder.tbStatus.setChecked(model.getStatus().equals("Complete"));
                 viewHolder.tbStatus.setTextColor(setColor(model.getStatus().equals("Complete")));
 
-
                 if (model.getImageUrl() != null) {
                     viewHolder.setIvImage(ProfileStoriesListActivity.this,model.getImageUrl());
                 } else {
@@ -116,7 +116,6 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
                         updateStoryDialog(post_key, model.getCategory().trim());
                     }
                 });
-
 
                 viewHolder.btCover.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -310,7 +309,7 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
 
     private void coverCover(UploadTask.TaskSnapshot taskSnapshot, String post_key) {
         Map<String,Object> values = new HashMap<>();
-        values.put("imageUrl",taskSnapshot.getDownloadUrl().toString());
+       // values.put("imageUrl",taskSnapshot.getDownloadUrl().toString());
         FireBaseUtils.mDatabaseStory.child(post_key).updateChildren(values);
     }
 
