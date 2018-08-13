@@ -6,7 +6,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.techart.writersblock.R;
 import com.techart.writersblock.constants.FireBaseUtils;
@@ -27,7 +26,6 @@ public final class ArticleEditViewHolder extends RecyclerView.ViewHolder
     private View mView;
 
     private DatabaseReference mDatabaseLike;
-    private FirebaseAuth mAUth;
 
     public Button btEdit;
     public ImageButton btnLiked;
@@ -51,7 +49,6 @@ public final class ArticleEditViewHolder extends RecyclerView.ViewHolder
 
         this.mView = itemView;
         mDatabaseLike = FireBaseUtils.mDatabaseLike;
-        mAUth = FirebaseAuth.getInstance();
         mDatabaseLike.keepSynced(true);
     }
 

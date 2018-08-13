@@ -39,8 +39,7 @@ public final class NumberUtils {
      * @param value count
      * @return return a string
      */
-    public static int getModuleOfTen(int value)
-    {
+    public static int getModuleOfTen(int value)   {
         return value % 10;
     }
 

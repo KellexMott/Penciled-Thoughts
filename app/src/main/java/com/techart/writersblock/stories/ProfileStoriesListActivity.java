@@ -27,8 +27,11 @@ import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
@@ -40,6 +43,7 @@ import com.techart.writersblock.constants.Constants;
 import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.models.Story;
 import com.techart.writersblock.utils.ImageUtils;
+import com.techart.writersblock.utils.UploadUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -56,7 +60,6 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseStory;
     private AlertDialog updateDialog;
 
-    ProgressDialog mProgress;
     private static final int GALLERY_REQUEST = 1;
     private int PERMISSION_ALL = 1;
     private String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -269,12 +272,17 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * Uploads image to cloud storage
+     */
     private void upload(final String post_key,final String storyTitle) {
-        mProgress = new ProgressDialog(ProfileStoriesListActivity.this);
+        final ProgressDialog mProgress = new ProgressDialog(ProfileStoriesListActivity.this);
         mProgress.setMessage("Uploading photo, please wait...");
         mProgress.setCanceledOnTouchOutside(false);
         mProgress.show();
-        StorageReference filePath = FireBaseUtils.mStoragePhotos.child("stories/"+reformatStoryTitle(storyTitle));
+        final StorageReference filePath = FireBaseUtils.mStoragePhotos.child("stories/"+reformatStoryTitle(storyTitle) + post_key);
+
         Bitmap bmp = null;
         try {
             bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
@@ -285,31 +293,42 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
         bmp.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
         byte[] data = byteArrayOutputStream.toByteArray();
         //uploading the image
-        UploadTask uploadTask2 = filePath.putBytes(data);
-        uploadTask2.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+        UploadTask uploadTask = filePath.putBytes(data);
 
-                mProgress.dismiss();
-                Toast.makeText(getApplicationContext(),"Story cover changed successfully",Toast.LENGTH_LONG).show();
-                coverCover(taskSnapshot, post_key);
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                // Continue with the task to get the download URL
+                return filePath.getDownloadUrl();
             }
-        }).addOnFailureListener(new OnFailureListener() {
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
-            public void onFailure(@NonNull Exception e) {
-
-                Toast.makeText(ProfileStoriesListActivity.this, "Upload Failed -> " + e, Toast.LENGTH_LONG).show();
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    sendPost(task,post_key);
+                    mProgress.dismiss();
+                    UploadUtils.makeNotification("Upload successful",ProfileStoriesListActivity.this);
+                    finish();
+                } else {
+                    // Handle failures
+                    UploadUtils.makeNotification("Image upload failed",ProfileStoriesListActivity.this);
+                }
             }
         });
+
     }
 
     private String reformatStoryTitle(String storyTitle) {
         return storyTitle.replace(" ","_").toLowerCase();
     }
 
-    private void coverCover(UploadTask.TaskSnapshot taskSnapshot, String post_key) {
+    private void sendPost(@NonNull Task<Uri> task, String post_key) {
         Map<String,Object> values = new HashMap<>();
-       // values.put("imageUrl",taskSnapshot.getDownloadUrl().toString());
+        values.put("imageUrl",task.getResult().toString());
         FireBaseUtils.mDatabaseStory.child(post_key).updateChildren(values);
     }
 

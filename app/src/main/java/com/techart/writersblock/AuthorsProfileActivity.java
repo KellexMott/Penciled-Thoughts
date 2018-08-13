@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -32,7 +31,6 @@ public class AuthorsProfileActivity extends AppCompatActivity
     private String currentPhotoUrl;
     private boolean isAttached;
 
-    private ImageView ibProfile;
     private static final int EDITOR_REQUEST_CODE = 1001;
 
     @Override
@@ -42,7 +40,6 @@ public class AuthorsProfileActivity extends AppCompatActivity
         authorUrl = getIntent().getStringExtra(Constants.AUTHOR_URL);
         setTitle(author);
         setContentView(R.layout.activity_author);
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
@@ -97,21 +94,25 @@ public class AuthorsProfileActivity extends AppCompatActivity
     }
 
     private void loadProfilePicture(){
-        FireBaseUtils.mDatabaseUsers.child(authorUrl).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Users users = dataSnapshot.getValue(Users.class);
-                if (users.getImageUrl() != null && users.getImageUrl().length() > 7) {
-                    currentPhotoUrl = users.getImageUrl();
-                    setPicture(currentPhotoUrl);
-                } else {
-                    Toast.makeText(getBaseContext(),"No image found",Toast.LENGTH_LONG).show();
+        if (authorUrl != null){
+            FireBaseUtils.mDatabaseUsers.child(authorUrl).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Users users = dataSnapshot.getValue(Users.class);
+                    if (users.getImageUrl() != null && users.getImageUrl().length() > 7) {
+                        currentPhotoUrl = users.getImageUrl();
+                        setPicture(currentPhotoUrl);
+                    } else {
+                        Toast.makeText(getBaseContext(),"No image found",Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+        } else {
+            Toast.makeText(getBaseContext(),"Could not load image",Toast.LENGTH_LONG).show();
+        }
     }
 
 

@@ -32,32 +32,21 @@
 
         <!-- Writers -->
 
-        <!-- Story -->
         <Preference
-            android:title="@string/title_story_writer"
-            android:summary="@string/summary_story_writer">
+            android:title="@string/title_writers"
+            android:summary="@string/summary_writers">
             <intent
-                android:action="android.intent.action.VIEW"
-                android:data="@string/url_story_writer" />
+                android:action="com.techart.writersblock.WritersActivity"/>
         </Preference>
 
         <!-- Poem -->
         <Preference
-            android:title="@string/title_poem_writer"
-            android:summary="@string/summary_poem_writer">
+            android:title="@string/title_readers"
+            android:summary="@string/summary_readers">
             <intent
-                android:action="android.intent.action.VIEW"
-                android:data="@string/url_poem_writer" />
+                android:action="com.techart.writersblock.ReadersActivity"/>
         </Preference>
 
-        <!-- Devotion -->
-        <Preference
-            android:title="@string/title_devotion_writer"
-            android:summary="@string/summary_devotion_writer">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:data="@string/url_devotion_writer" />
-        </Preference>
 
     </PreferenceCategory>
 </PreferenceScreen>

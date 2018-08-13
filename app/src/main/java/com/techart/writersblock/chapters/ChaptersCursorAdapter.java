@@ -17,7 +17,7 @@ import com.techart.writersblock.sqliteutils.WritersBlockContract;
  * Created by Kelvin on 30/05/2017.
  */
 
-public class ChaptersCursorAdapter extends CursorAdapter {
+class ChaptersCursorAdapter extends CursorAdapter {
     public ChaptersCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         Context context1 = context;

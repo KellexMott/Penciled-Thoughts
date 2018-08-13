@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText etUsername;
     private EditText etPassWord;
-    String email;
+    private String email;
     // Firebase references.
     private DatabaseReference mDatabaseUsers;
 

@@ -89,6 +89,12 @@
             android:theme="@style/dialogTheme" />
 
         <activity
+            android:name=".utils.NumberRequestDialog"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@style/dialogTheme" />
+
+        <activity
             android:name=".setup.PasswordResetDialog"
             android:excludeFromRecents="true"
             android:noHistory="true"
@@ -99,6 +105,35 @@
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/dialogTheme" />
+
+        <activity
+            android:name=".OnStoryNotificationActivity"
+            android:parentActivityName=".MainActivity"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="Story_Notice" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ReadersActivity"
+            android:parentActivityName=".InformationActivity">
+            <intent-filter>
+                <action android:name="com.techart.writersblock.ReadersActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".WritersActivity"
+            android:parentActivityName=".InformationActivity">
+            <intent-filter>
+                <action android:name="com.techart.writersblock.WritersActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".HelpActivity"
             android:parentActivityName=".InformationActivity">
@@ -107,6 +142,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ProfileActivity"
             android:theme="@style/AppTheme.NoActionBar"
@@ -239,7 +275,7 @@
             android:name=".SearchActivity"
             android:theme="@style/FullScreen">
             <intent-filter>
-                <action android:name="com.techart.ats.SearchActivity" />
+                <action android:name="SearchActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

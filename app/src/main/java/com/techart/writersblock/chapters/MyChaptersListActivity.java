@@ -42,6 +42,10 @@ public class MyChaptersListActivity extends AppCompatActivity
         intent = getIntent();
 
         Uri uri = intent.getParcelableExtra(WritersBlockContract.StoryEntry.CONTENT_ITEM_TYPE);
+        if (uri == null){
+            Toast.makeText(this,"kindly reload the chapter",Toast.LENGTH_LONG).show();
+            finish();
+        }
         uriLastPathSegmentSegment = uri.getLastPathSegment();
 
         chapterFilter = WritersBlockContract.ChapterEntry.CHAPTER_STORY_ID + "=" + uriLastPathSegmentSegment;

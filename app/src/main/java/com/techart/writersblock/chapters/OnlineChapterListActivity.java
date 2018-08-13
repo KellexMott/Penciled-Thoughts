@@ -67,13 +67,13 @@ public class OnlineChapterListActivity extends AppCompatActivity {
         finish();
     }
 
-    public static class ChapterViewHolder extends RecyclerView.ViewHolder
+    static class ChapterViewHolder extends RecyclerView.ViewHolder
     {
         TextView tvTitle;
         TextView tvTime;
         View mView;
 
-        public ChapterViewHolder(View itemView) {
+        ChapterViewHolder(View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvTime = itemView.findViewById(R.id.tv_timeCreated);

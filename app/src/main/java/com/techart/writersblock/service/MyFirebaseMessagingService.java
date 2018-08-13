@@ -32,13 +32,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void showNotifications(Map<String,String> payload){
-     /*   String action = payload.get("click_action");
-        String postType = payload.get("postType");
-        String heading = payload.get("heading");
-        Intent intent = new Intent(action);
-        intent.putExtra(Constants.POST_TYPE,postType);
-        intent.putExtra("heading",heading);*/
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent;
+        /*if (payload.get("click_action") != null && payload.get("click_action").equals("Story_Notice")){
+            intent = new Intent(this, OnStoryNotificationActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("title",payload.get("title"));
+        }else  {*/
+        intent = new Intent(this, MainActivity.class);
         TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
         taskStackBuilder.addNextIntent(intent);
         PendingIntent pendingIntent  = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -48,6 +48,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         .setContentText(payload.get("body")) //ditto
         .setSmallIcon(R.mipmap.ic_launcher)
         .setAutoCancel(true) //dismisses the notification on click
+                .setColor(getResources().getColor(R.color.colorPrimary))
         .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =

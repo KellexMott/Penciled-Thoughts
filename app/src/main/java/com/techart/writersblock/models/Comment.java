@@ -6,7 +6,6 @@ package com.techart.writersblock.models;
  */
 
 public class Comment {
-    private String user;
     private String author;
     private String authorUrl;
     private Long replies;
@@ -15,12 +14,6 @@ public class Comment {
 
 
     public Comment() {
-    }
-
-
-    public String getUser() { return user;}
-    public void setUser(String user) {
-        this.user = user;
     }
 
     public String getCommentText() {

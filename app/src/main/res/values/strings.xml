@@ -15,7 +15,7 @@
         <item>Romantic Comedy</item>
         <item>Sci-Fi</item>
         <item>Thriller</item>
-        <item>Tradition</item>
+        <item>Traditional</item>
     </string-array>
     <string name="default_category">Select Category</string>
 
@@ -170,29 +170,24 @@
     <string name="summary_about">Penciled Thoughts initially called Writers\' Block is a non-profit making and free
         Android Application meant to help talented writers in Zambia and all over the world by not only providing a platform that organizes Stories, Poems and Devotion in
         a manner that is easy to follow, but also extending the reach to not only people on facebook and whatsApp groups that writers in Zambia
-        have formed but to people who are not on their friend or contact lists as well. @ 2018
+        have formed but to people who are not on their friend or contact lists as well.
 
    </string>
     <string name="app_version">1.0.0</string>
 
     <string name="title_developer">Developer</string>
     <string name="summary_developer">Know more about the Developer</string>
-    <string name="summary_story_writer">Know more about the Major Story Contributor</string>
-    <string name="summary_poem_writer">Know more about the Major Poem Contributor</string>
-    <string name="summary_devotion_writer">Know more about the Major Devotion Contributor</string>
+    <string name="summary_writers">List of writers</string>
+    <string name="summary_readers">List of Readers</string>
 
-    <string name="url_developer">https://web.facebook.com/kelvin.chiwele</string>
-    <string name="url_story_writer">https://web.facebook.com/hildahphiri11/</string>
-    <string name="url_poem_writer">https://web.facebook.com/terrykasanga.kahangu</string>
-    <string name="url_devotion_writer">https://web.facebook.com/lele.sinkala</string>
+    <string name="url_developer">https://www.facebook.com/TechArtZambia/</string>
 
     <string name="title_version">Version</string>
     <string name="key_app_version">key_app_version</string>
     <string name="title_help">Help</string>
     <string name="summary_help">Steps to creating, modifying and deleting posts</string>
-    <string name="title_story_writer">Writer - Stories</string>
-    <string name="title_poem_writer">Writer - Poem</string>
-    <string name="title_devotion_writer">Writer - Devotion</string>
+    <string name="title_writers">Writers</string>
+    <string name="title_readers">Readers</string>
     <string name="about">About</string>
     <string name="number_placeholder">#</string>
     <string name="edit_name">Edit name</string>
@@ -210,4 +205,5 @@
     <string name="no_replies_yet">No replies yet</string>
     <string name="view">VIEW</string>
     <string name="set">SET</string>
+    <string name="last_insert">Last insert ~</string>
 </resources>

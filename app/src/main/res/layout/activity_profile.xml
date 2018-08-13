@@ -16,6 +16,5 @@
         style="@style/BottomNavigation"
         app:itemIconTint="@drawable/bottom_nav_color_selector"
         app:itemTextColor="@drawable/bottom_nav_color_selector"
-        app:layout_behavior=".BottomNavigationBehavior"
         app:menu="@menu/bottom_navprofile"/>
 </android.support.design.widget.CoordinatorLayout>

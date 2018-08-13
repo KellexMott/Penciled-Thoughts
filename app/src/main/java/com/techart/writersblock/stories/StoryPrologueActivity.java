@@ -35,9 +35,6 @@ public class StoryPrologueActivity extends AppCompatActivity {
     private String description;
 
 
-    private TextView tvCategoryError;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,8 +82,8 @@ public class StoryPrologueActivity extends AppCompatActivity {
     }
 
     private boolean validate() {
-        tvCategoryError = (TextView)spCategory.getSelectedView();
-        return EditorUtils.dropDownValidator(category,getResources().getString(R.string.default_category),tvCategoryError) &&
+        TextView tvCategoryError = (TextView) spCategory.getSelectedView();
+        return EditorUtils.dropDownValidator(category,getResources().getString(R.string.default_category), tvCategoryError) &&
              EditorUtils.editTextValidator(title,etStoryTitle,"Kindly set story title");
     }
 

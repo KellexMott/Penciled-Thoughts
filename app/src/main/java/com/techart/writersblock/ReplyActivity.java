@@ -36,23 +36,23 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
     private Boolean isSent;
     private String postType;
     private String commentKey;
-    TextView tvEmpty;
-
+    private TextView tvEmpty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reply);
+        post_key = getIntent().getStringExtra(Constants.POST_KEY);
+        commentKey = getIntent().getStringExtra(Constants.COMMENT_KEY);
+
+        String postAuthor = getIntent().getStringExtra(Constants.POST_AUTHOR);
+        String comment = getIntent().getStringExtra(Constants.COMMENT_TEXT);
+        String time = getIntent().getStringExtra(Constants.TIME_CREATED);
+
         FireBaseUtils.mDatabaseComment.keepSynced(true);
         FireBaseUtils.mDatabaseStory.keepSynced(true);
         FireBaseUtils.mDatabaseDevotions.keepSynced(true);
         FireBaseUtils.mDatabasePoems.keepSynced(true);
-
-        post_key = getIntent().getStringExtra(Constants.POST_KEY);
-        commentKey = getIntent().getStringExtra(Constants.COMMENT_KEY);
-        String postAuthor = getIntent().getStringExtra(Constants.POST_AUTHOR);
-        String comment = getIntent().getStringExtra(Constants.COMMENT_TEXT);
-        String time = getIntent().getStringExtra(Constants.TIME_CREATED);
 
         postType = getIntent().getStringExtra(Constants.POST_TYPE);
         setTitle("Replies to "+ postAuthor);
@@ -74,10 +74,9 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void initCommentSection() {
-        Query commentsQuery = FireBaseUtils.mDatabaseReplies.child(post_key).orderByChild(Constants.TIME_CREATED);
+        Query commentsQuery = FireBaseUtils.mDatabaseReplies.child(commentKey).orderByChild(Constants.TIME_CREATED);
         FirebaseRecyclerAdapter<Comment, CommentHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Comment, CommentHolder>(
-                Comment.class, R.layout.item_reply, CommentHolder.class, commentsQuery)
-        {
+                Comment.class, R.layout.item_reply, CommentHolder.class, commentsQuery) {
             @Override
             protected void populateViewHolder(CommentHolder viewHolder, final Comment model, int position) {
                 tvEmpty.setVisibility(View.GONE);
@@ -109,8 +108,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
     private void sendComment() {
         final String comment = mEtComment.getText().toString().trim();
         isSent = false;
-        if (!comment.isEmpty())
-        {
+        if (!comment.isEmpty()) {
             final ProgressDialog progressDialog = new ProgressDialog(ReplyActivity.this);
             progressDialog.setMessage("Sending reply..");
             progressDialog.setCancelable(true);
@@ -119,9 +117,8 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             FireBaseUtils.mDatabaseReplies.child(post_key).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (!isSent)
-                    {
-                        DatabaseReference newComment = FireBaseUtils.mDatabaseReplies.child(post_key).push();
+                    if (!isSent) {
+                        DatabaseReference newComment = FireBaseUtils.mDatabaseReplies.child(commentKey).push();
                         Map<String,Object> values = new HashMap<>();
                         values.put(Constants.USER,FireBaseUtils.getUiD());
                         values.put(Constants.POST_AUTHOR,FireBaseUtils.getAuthor());
@@ -166,8 +163,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
-
-    public void setVisibility(String url, CommentHolder viewHolder) {
+    private void setVisibility(String url, CommentHolder viewHolder) {
         if (FireBaseUtils.getUiD() != null && FireBaseUtils.getUiD().equals(url)){
             viewHolder.commentTextView.setBackground(getResources().getDrawable(R.drawable.tv_circular_active_background));
         }
@@ -188,11 +184,10 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-
     public static class CommentHolder extends RecyclerView.ViewHolder {
-        final TextView authorTextView;
-        final TextView commentTextView;
-        final TextView timeTextView;
+        public TextView authorTextView;
+        public TextView commentTextView;
+        public TextView timeTextView;
 
         public CommentHolder(View itemView) {
             super(itemView);
@@ -201,5 +196,4 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             commentTextView = itemView.findViewById(R.id.tvComment);
         }
     }
-
 }

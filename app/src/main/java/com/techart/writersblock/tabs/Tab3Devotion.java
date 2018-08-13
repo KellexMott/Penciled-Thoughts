@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -64,12 +63,6 @@ public class Tab3Devotion extends Fragment {
         return "Devotion";
     }
 
-    @Override
-    public void onStart()
-    {
-        super.onStart();
-    }
-
     /**
      * Binds view to recycler view
      */
@@ -84,7 +77,7 @@ public class Tab3Devotion extends Fragment {
                 viewHolder.post_title.setText(model.getTitle());
                 viewHolder.setTint(getContext());
                 viewHolder.post_author.setText(getString(R.string.article_author, model.getAuthor()));
-                viewHolder.setIvImage(getContext(), ImageUtils.getDevotionUrl(NumberUtils.getModuleOfTen(position)));
+                viewHolder.setIvImage(getContext(), ImageUtils.getDevotionUrl());
                 if (model.getNumLikes() != null) {
                     String count = NumberUtils.shortenDigit(model.getNumLikes());
                     viewHolder.numLikes.setText(count);
@@ -201,11 +194,5 @@ public class Tab3Devotion extends Fragment {
         };
         mPoemList.setAdapter(fireBaseRecyclerAdapter);
         fireBaseRecyclerAdapter.notifyDataSetChanged();
-    }
-
-    public String getAuthor()
-    {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        return user.getDisplayName();
     }
 }

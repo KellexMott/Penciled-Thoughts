@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.techart.writersblock.constants.Constants;
 import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.models.Users;
 import com.techart.writersblock.setup.LoginActivity;
@@ -61,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(loginIntent);
                 }
-                FireBaseUtils.subscribeToNewPostNotification();
             }
         };
         haveNetworkConnection();
@@ -85,8 +87,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
-                        //Refresh View
-                        //createNotification("Story", "Chapter added");
+                        //checkVersion();
+
                         break;
                     case R.id.navigation_create:
                        // Intent dialogIntent = new Intent(MainActivity.this,  PostTypeDialog.class);
@@ -100,38 +102,91 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 return true;
                 }
             });
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationViewBehavior());
         //End bottom naviagtion
+        resolveIssue();
     }
 
-    private void startLibraryActivity(){
-        FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Users user = dataSnapshot.getValue(Users.class);
-                if (user != null){
-                    switch (user.getSignedAs().trim()) {
-                        case "Writer": {
-                            Intent accountIntent = new Intent(MainActivity.this, ProfileActivity.class);
-                            startActivity(accountIntent);
-                            break;
-                        }
-                        case "Reader": {
-                            Intent accountIntent = new Intent(MainActivity.this, LibraryActivity.class);
-                            startActivity(accountIntent);
-                            break;
-                        }
-                        default:
-                            Toast.makeText(MainActivity.this, "Could not open library " + user.getSignedAs(), LENGTH_LONG).show();
-                            break;
+    /**
+     * Loads the list of staff from database to Shared preferences for easy access
+     */
+    /*
+    private void checkVersion() {
+        if (FireBaseUtils.mAuth.getCurrentUser() != null){
+            FireBaseUtils.mDatabaseNumber.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (((int) dataSnapshot.getChildrenCount()) < 15 && !dataSnapshot.hasChild(FireBaseUtils.getUiD())) {
+                        Intent dialogIntent = new Intent(MainActivity.this,  NumberRequestDialog.class);
+                        startActivity(dialogIntent);
                     }
-                }else {
-                    Toast.makeText(MainActivity.this,"Error...! Try later",LENGTH_LONG).show();
                 }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }*/
+
+    private void resolveIssue(){
+        if (FireBaseUtils.mAuth.getCurrentUser() != null && FireBaseUtils.user != null){
+            FirebaseMessaging.getInstance().subscribeToTopic(Constants.NEW_POST_SUBSCRIPTION);
+            FirebaseMessaging.getInstance().subscribeToTopic("tester");
+            FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Users user = dataSnapshot.getValue(Users.class);
+                    if (user != null && user.getName().trim().contains("Writer")){
+                        FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).child(Constants.USER_NAME).setValue(FireBaseUtils.getAuthor());
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+        } else {
+            Toast.makeText(MainActivity.this,"Still loading, try after a minute",LENGTH_LONG).show();
+        }
+    }
+
+
+
+    private void startLibraryActivity(){
+        if (FireBaseUtils.mAuth.getCurrentUser() != null ){
+            FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Users user = dataSnapshot.getValue(Users.class);
+                    if (user != null){
+                        switch (user.getSignedAs().trim()) {
+                            case "Writer": {
+                                Intent accountIntent = new Intent(MainActivity.this, ProfileActivity.class);
+                                startActivity(accountIntent);
+                                break;
+                            }
+                            case "Reader": {
+                                Intent accountIntent = new Intent(MainActivity.this, LibraryActivity.class);
+                                startActivity(accountIntent);
+                                break;
+                            }
+                            default:
+                                Toast.makeText(MainActivity.this, "Could not open library " + user.getSignedAs(), LENGTH_LONG).show();
+                                break;
+                        }
+                    }else {
+                        Toast.makeText(MainActivity.this,"Error...! Try later",LENGTH_LONG).show();
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+        } else {
+            Toast.makeText(MainActivity.this,"Still loading, try after a minute",LENGTH_LONG).show();
+        }
+
     }
 
     @Override
@@ -142,8 +197,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     }
 
     @Override
-    protected void onStart()
-    {
+    protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
@@ -214,8 +268,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed(){
         finish();
     }
 }

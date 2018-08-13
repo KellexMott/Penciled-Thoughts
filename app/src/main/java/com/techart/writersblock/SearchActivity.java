@@ -92,10 +92,12 @@ public class SearchActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
                 searchText = etSearch.getText().toString().trim();
-                if (searchText.isEmpty()){
+                if (searchText.isEmpty() && postType != null){
                     initSearchFor();
-                } else if (searchText != null) {
+                } else if (searchText != null && postType != null) {
                     firebaseSearch();
+                } else if (postType != null){
+                    Toast.makeText(SearchActivity.this, "Unable to initialize search",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -145,7 +147,7 @@ public class SearchActivity extends AppCompatActivity {
                 viewHolder.post_title.setText(model.getTitle());
                 viewHolder.setTint(SearchActivity.this);
                 viewHolder.post_author.setText(getString(R.string.article_author,model.getAuthor()));
-                viewHolder.setIvImage(SearchActivity.this, ImageUtils.getPoemUrl(NumberUtils.getModuleOfTen(position)));
+                viewHolder.setIvImage(SearchActivity.this, ImageUtils.getPoemUrl());
                 if (model.getNumLikes() != null) {
                     String count = NumberUtils.shortenDigit(model.getNumLikes());
                     viewHolder.numLikes.setText(count);
@@ -270,7 +272,7 @@ public class SearchActivity extends AppCompatActivity {
                 viewHolder.post_title.setText(model.getTitle());
                 viewHolder.setTint(SearchActivity.this);
                 viewHolder.post_author.setText(getString(R.string.article_author,model.getAuthor()));
-                viewHolder.setIvImage(SearchActivity.this, ImageUtils.getPoemUrl(NumberUtils.getModuleOfTen(position)));
+                viewHolder.setIvImage(SearchActivity.this, ImageUtils.getPoemUrl());
                 if (model.getNumLikes() != null) {
                     String count = NumberUtils.shortenDigit(model.getNumLikes());
                     viewHolder.numLikes.setText(count);
@@ -390,7 +392,6 @@ public class SearchActivity extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
         selectSearchField();
-        //onNewIntent(getIntent());
     }
     /*
     @Override

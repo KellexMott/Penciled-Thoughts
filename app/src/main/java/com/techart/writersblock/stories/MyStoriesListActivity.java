@@ -22,7 +22,7 @@ import com.techart.writersblock.sqliteutils.WritersBlockContract;
 public class MyStoriesListActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    String filter;
+    private String filter;
     private StoryCursorAdapter cursorAdapter;
     private static final int EDITOR_REQUEST_CODE = 1001;
     @Override

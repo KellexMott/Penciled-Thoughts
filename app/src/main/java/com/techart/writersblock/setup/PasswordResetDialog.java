@@ -24,7 +24,6 @@ import com.techart.writersblock.R;
 public class PasswordResetDialog extends AppCompatActivity {
 
     private EditText etDialogEditor;
-    private String email;
     String newText;
 
     @Override
@@ -36,7 +35,7 @@ public class PasswordResetDialog extends AppCompatActivity {
         TextView tvUpdate = findViewById(R.id.tv_update);
         TextView tvCancel = findViewById(R.id.tv_cancel);
 
-        email = getIntent().getStringExtra("Email");
+        String email = getIntent().getStringExtra("Email");
         etDialogEditor.setText(email);
 
         tvUpdate.setOnClickListener(new View.OnClickListener() {
@@ -71,17 +70,17 @@ public class PasswordResetDialog extends AppCompatActivity {
 
     public void onSent() {
         DialogInterface.OnClickListener dialogClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int button) {
-                        if (button == DialogInterface.BUTTON_POSITIVE) {
-                            finish();
-                        }
-                        if (button == DialogInterface.BUTTON_NEGATIVE){
-                            dialog.dismiss();
-                        }
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int button) {
+                    if (button == DialogInterface.BUTTON_POSITIVE) {
+                        finish();
                     }
-                };
+                    if (button == DialogInterface.BUTTON_NEGATIVE){
+                        dialog.dismiss();
+                    }
+                }
+            };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Sent to "+ newText)
                 .setMessage("Go to mail to reset password")

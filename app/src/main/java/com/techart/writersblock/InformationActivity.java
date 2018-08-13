@@ -10,7 +10,6 @@ import android.preference.PreferenceFragment;
 import android.view.MenuItem;
 
 public class InformationActivity extends AppCompatInformationActivity {
-    private static final String TAG = InformationActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +32,6 @@ public class InformationActivity extends AppCompatInformationActivity {
                 preferenceAppVersion.setSummary(body);
             } catch (PackageManager.NameNotFoundException ignored) {
             }
-
-            // feedback preference click listener
-           // Preference myPref = findPreference(getString(R.string.key_send_feedback));
-           /* myPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference preference) {
-                    sendFeedback(getActivity());
-                    return true;
-                }
-            });*/
         }
     }
 

@@ -31,4 +31,5 @@
 -renamesourcefileattribute SourceFile
 
 -dontwarn org.apache.http.**
+-dontwarn java.lang.annotation.Annotation
 -dontwarn android.net.http.AndroidHttpClient

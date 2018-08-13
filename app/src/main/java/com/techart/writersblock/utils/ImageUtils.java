@@ -26,42 +26,34 @@ public final class ImageUtils {
         switch (category) {
             case "Action":
                 return R.drawable.action;
+            case "Comedy":
+                return R.drawable.comedy;
             case "Drama":
                 return R.drawable.drama;
             case "Fiction":
                 return R.drawable.fiction;
+            case "Horror":
+                return R.drawable.horror;
             case "Romance":
                 return R.drawable.romance;
+            case "Sci-Fi":
+                return R.drawable.scifi;
+            case "Tradition":
+                return R.drawable.tradition;
+            case "Traditional":
+                return R.drawable.tradition;
+            case "Thriller":
+                return R.drawable.horror;
             default: return R.drawable.fiction;
         }
     }
 
-    public static int getPoemUrl(int category) {
-        switch (category) {
-            case 0:
-                return R.drawable.poem1;
-            case 1:
-                return R.drawable.poem2;
-            case 2:
-                return R.drawable.poem3;
-            case 3:
-                return R.drawable.poem4;
-            case 4:
-                return R.drawable.poem5;
-            default: return R.drawable.poem6;
-        }
+    public static int getPoemUrl() {
+        return R.drawable.poem;
     }
 
-    public static int getDevotionUrl(int category) {
-        switch (category) {
-            case 0:
-                return R.drawable.devotion;
-            case 1:
-                return R.drawable.devotion1;
-            case 2:
-                return R.drawable.devotion2;
-            default: return R.drawable.devotion3;
-        }
+    public static int getDevotionUrl() {
+        return R.drawable.devotion;
     }
 
     public static String getRealPathFromUrl(Context context, Uri imageUrl) {

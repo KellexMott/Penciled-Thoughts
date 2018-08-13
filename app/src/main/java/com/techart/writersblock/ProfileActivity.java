@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -70,7 +71,7 @@ public class ProfileActivity extends AppCompatActivity {
     private String currentPhotoUrl;
     private boolean isAttached;
 
-    StorageReference filePath;
+
     // GALLERY_REQUEST is a constant integer
     private static final int GALLERY_REQUEST = 1;
     // The request code used in ActivityCompat.requestPermissions()
@@ -186,6 +187,8 @@ public class ProfileActivity extends AppCompatActivity {
                     return true;
                 }
             });
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationViewBehavior());
         //End bottom naviagtion
     }
 
@@ -367,10 +370,10 @@ public class ProfileActivity extends AppCompatActivity {
      */
     private void upload() {
         mProgress = new ProgressDialog(ProfileActivity.this);
-        mProgress.setMessage("Uploading photo, please wait...");
+        mProgress.setMessage("Uploading, please wait...");
         mProgress.setCanceledOnTouchOutside(false);
         mProgress.show();
-        filePath = FireBaseUtils.mStoragePhotos.child("profiles/"+FireBaseUtils.getAuthor());
+        final StorageReference filePath = FireBaseUtils.mStoragePhotos.child("profiles/"+FireBaseUtils.getAuthor());
         Bitmap bmp = null;
         try {
             bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
@@ -389,7 +392,6 @@ public class ProfileActivity extends AppCompatActivity {
                 if (!task.isSuccessful()) {
                     throw task.getException();
                 }
-
                 // Continue with the task to get the download URL
                 return filePath.getDownloadUrl();
             }
@@ -397,20 +399,23 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
-                    Map<String,Object> values = new HashMap<>();
-                    values.put("imageUrl",task.getResult().toString());
-                    FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).updateChildren(values);
+                    sendPost(task);
                     tvSetPhoto.setVisibility(View.INVISIBLE);
                     mProgress.dismiss();
-                    finish();
                     UploadUtils.makeNotification("Upload successful",ProfileActivity.this);
-
+                    finish();
                 } else {
                     // Handle failures
                     UploadUtils.makeNotification("Image upload failed",ProfileActivity.this);
                 }
             }
         });
+    }
+
+    private void sendPost(@NonNull Task<Uri> task) {
+        Map<String,Object> values = new HashMap<>();
+        values.put("imageUrl",task.getResult().toString());
+        FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).updateChildren(values);
     }
 
     @Override
@@ -431,8 +436,7 @@ public class ProfileActivity extends AppCompatActivity {
         new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int button) {
-            if (button == DialogInterface.BUTTON_POSITIVE)
-            {
+            if (button == DialogInterface.BUTTON_POSITIVE)  {
                 FirebaseAuth.getInstance().signOut();
             }
             }

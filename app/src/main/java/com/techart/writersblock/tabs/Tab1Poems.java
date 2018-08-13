@@ -68,7 +68,7 @@ public class Tab1Poems extends Fragment {
                 viewHolder.post_title.setText(model.getTitle());
                 viewHolder.setTint(getContext());
                 viewHolder.post_author.setText(getString(R.string.article_author,model.getAuthor()));
-                viewHolder.setIvImage(getContext(), ImageUtils.getPoemUrl(NumberUtils.getModuleOfTen(position)));
+                viewHolder.setIvImage(getContext(), ImageUtils.getPoemUrl());
                 if (model.getNumLikes() != null)
                 {
                     String count = NumberUtils.shortenDigit(model.getNumLikes());

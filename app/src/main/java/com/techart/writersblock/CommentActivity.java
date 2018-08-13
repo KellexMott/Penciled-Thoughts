@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,9 +38,9 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
     private String post_key;
     private Boolean isSent;
     private String postType;
-    String postName;
-    String time;
-    TextView tvEmpty;
+    private String postName;
+    private String time;
+    private TextView tvEmpty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,13 +78,32 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                 if (model.getAuthorUrl() != null){
                     setVisibility(model.getAuthorUrl(),viewHolder);
                 }
-                viewHolder.authorTextView.setText(model.getAuthor());
+                if (model.getAuthor() != null){
+                    viewHolder.authorTextView.setText(model.getAuthor());
+                }
+
+                if (model.getTimeCreated() != null){
+                    time = TimeUtils.timeElapsed(model.getTimeCreated());
+                    viewHolder.timeTextView.setText(time);
+                }
                 viewHolder.commentTextView.setText(model.getCommentText());
-                time = TimeUtils.timeElapsed(model.getTimeCreated());
-                viewHolder.timeTextView.setText(time);
+
                 if (model.getReplies() != null && model.getReplies() != 0){
                     viewHolder.tvViewReplies.setVisibility(View.VISIBLE);
                     viewHolder.tvViewReplies.setText(getString(R.string.replies, NumberUtils.setUsualPlurality(model.getReplies(),"reply")));
+                    viewHolder.tvViewReplies.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent replyIntent = new Intent(CommentActivity.this,ReplyActivity.class);
+                            replyIntent.putExtra(Constants.POST_KEY,post_key);
+                            replyIntent.putExtra(Constants.COMMENT_KEY,comment_key);
+                            replyIntent.putExtra(Constants.POST_AUTHOR,model.getAuthor());
+                            replyIntent.putExtra(Constants.COMMENT_TEXT,model.getCommentText());
+                            replyIntent.putExtra(Constants.TIME_CREATED,time);
+                            replyIntent.putExtra(Constants.POST_TYPE,postType);
+                            startActivity(replyIntent);
+                        }
+                    });
                 }
                 viewHolder.tvReply.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -105,7 +123,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         mCommentList.setAdapter(firebaseRecyclerAdapter);
     }
 
-    public void setVisibility(String url, CommentHolder viewHolder) {
+    private void setVisibility(String url, CommentHolder viewHolder) {
         if (FireBaseUtils.getUiD() != null && FireBaseUtils.getUiD().equals(url)){
             viewHolder.commentTextView.setBackground(getResources().getDrawable(R.drawable.tv_circular_active_background));
         }
@@ -251,16 +269,14 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public static class CommentHolder extends RecyclerView.ViewHolder {
-        final LinearLayout llComment;
-        final TextView authorTextView;
-        final TextView commentTextView;
-        final TextView timeTextView;
-        final TextView tvReply;
-        final TextView tvViewReplies;
+        public TextView authorTextView;
+        public TextView commentTextView;
+        public TextView timeTextView;
+        public TextView tvReply;
+        public TextView tvViewReplies;
 
         public CommentHolder(View itemView) {
             super(itemView);
-            llComment = itemView.findViewById(R.id.ll_comment);
             authorTextView = itemView.findViewById(R.id.tvAuthor);
             timeTextView = itemView.findViewById(R.id.tvTime);
             tvReply = itemView.findViewById(R.id.tvReply);

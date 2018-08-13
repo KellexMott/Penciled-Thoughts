@@ -16,8 +16,8 @@ import com.techart.writersblock.constants.Constants;
  */
 public class ScrollingActivity extends AppCompatActivity {
     private ShareActionProvider mShareActionProvider;
-    String postTitle;
-    String postContent;
+    private String postTitle;
+    private String postContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
