@@ -68,15 +68,14 @@ public class AddChapterOnlineActivity extends AppCompatActivity {
 
     private void startPosting() {
         newText = editor.getText().toString().trim();
-        if (validate())
-        {
+        if (validate())  {
             postStoryChapter();
         }
     }
 
     private boolean validate()
     {
-        return EditorUtils.validateMainText(this,editor.getLayout().getLineCount());
+        return storyUrl != null && EditorUtils.validateMainText(this,editor.getLayout().getLineCount());
     }
 
     private void postStoryChapter() {

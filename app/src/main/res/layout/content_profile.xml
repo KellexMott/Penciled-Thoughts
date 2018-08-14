@@ -17,7 +17,7 @@
             android:id="@+id/tv_readingList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorAccent"
             android:padding="@dimen/activity_horizontal"
             android:elevation="@dimen/activity_horizontal"
             android:layout_marginTop="@dimen/activity_horizontal"

@@ -36,7 +36,6 @@ public class ChapterEditorOnlineActivity extends AppCompatActivity {
         chapterUrl = intent.getStringExtra(Constants.POST_KEY);
         String oldText = intent.getStringExtra(Constants.CHAPTER_CONTENT);
         String oldTitle = intent.getStringExtra(Constants.CHAPTER_TITLE);
-
         setTitle("Editing Episode " + oldTitle);
         editor.setText(oldText);
         editor.requestFocus();
@@ -61,8 +60,7 @@ public class ChapterEditorOnlineActivity extends AppCompatActivity {
     }
 
 
-    private boolean validate()
-    {
+    private boolean validate() {
         return EditorUtils.validateMainText(this,editor.getLayout().getLineCount());
     }
 
@@ -73,7 +71,7 @@ public class ChapterEditorOnlineActivity extends AppCompatActivity {
      */
     private void startPosting() {
         newText = editor.getText().toString().trim();
-        if (validate() && !storyUrl.equals("null") && chapterUrl != null){
+        if (validate() && storyUrl != null && chapterUrl != null){
             postChapter();
         }
     }

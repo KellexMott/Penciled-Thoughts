@@ -3,6 +3,7 @@ package com.techart.writersblock.setup;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -44,6 +45,8 @@ public class RegisterActivity extends AppCompatActivity {
     private String email;
     private ProgressDialog mProgress;
     private String signingInAs;
+    private SharedPreferences mPref;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,10 +91,11 @@ public class RegisterActivity extends AppCompatActivity {
         mProgress.setCanceledOnTouchOutside(false);
         mProgress.show();
 
-        FireBaseUtils.mAuth.createUserWithEmailAndPassword(email,firstPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,firstPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
+                        mPref = getSharedPreferences(String.format("%s",getString(R.string.app_name)),MODE_PRIVATE);
                         Map<String,Object> values = new HashMap<>();
                         values.put(Constants.USER_NAME,name);
                         values.put(Constants.IMAGE_URL,getString(R.string.default_key));
@@ -109,6 +113,9 @@ public class RegisterActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
+                                            SharedPreferences.Editor editor = mPref.edit();
+                                            editor.putString("user",name);
+                                            editor.apply();
                                             Toast.makeText(RegisterActivity.this, "User profile updated.", Toast.LENGTH_LONG).show();
                                         }
                                     }

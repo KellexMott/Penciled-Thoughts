@@ -76,12 +76,10 @@ public class AddChapterActivity extends AppCompatActivity {
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_post) {
-            if (!storyUrl.equals("null"))
+            if (storyUrl != "null" && !storyUrl.equals("null"))
             {
                 startPosting();
-            }
-            else
-            {
+            } else  {
                 postDialog();
             }
             return true;

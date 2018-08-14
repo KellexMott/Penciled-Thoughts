@@ -16,10 +16,8 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
-import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.techart.writersblock.constants.Constants;
 import com.techart.writersblock.constants.FireBaseUtils;
@@ -48,11 +46,8 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         String postAuthor = getIntent().getStringExtra(Constants.POST_AUTHOR);
         String comment = getIntent().getStringExtra(Constants.COMMENT_TEXT);
         String time = getIntent().getStringExtra(Constants.TIME_CREATED);
+        FireBaseUtils.mDatabaseReplies.child(commentKey).keepSynced(true);
 
-        FireBaseUtils.mDatabaseComment.keepSynced(true);
-        FireBaseUtils.mDatabaseStory.keepSynced(true);
-        FireBaseUtils.mDatabaseDevotions.keepSynced(true);
-        FireBaseUtils.mDatabasePoems.keepSynced(true);
 
         postType = getIntent().getStringExtra(Constants.POST_TYPE);
         setTitle("Replies to "+ postAuthor);
@@ -128,7 +123,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                         newComment.setValue(values);
                         isSent = true;
                         progressDialog.dismiss();
-                        onReplySent();
                         mEtComment.setText("");
                     }
                 }
@@ -140,27 +134,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         } else {
             Toast.makeText(this,"Nothing to send",Toast.LENGTH_LONG ).show();
         }
-    }
-
-    private void onReplySent() {
-        FireBaseUtils.mDatabaseComment.child(post_key).child(commentKey).runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(MutableData mutableData) {
-                Comment comment = mutableData.getValue(Comment.class);
-                if (comment == null) {
-                    return Transaction.success(mutableData);
-                }
-                comment.setReplies(comment.getReplies() + 1 );
-                // Set value and report transaction success
-                mutableData.setValue(comment);
-                return Transaction.success(mutableData);
-            }
-
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b,
-                                   DataSnapshot dataSnapshot) {
-            }
-        });
     }
 
     private void setVisibility(String url, CommentHolder viewHolder) {

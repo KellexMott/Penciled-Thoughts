@@ -131,9 +131,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     }*/
 
     private void resolveIssue(){
-        if (FireBaseUtils.mAuth.getCurrentUser() != null && FireBaseUtils.user != null){
+        if (FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser() != null){
             FirebaseMessaging.getInstance().subscribeToTopic(Constants.NEW_POST_SUBSCRIPTION);
-            FirebaseMessaging.getInstance().subscribeToTopic("tester");
             FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -154,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
 
     private void startLibraryActivity(){
-        if (FireBaseUtils.mAuth.getCurrentUser() != null ){
+        if (FirebaseAuth.getInstance().getCurrentUser()!= null ){
             FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {

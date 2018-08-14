@@ -54,7 +54,7 @@ public class MySpiritualsListActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        getMenuInflater().inflate(R.menu.menu_list,menu);
+        getMenuInflater().inflate(R.menu.menu_storylist,menu);
         return super.onCreateOptionsMenu(menu);
     }
 

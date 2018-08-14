@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.techart.writersblock.R;
@@ -34,46 +35,49 @@ public class OnlineChapterListActivity extends AppCompatActivity {
         bindView();
     }
 
-    private void bindView()
-    {
-        FirebaseRecyclerAdapter<Chapter,ChapterViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Chapter, ChapterViewHolder>(
-                Chapter.class,R.layout.item_chapter,ChapterViewHolder.class, FireBaseUtils.mDatabaseChapters.child(storyUrl)) {
-            @Override
-            protected void populateViewHolder(ChapterViewHolder viewHolder, final Chapter model, int position) {
-                final String post_key = getRef(position).getKey();
-                viewHolder.tvTitle.setText(model.getChapterTitle());
-                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent readIntent = new Intent(OnlineChapterListActivity.this,ChapterEditorOnlineActivity.class);
-                        readIntent.putExtra(Constants.POST_KEY,post_key);
-                        readIntent.putExtra(Constants.STORY_REFID,storyUrl);
-                        readIntent.putExtra(Constants.CHAPTER_TITLE,model.getChapterTitle());
-                        readIntent.putExtra(Constants.CHAPTER_CONTENT,model.getContent());
-                        startActivity(readIntent);
-                    }
-                });
+    private void bindView() {
+        if(storyUrl != null){
+            FirebaseRecyclerAdapter<Chapter,ChapterViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Chapter, ChapterViewHolder>(
+                    Chapter.class,R.layout.item_chapter,ChapterViewHolder.class, FireBaseUtils.mDatabaseChapters.child(storyUrl)) {
+                @Override
+                protected void populateViewHolder(ChapterViewHolder viewHolder, final Chapter model, int position) {
+                    final String post_key = getRef(position).getKey();
+                    viewHolder.tvTitle.setText(model.getChapterTitle());
+                    viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent readIntent = new Intent(OnlineChapterListActivity.this,ChapterEditorOnlineActivity.class);
+                            readIntent.putExtra(Constants.POST_KEY,post_key);
+                            readIntent.putExtra(Constants.STORY_REFID,storyUrl);
+                            readIntent.putExtra(Constants.CHAPTER_TITLE,model.getChapterTitle());
+                            readIntent.putExtra(Constants.CHAPTER_CONTENT,model.getContent());
+                            startActivity(readIntent);
+                        }
+                    });
 
-            }
-        };
-        mPoemList.setAdapter(firebaseRecyclerAdapter);
-        firebaseRecyclerAdapter.notifyDataSetChanged();
+                }
+            };
+            mPoemList.setAdapter(firebaseRecyclerAdapter);
+            firebaseRecyclerAdapter.notifyDataSetChanged();
+        } else {
+            Toast.makeText(this,"Kindly reload",Toast.LENGTH_LONG).show();
+        }
+
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed(){
         setResult(RESULT_OK,getIntent());
         finish();
     }
 
-    static class ChapterViewHolder extends RecyclerView.ViewHolder
+    public static class ChapterViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvTitle;
-        TextView tvTime;
-        View mView;
+        public TextView tvTitle;
+        public TextView tvTime;
+        public View mView;
 
-        ChapterViewHolder(View itemView) {
+        public ChapterViewHolder(View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvTime = itemView.findViewById(R.id.tv_timeCreated);

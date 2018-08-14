@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -26,6 +28,8 @@ public class ProfilePoemsListActivity extends AppCompatActivity {
     private RecyclerView mPoemList;
     private String author;
     private boolean mProcessLike = false;
+    private static final int EDITOR_REQUEST_CODE = 1001;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,25 @@ public class ProfilePoemsListActivity extends AppCompatActivity {
         linearLayoutManager.setStackFromEnd(true);
         mPoemList.setLayoutManager(linearLayoutManager);
         bindView();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.menu_list,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_add:
+                Intent editorIntent = new Intent(ProfilePoemsListActivity.this, PoemEditorActivity.class);
+                startActivityForResult(editorIntent,EDITOR_REQUEST_CODE);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void bindView()

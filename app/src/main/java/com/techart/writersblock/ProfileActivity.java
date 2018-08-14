@@ -12,8 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -78,8 +77,9 @@ public class ProfileActivity extends AppCompatActivity {
     // and returned in the Activity's onRequestPermissionsResult()
     private int PERMISSION_ALL = 1;
     private String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    private BottomNavigationView bottomNavigationView;
     private Uri uri;
+    FloatingActionButton fab;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +91,8 @@ public class ProfileActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         loadProfilePicture();
         tvSetPhoto = findViewById(R.id.tv_setPhoto);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         TextView tv_readingList = findViewById(R.id.tv_readingList);
         imProfilePicture = findViewById(R.id.ib_profile);
         RelativeLayout mypoems = findViewById(R.id.mypoems);
@@ -99,6 +101,8 @@ public class ProfileActivity extends AppCompatActivity {
         RelativeLayout postedPoems = findViewById(R.id.rv_postedpoems);
         RelativeLayout postedSpirituals = findViewById(R.id.rv_postedspirituals);
         RelativeLayout postedStories = findViewById(R.id.rv_postedstories);
+        fab = findViewById(R.id.fab);
+
 
         //Sets new DP buy first deleting existing one
         tvSetPhoto.setOnClickListener(new View.OnClickListener() {
@@ -165,31 +169,15 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        fab.setVisibility(View.VISIBLE);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent iInformation = new Intent(ProfileActivity.this,PostTypeDialog.class);
+                startActivity(iInformation);
+            }
+        });
 
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.navigation_home:
-                            Intent ma = new Intent(ProfileActivity.this, MainActivity.class);
-                            ma.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(ma);
-                            break;
-                        case R.id.navigation_create:
-                            Intent dialogIntent = new Intent(ProfileActivity.this,  PostTypeDialog.class);
-                            startActivity(dialogIntent);
-                            break;
-                        case R.id.navigation_profile:
-                            break;
-                    }
-                    return true;
-                }
-            });
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationViewBehavior());
-        //End bottom naviagtion
     }
 
     @Override
@@ -232,6 +220,9 @@ public class ProfileActivity extends AppCompatActivity {
                 Intent readIntent = new Intent(ProfileActivity.this, EditNameDialog.class);
                 startActivity(readIntent);
                 break;
+            case android.R.id.home:
+                finish();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -282,12 +273,6 @@ public class ProfileActivity extends AppCompatActivity {
             .setPositiveButton("ALLOW", dialogClickListener)
             .setNegativeButton("DENY", dialogClickListener)
             .show();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
     }
 
     private void loadProfilePicture(){

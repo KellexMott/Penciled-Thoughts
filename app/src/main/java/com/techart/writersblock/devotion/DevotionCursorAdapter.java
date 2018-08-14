@@ -45,15 +45,9 @@ public class DevotionCursorAdapter extends CursorAdapter {
         time.setText(timeCreated);
         ImageView iv = view.findViewById(R.id.ivFile);
 
-
-
-        if (isPosted.length() > 5)
-        {
-
+        if (isPosted.length() > 5)   {
             iv.setImageResource(R.drawable.ic_file_blue);
-        }
-        else
-        {
+        } else {
             iv.setImageResource(R.drawable.ic_file_grey);
         }
 
