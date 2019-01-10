@@ -99,7 +99,7 @@ public class AuthorsProfileActivity extends AppCompatActivity
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Users users = dataSnapshot.getValue(Users.class);
-                    if (users.getImageUrl() != null && users.getImageUrl().length() > 7) {
+                    if (users != null && users.getImageUrl() != null && users.getImageUrl().length() > 7) {
                         currentPhotoUrl = users.getImageUrl();
                         setPicture(currentPhotoUrl);
                     } else {

@@ -17,6 +17,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -34,6 +35,14 @@
         <activity
             android:name=".CommentActivity"
             android:parentActivityName=".MainActivity" />
+
+        <activity
+            android:name=".ChapterCommentsActivity"
+            android:parentActivityName=".ActivityRead" />
+
+        <activity
+            android:name=".ChaptersReplyActivity"
+            android:parentActivityName=".ChapterCommentsActivity" />
 
         <activity
             android:name=".ReplyActivity"
@@ -68,22 +77,12 @@
             android:theme="@style/FullScreen" />
 
         <activity
-            android:name=".PostTypeDialog"
-            android:excludeFromRecents="true"
-            android:noHistory="true"
-            android:theme="@style/dialogTheme" />
-        <activity
             android:name=".stories.StoryDialogActivity"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/dialogTheme" />
         <activity
             android:name=".stories.StoryTitleEditDialog"
-            android:excludeFromRecents="true"
-            android:noHistory="true"
-            android:theme="@style/dialogTheme" />
-        <activity
-            android:name=".EditNameDialog"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/dialogTheme" />
@@ -147,9 +146,7 @@
             android:name=".ProfileActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop" />
-        <activity
-            android:name=".ActivityReadStory"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".LikesActivity"
             android:excludeFromRecents="true"
@@ -238,8 +235,21 @@
         <activity
             android:name=".stories.StoryEditorActivity"
             android:excludeFromRecents="true"
-            android:parentActivityName=".ProfileActivity">
-        </activity>
+            android:parentActivityName=".ProfileActivity" />
+
+
+        <activity
+            android:name=".ActivityRead"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".MainActivity"></activity>
+
+        <activity
+            android:name=".WritersChatRoomActivity"
+            android:parentActivityName=".ProfileActivity"></activity>
+
+        <activity
+            android:name=".GeneralChatRoomActivity"
+            android:parentActivityName=".LibraryActivity" />
 
         <activity
             android:name=".LibraryActivity"

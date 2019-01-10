@@ -16,10 +16,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.techart.writersblock.constants.Constants;
 import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.models.Chapter;
+import com.techart.writersblock.models.Chapters;
 import com.techart.writersblock.models.Story;
 import com.techart.writersblock.utils.ImageUtils;
 import com.techart.writersblock.utils.NumberUtils;
@@ -181,7 +181,6 @@ public class OnStoryNotificationActivity extends AppCompatActivity {
         fireBaseRecyclerAdapter.notifyDataSetChanged();
     }
 
-
     private void addToViews(final String description, final String post_key, final Story model) {
         mProcessView = true;
         FireBaseUtils.mDatabaseViews.child(post_key).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -193,13 +192,11 @@ public class OnStoryNotificationActivity extends AppCompatActivity {
                         initializeChapters(post_key, model);
                     } else if (description.isEmpty()) {
                         mProcessView = false;
-                        FirebaseMessaging.getInstance().subscribeToTopic(post_key);
                         FireBaseUtils.addStoryView(model,post_key);
                         FireBaseUtils.onStoryViewed(post_key);
                         initializeChapters(post_key, model);
                     } else {
                         mProcessView = false;
-                        FirebaseMessaging.getInstance().subscribeToTopic(post_key);
                         showDescription(description,post_key,model);
                     }
                 }
@@ -225,7 +222,6 @@ public class OnStoryNotificationActivity extends AppCompatActivity {
         progressDialog.setCancelable(true);
         progressDialog.show();
 
-        FireBaseUtils.isComplete(status, FireBaseUtils.mDatabaseChapters.child(post_key));
         FireBaseUtils.mDatabaseChapters.child(post_key).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -236,8 +232,9 @@ public class OnStoryNotificationActivity extends AppCompatActivity {
                 }
                 if (contents.size() == pageCount) {
                     progressDialog.dismiss();
-                    Intent readIntent = new Intent(OnStoryNotificationActivity.this,ActivityReadStory.class);
-                    readIntent.putStringArrayListExtra(Constants.POST_CONTENT,contents);
+                    Chapters chapters = Chapters.getInstance();
+                    chapters.setChapters(contents);
+                    Intent readIntent = new Intent(OnStoryNotificationActivity.this, ActivityRead.class);
                     readIntent.putExtra(Constants.POST_KEY,post_key);
                     startActivity(readIntent);
                 }
@@ -259,6 +256,7 @@ public class OnStoryNotificationActivity extends AppCompatActivity {
                     values.put(Constants.POST_KEY,  post_key);
                     values.put(Constants.POST_TITLE, model.getTitle());
                     values.put(Constants.CHAPTER_ADDED, 0);
+                    // values.put("lastAccessed", timeAccessed);
                     FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.getUiD()).child(post_key).setValue(values);
                     Toast.makeText(OnStoryNotificationActivity.this,model.getTitle() + " added to library",Toast.LENGTH_LONG).show();
                 }

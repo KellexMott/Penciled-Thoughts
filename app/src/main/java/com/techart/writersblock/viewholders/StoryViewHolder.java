@@ -28,12 +28,9 @@ public final class StoryViewHolder extends RecyclerView.ViewHolder {
     public TextView tvNumComments;
     public TextView tvNumViews;
     public TextView tvTime;
-
     public ImageView ivStory;
     public View mView;
-
     public DatabaseReference mDatabaseLike;
-
     public ImageButton btnDelete;
     public ImageButton btnLiked;
     public ImageButton btnComment;

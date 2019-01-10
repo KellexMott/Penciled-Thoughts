@@ -43,6 +43,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etUsername;
     private EditText etPassWord;
     private String email;
+    private boolean isAttached;
+
     // Firebase references.
     private DatabaseReference mDatabaseUsers;
 
@@ -106,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
                     if(task.isSuccessful()) {
                         validUsersExistance();
                     }else {
-                        mProgress.dismiss();
+                        closeDialog();
                         if (task.getException() instanceof FirebaseAuthInvalidUserException) {
                             etUsername.setTextColor(Color.RED);
                             etUsername.setError("Unrecognized email...! Use the email you registered with");
@@ -145,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
             mDatabaseUsers.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    mProgress.dismiss();
+                    closeDialog();
                     if (dataSnapshot.hasChild(userId)) {
                         Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
                         mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -163,10 +165,28 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         } else {
-            mProgress.dismiss();
+            closeDialog();
             Toast.makeText(LoginActivity.this, "Error encountered, Try again later", Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        isAttached = true;
+    }
+
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        isAttached = false;
+    }
+
+    private void closeDialog() {
+        if (isAttached) {
+            mProgress.dismiss();
+        }
     }
 
 

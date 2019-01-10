@@ -20,10 +20,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.techart.writersblock.constants.Constants;
 import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.models.Chapter;
+import com.techart.writersblock.models.Chapters;
 import com.techart.writersblock.models.Devotion;
 import com.techart.writersblock.models.Poem;
 import com.techart.writersblock.models.Story;
@@ -42,6 +42,7 @@ public class SearchActivity extends AppCompatActivity {
     private boolean mProcessLike = false;
     private boolean mProcessView = false;
     private EditText etSearch;
+    private Long timeAccessed;
     private RecyclerView rvSearchResults;
     private String searchText;
     private ArrayList<String> contents= new ArrayList<>(Arrays.asList(Constants.STORY_HOLDER, Constants.POEM_HOLDER, Constants.DEVOTION_HOLDER));
@@ -554,13 +555,11 @@ public class SearchActivity extends AppCompatActivity {
                         initializeChapters(post_key, model);
                     } else if (description.isEmpty()) {
                         mProcessView = false;
-                        FirebaseMessaging.getInstance().subscribeToTopic(post_key);
                         FireBaseUtils.addStoryView(model,post_key);
                         FireBaseUtils.onStoryViewed(post_key);
                         initializeChapters(post_key, model);
                     } else {
                         mProcessView = false;
-                        FirebaseMessaging.getInstance().subscribeToTopic(post_key);
                         showDescription(description,post_key,model);
                     }
                 }
@@ -573,13 +572,15 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void initializeChapters(String post_key, Story model) {
+        FireBaseUtils.mDatabaseChapters.child(post_key).keepSynced(true);
         contents = new ArrayList<>();
         addToLibrary(model,post_key);
-        loadChapters(post_key);
+        loadChapters(model.getCategory().trim(), post_key);
     }
 
-    private void loadChapters(final String post_key) {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
+
+    private void loadChapters(String status, final String post_key) {
+        final ProgressDialog progressDialog = new ProgressDialog(SearchActivity.this);
         progressDialog.setMessage("Loading chapters");
         progressDialog.setCancelable(true);
         progressDialog.show();
@@ -594,8 +595,9 @@ public class SearchActivity extends AppCompatActivity {
                 }
                 if (contents.size() == pageCount) {
                     progressDialog.dismiss();
-                    Intent readIntent = new Intent(SearchActivity.this,ActivityReadStory.class);
-                    readIntent.putStringArrayListExtra(Constants.POST_CONTENT,contents);
+                    Chapters chapters = Chapters.getInstance();
+                    chapters.setChapters(contents);
+                    Intent readIntent = new Intent(SearchActivity.this, ActivityRead.class);
                     readIntent.putExtra(Constants.POST_KEY,post_key);
                     startActivity(readIntent);
                 }
@@ -607,6 +609,7 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
+
     private void addToLibrary(final Story model, final String post_key) {
         FireBaseUtils.mDatabaseLibrary.addValueEventListener(new ValueEventListener() {
             @Override
@@ -616,6 +619,7 @@ public class SearchActivity extends AppCompatActivity {
                     values.put(Constants.POST_KEY,  post_key);
                     values.put(Constants.POST_TITLE, model.getTitle());
                     values.put(Constants.CHAPTER_ADDED, 0);
+                    values.put("lastAccessed", timeAccessed);
                     FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.getUiD()).child(post_key).setValue(values);
                     Toast.makeText(SearchActivity.this,model.getTitle() + " added to library",Toast.LENGTH_LONG).show();
                 }
@@ -627,24 +631,26 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
+
     private void showDescription(String description, final String post_key, final Story model) {
         DialogInterface.OnClickListener dialogClickListener =
-        new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int button) {
-                if (button == DialogInterface.BUTTON_POSITIVE) {
-                    FireBaseUtils.addStoryView(model,post_key);
-                    FireBaseUtils.onStoryViewed(post_key);
-                    initializeChapters(post_key, model);
-                } else {
-                    dialog.dismiss();
-                }
-            }
-        };
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int button) {
+                        if (button == DialogInterface.BUTTON_POSITIVE) {
+                            FireBaseUtils.addStoryView(model, post_key);
+                            FireBaseUtils.onStoryViewed(post_key);
+                            initializeChapters(post_key, model);
+                        } else {
+                            dialog.dismiss();
+                        }
+                    }
+                };
+        AlertDialog.Builder builder = new AlertDialog.Builder(SearchActivity.this);
         builder.setMessage(description)
                 .setPositiveButton("Start Reading", dialogClickListener)
                 .setNegativeButton("Back", dialogClickListener)
                 .show();
     }
+
 }

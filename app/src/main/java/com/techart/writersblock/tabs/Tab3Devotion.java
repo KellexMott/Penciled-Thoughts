@@ -8,9 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -36,15 +36,18 @@ public class Tab3Devotion extends Fragment {
     private boolean mProcessView = false;
     private boolean mProcessLike = false;
 
+    private ProgressBar progressBar;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tabrecyclerviewer, container, false);
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FireBaseUtils.mDatabaseLike.keepSynced(true);
         FireBaseUtils.mDatabaseDevotions.keepSynced(true);
         FireBaseUtils.mDatabaseViews.keepSynced(true);
         FireBaseUtils.mDatabaseComment.keepSynced(true);
+        progressBar = rootView.findViewById(R.id.pb_loading);
 
         mPoemList = rootView.findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
@@ -73,6 +76,7 @@ public class Tab3Devotion extends Fragment {
             @Override
             protected void populateViewHolder(ArticleViewHolder viewHolder, final Devotion model, int position) {
                 final String post_key = getRef(position).getKey();
+                progressBar.setVisibility(View.GONE);
                 FireBaseUtils.mDatabaseLike.child(post_key).keepSynced(true);
                 viewHolder.post_title.setText(model.getTitle());
                 viewHolder.setTint(getContext());

@@ -40,7 +40,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.techart.writersblock.constants.Constants;
 import com.techart.writersblock.constants.FireBaseUtils;
-import com.techart.writersblock.models.Chapter;
 import com.techart.writersblock.models.Library;
 import com.techart.writersblock.models.Users;
 import com.techart.writersblock.utils.ImageUtils;
@@ -127,7 +126,7 @@ public class LibraryActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         // onStoryOpened(post_key);
-                        storyExists(post_key);
+                        startReadActivity(model.getPostTitle(), post_key);
                     }
                 });
                 viewHolder.tvRemove.setOnClickListener(new View.OnClickListener() {
@@ -141,16 +140,14 @@ public class LibraryActivity extends AppCompatActivity {
         rvReadingList.setAdapter(firebaseRecyclerAdapter);
     }
 
-    private void storyExists(final String key) {
+    private void storyExists(final String title, final String key) {
+
         FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.getUiD()).child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChild(Constants.POST_KEY))
-                {
-                    loadChapters(key);
-                }
-                else
-                {
+                if (dataSnapshot.hasChild(Constants.POST_KEY)) {
+                    startReadActivity(title, key);
+                } else {
                     storyDeleted(key,"Story was deleted by Author");
                 }
             }
@@ -160,35 +157,11 @@ public class LibraryActivity extends AppCompatActivity {
         });
     }
 
-    private void loadChapters(final String key) {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading chapters");
-        progressDialog.setCancelable(true);
-        progressDialog.setIndeterminate(true);
-        progressDialog.show();
-        FireBaseUtils.mDatabaseChapters.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                    contents = new ArrayList<>();
-                    chapterTitles = new ArrayList<>();
-                    pageCount = ((int) dataSnapshot.getChildrenCount());
-                    for (DataSnapshot chapterSnapShot: dataSnapshot.getChildren()) {
-                        Chapter chapter = chapterSnapShot.getValue(Chapter.class);
-                        contents.add(chapter.getContent());
-                        chapterTitles.add(chapter.getChapterTitle());
-                    }
-                    if (contents.size() == pageCount) {
-                        progressDialog.dismiss();
-                        Intent readIntent = new Intent(LibraryActivity.this,ActivityReadStory.class);
-                        readIntent.putStringArrayListExtra(Constants.POST_CONTENT,contents);
-                        readIntent.putStringArrayListExtra(Constants.POST_TITLE,chapterTitles);
-                        startActivity(readIntent);
-                    }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
+    private void startReadActivity(String title, String post_key) {
+        Intent readIntent = new Intent(this, ActivityRead.class);
+        readIntent.putExtra(Constants.POST_TITLE, title);
+        readIntent.putExtra(Constants.POST_KEY, post_key);
+        startActivity(readIntent);
     }
 
     private void storyDeleted(final String key, String msg )
@@ -238,6 +211,10 @@ public class LibraryActivity extends AppCompatActivity {
             case R.id.action_logout:
                 logOut();
                 break;
+            case R.id.action_chat:
+                Intent readIntent = new Intent(LibraryActivity.this, GeneralChatRoomActivity.class);
+                startActivity(readIntent);
+                break;
             case R.id.action_changedp:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     onGetPermission();
@@ -248,12 +225,14 @@ public class LibraryActivity extends AppCompatActivity {
                     startActivityForResult(imageIntent, GALLERY_REQUEST);
                 }
                 break;
-            case R.id.action_edit_name:
-                Intent readIntent = new Intent(LibraryActivity.this, EditNameDialog.class);
-                startActivity(readIntent);
-                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void closeDialog() {
+        if (isAttached) {
+            mProgress.dismiss();
+        }
     }
 
     @TargetApi(23)
@@ -365,7 +344,7 @@ public class LibraryActivity extends AppCompatActivity {
               // values.put("imageUrl",taskSnapshot.getDownloadUrl().toString());
                FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).updateChildren(values);
                tvSetPhoto.setVisibility(View.INVISIBLE);
-               mProgress.dismiss();
+               closeDialog();
                Toast.makeText(LibraryActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
            }
        }).addOnFailureListener(new OnFailureListener() {

@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.Query;
@@ -18,6 +20,8 @@ import com.techart.writersblock.utils.TimeUtils;
 public class ViewsActivity extends AppCompatActivity {
     private String postKey;
     private RecyclerView mPoemList;
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +31,8 @@ public class ViewsActivity extends AppCompatActivity {
         setTitle("Viewers");
         FireBaseUtils.mDatabaseViews.child(postKey).keepSynced(true);
         mPoemList = findViewById(R.id.lv_notice);
+        progressBar = findViewById(R.id.pb_loading);
+
         mPoemList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ViewsActivity.this);
         linearLayoutManager.setReverseLayout(true);
@@ -46,6 +52,7 @@ public class ViewsActivity extends AppCompatActivity {
         {
             @Override
             protected void populateViewHolder(LikesActivity.NoticeViewHolder viewHolder, final Notice model, int position) {
+                progressBar.setVisibility(View.GONE);
                 String time = TimeUtils.timeElapsed(model.getTimeCreated());
                 viewHolder.tvUser.setText(model.getUser());
                 viewHolder.tvTime.setText(time);

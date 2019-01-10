@@ -16,8 +16,10 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.techart.writersblock.constants.Constants;
 import com.techart.writersblock.constants.FireBaseUtils;
@@ -122,6 +124,8 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                         values.put(Constants.TIME_CREATED, ServerValue.TIMESTAMP);
                         newComment.setValue(values);
                         isSent = true;
+                        Toast.makeText(ReplyActivity.this, "Reply sent....", Toast.LENGTH_LONG).show();
+                        onReplySent();
                         progressDialog.dismiss();
                         mEtComment.setText("");
                     }
@@ -135,6 +139,34 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             Toast.makeText(this,"Nothing to send",Toast.LENGTH_LONG ).show();
         }
     }
+
+    private void onReplySent() {
+        FireBaseUtils.mDatabaseComment.child(post_key).child(commentKey).runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Comment comment = mutableData.getValue(Comment.class);
+                if (comment == null) {
+                    return Transaction.success(mutableData);
+                } else if (comment.getReplies() == null) {
+                    Map<String, Object> values = new HashMap<>();
+                    values.put(Constants.REPLIES, 1);
+                    FireBaseUtils.mDatabaseComment.child(post_key).child(commentKey).updateChildren(values);
+                    return Transaction.success(mutableData);
+                }
+                comment.setReplies(comment.getReplies() + 1);
+                // Set value and report transaction success
+                mutableData.setValue(comment);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+            }
+        });
+    }
+
+
 
     private void setVisibility(String url, CommentHolder viewHolder) {
         if (FireBaseUtils.getUiD() != null && FireBaseUtils.getUiD().equals(url)){

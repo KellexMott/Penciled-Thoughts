@@ -11,4 +11,10 @@
     <color name="colorMediumGrey">#727272</color>
     <color name="colorLightGrey">#D3D3D3</color>
     <color name="colorRed">#da1212</color>
+
+    //icons
+    <color name="colorFb">#3b5998</color>
+    <color name="colorLightFb">#5374ba</color>
+    <color name="colorWhatsapp">#128C7E</color>
+    <color name="colorLightAccent">#16ea92</color>
 </resources>

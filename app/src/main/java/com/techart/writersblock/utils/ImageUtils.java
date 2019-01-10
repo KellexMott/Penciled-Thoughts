@@ -19,6 +19,7 @@ import com.techart.writersblock.R;
  */
 
 public final class ImageUtils {
+
     private ImageUtils() {
     }
 

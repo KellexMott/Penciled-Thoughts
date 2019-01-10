@@ -101,13 +101,12 @@ public class ChapterEditorActivity extends AppCompatActivity {
         else posts the chapter
      */
     private void startPosting() {
-        if (storyUrl.equals("null")) {
+        if (storyUrl != null && storyUrl.equals("null")) {
             queryStoryData();
             postStory();
             updateStory();
             postChapter();
-        }
-        else if (!storyUrl.equals("null") && chapterUrl != null){
+        } else if (storyUrl != null && !storyUrl.equals("null") && chapterUrl != null) {
             updatePostedChapter();
         }else {
             postChapter();
@@ -133,7 +132,7 @@ public class ChapterEditorActivity extends AppCompatActivity {
         values.put(Constants.NUM_LIKES,0);
         values.put(Constants.NUM_COMMENTS,0);
         values.put(Constants.NUM_VIEWS,0);
-        values.put(Constants.AUTHOR_URL,FireBaseUtils.getUiD());
+        values.put(Constants.AUTHOR_URL, FireBaseUtils.getUiD());
         values.put(Constants.POST_AUTHOR,FireBaseUtils.getAuthor());
         values.put(Constants.TIME_CREATED, ServerValue.TIMESTAMP);
 

@@ -25,6 +25,8 @@
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
 -keepattributes SourceFile,LineNumberTable
+-keepattributes *Annotation*
+-keep @**annotation** class * {*;}
 
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
@@ -33,3 +35,4 @@
 -dontwarn org.apache.http.**
 -dontwarn java.lang.annotation.Annotation
 -dontwarn android.net.http.AndroidHttpClient
+-dontwarn org.w3c.dom.bootstrap.DOMImplementationRegistry

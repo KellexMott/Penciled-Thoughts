@@ -20,14 +20,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.techart.writersblock.constants.Constants;
 import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.models.Users;
 import com.techart.writersblock.setup.LoginActivity;
-import com.techart.writersblock.tabs.Tab1Poems;
-import com.techart.writersblock.tabs.Tab2Stories;
+import com.techart.writersblock.tabs.Tab1Stories;
+import com.techart.writersblock.tabs.Tab2Poems;
 import com.techart.writersblock.tabs.Tab3Devotion;
+import com.techart.writersblock.utils.NumberRequestDialog;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -58,12 +57,12 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (firebaseAuth.getCurrentUser()==null)
-                {
+                if (firebaseAuth.getCurrentUser() == null) {
                     Intent loginIntent = new Intent(MainActivity.this,LoginActivity.class);
                     loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(loginIntent);
                 }
+                checkVersion();
             }
         };
         haveNetworkConnection();
@@ -91,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
                         break;
                     case R.id.navigation_create:
-                       // Intent dialogIntent = new Intent(MainActivity.this,  PostTypeDialog.class);
                         Intent dialogIntent = new Intent(MainActivity.this,  SearchActivity.class);
                         startActivity(dialogIntent);
                         break;
@@ -105,15 +103,14 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationViewBehavior());
         //End bottom naviagtion
-        resolveIssue();
     }
 
     /**
      * Loads the list of staff from database to Shared preferences for easy access
      */
-    /*
+
     private void checkVersion() {
-        if (FireBaseUtils.mAuth.getCurrentUser() != null){
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             FireBaseUtils.mDatabaseNumber.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -128,29 +125,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 }
             });
         }
-    }*/
-
-    private void resolveIssue(){
-        if (FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser() != null){
-            FirebaseMessaging.getInstance().subscribeToTopic(Constants.NEW_POST_SUBSCRIPTION);
-            FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Users user = dataSnapshot.getValue(Users.class);
-                    if (user != null && user.getName().trim().contains("Writer")){
-                        FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).child(Constants.USER_NAME).setValue(FireBaseUtils.getAuthor());
-                    }
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                }
-            });
-        } else {
-            Toast.makeText(MainActivity.this,"Still loading, try after a minute",LENGTH_LONG).show();
-        }
     }
-
-
 
     private void startLibraryActivity(){
         if (FirebaseAuth.getInstance().getCurrentUser()!= null ){
@@ -203,8 +178,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private void addPages() {
         MyPageAdapter pagerAdapter=new MyPageAdapter(this.getSupportFragmentManager());
-        pagerAdapter.addFragment(new Tab2Stories());
-        pagerAdapter.addFragment(new Tab1Poems());
+        pagerAdapter.addFragment(new Tab1Stories());
+        pagerAdapter.addFragment(new Tab2Poems());
         pagerAdapter.addFragment(new Tab3Devotion());
         vp.setOffscreenPageLimit(1);
         //SET ADAPTER TO VP

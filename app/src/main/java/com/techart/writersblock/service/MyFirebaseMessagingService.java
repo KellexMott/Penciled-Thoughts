@@ -10,7 +10,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.techart.writersblock.MainActivity;
+import com.techart.writersblock.NotifcationsActivity;
 import com.techart.writersblock.R;
 import com.techart.writersblock.constants.Constants;
 
@@ -38,7 +38,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("title",payload.get("title"));
         }else  {*/
-        intent = new Intent(this, MainActivity.class);
+        /*
+        Map<String,Object> values = new HashMap<>();
+        values.put(Constants.POST_AUTHOR,FireBaseUtils.getAuthor());
+        values.put(Constants.AUTHOR_URL,FireBaseUtils.getAuthor());
+        values.put(Constants.POST_URL,FireBaseUtils.getAuthor());
+        values.put(Constants.POST_TITLE,payload.get("title"));
+        values.put(Constants.POST_TYPE,FireBaseUtils.getAuthor());
+        values.put(Constants.TIME_CREATED, ServerValue.TIMESTAMP);
+        FireBaseUtils.mDatabaseNotifications.child(FireBaseUtils.getUiD()).push().setValue(values);*/
+
+        intent = new Intent(this, NotifcationsActivity.class);
         TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
         taskStackBuilder.addNextIntent(intent);
         PendingIntent pendingIntent  = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);

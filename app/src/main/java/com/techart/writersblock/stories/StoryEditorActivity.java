@@ -148,7 +148,7 @@ public class StoryEditorActivity extends AppCompatActivity {
         values.put(Constants.NUM_LIKES,0);
         values.put(Constants.NUM_COMMENTS,0);
         values.put(Constants.NUM_VIEWS,0);
-        values.put(Constants.AUTHOR_URL,FireBaseUtils.getUiD());
+        values.put(Constants.AUTHOR_URL, FireBaseUtils.getUiD());
         values.put(Constants.POST_AUTHOR,FireBaseUtils.getAuthor());
         values.put(Constants.TIME_CREATED,ServerValue.TIMESTAMP);
         FireBaseUtils.mDatabaseStory.child(storyUrl).setValue(values);

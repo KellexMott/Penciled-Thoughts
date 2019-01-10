@@ -12,6 +12,11 @@
         android:title="@string/item_search" />
 
     <item
+        android:id="@+id/navigation_notification"
+        android:icon="@drawable/ic_notifications_24px"
+        android:title="@string/item_notifications" />
+
+    <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_library"
         android:title="@string/item_library" />

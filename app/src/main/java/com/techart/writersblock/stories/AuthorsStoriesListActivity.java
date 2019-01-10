@@ -1,19 +1,22 @@
 package com.techart.writersblock.stories;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.techart.writersblock.ActivityReadStory;
+import com.techart.writersblock.ActivityRead;
 import com.techart.writersblock.AuthorsProfileActivity;
 import com.techart.writersblock.CommentActivity;
 import com.techart.writersblock.LikesActivity;
@@ -21,12 +24,15 @@ import com.techart.writersblock.R;
 import com.techart.writersblock.constants.Constants;
 import com.techart.writersblock.constants.FireBaseUtils;
 import com.techart.writersblock.models.Chapter;
+import com.techart.writersblock.models.Chapters;
 import com.techart.writersblock.models.Story;
 import com.techart.writersblock.utils.ImageUtils;
 import com.techart.writersblock.utils.TimeUtils;
 import com.techart.writersblock.viewholders.StoryViewHolder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class AuthorsStoriesListActivity extends AppCompatActivity {
@@ -36,8 +42,10 @@ public class AuthorsStoriesListActivity extends AppCompatActivity {
     private ArrayList<String> chapterTitles;
     private int pageCount;
     private String author;
+    private Long timeAccessed;
 
     private boolean mProcessLike = false;
+    private boolean mProcessView = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,9 +109,7 @@ public class AuthorsStoriesListActivity extends AppCompatActivity {
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        contents = new ArrayList<>();
-                        chapterTitles = new ArrayList<>();
-                        loadChapters(post_key);
+                        addToViews(model.getDescription(), post_key, model);
                     }
                 });
 
@@ -158,28 +164,62 @@ public class AuthorsStoriesListActivity extends AppCompatActivity {
         firebaseRecyclerAdapter.notifyDataSetChanged();
     }
 
+    private void addToViews(final String description, final String post_key, final Story model) {
+        mProcessView = true;
+        FireBaseUtils.mDatabaseViews.child(post_key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (mProcessView) {
+                    if (dataSnapshot.hasChild(FireBaseUtils.getUiD())) {
+                        mProcessView = false;
+                        initializeChapters(post_key, model);
+                    } else if (description.isEmpty()) {
+                        mProcessView = false;
+                        FireBaseUtils.addStoryView(model, post_key);
+                        FireBaseUtils.onStoryViewed(post_key);
+                        initializeChapters(post_key, model);
+                    } else {
+                        mProcessView = false;
+                        showDescription(description, post_key, model);
+                    }
+                }
+            }
 
-    private void loadChapters(String post_key) {
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void initializeChapters(String post_key, Story model) {
+        FireBaseUtils.mDatabaseChapters.child(post_key).keepSynced(true);
+        contents = new ArrayList<>();
+        addToLibrary(model, post_key);
+        loadChapters(model.getCategory().trim(), post_key);
+    }
+
+
+    private void loadChapters(String status, final String post_key) {
         final ProgressDialog progressDialog = new ProgressDialog(AuthorsStoriesListActivity.this);
         progressDialog.setMessage("Loading chapters");
         progressDialog.setCancelable(true);
-        progressDialog.setIndeterminate(true);
         progressDialog.show();
-        FireBaseUtils.mDatabaseChapters.child(post_key).addListenerForSingleValueEvent(new ValueEventListener() {
+
+        FireBaseUtils.mDatabaseChapters.child(post_key).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 pageCount = ((int) dataSnapshot.getChildrenCount());
-                for (DataSnapshot chapterSnapShot: dataSnapshot.getChildren())
-                {
+                for (DataSnapshot chapterSnapShot : dataSnapshot.getChildren()) {
                     Chapter chapter = chapterSnapShot.getValue(Chapter.class);
                     contents.add(chapter.getContent());
-                    chapterTitles.add(chapter.getChapterTitle());
                 }
                 if (contents.size() == pageCount) {
                     progressDialog.dismiss();
-                    Intent readIntent = new Intent(AuthorsStoriesListActivity.this,ActivityReadStory.class);
-                    readIntent.putStringArrayListExtra(Constants.POST_CONTENT,contents);
-                    readIntent.putStringArrayListExtra(Constants.POST_TITLE,chapterTitles);
+                    Chapters chapters = Chapters.getInstance();
+                    chapters.setChapters(contents);
+                    Intent readIntent = new Intent(AuthorsStoriesListActivity.this, ActivityRead.class);
+                    readIntent.putExtra(Constants.POST_KEY, post_key);
                     startActivity(readIntent);
                 }
             }
@@ -190,6 +230,50 @@ public class AuthorsStoriesListActivity extends AppCompatActivity {
         });
     }
 
+
+    private void addToLibrary(final Story model, final String post_key) {
+        FireBaseUtils.mDatabaseLibrary.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.child(FireBaseUtils.getUiD()).hasChild(post_key)) {
+                    Map<String, Object> values = new HashMap<>();
+                    values.put(Constants.POST_KEY, post_key);
+                    values.put(Constants.POST_TITLE, model.getTitle());
+                    values.put(Constants.CHAPTER_ADDED, 0);
+                    values.put("lastAccessed", timeAccessed);
+                    FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.getUiD()).child(post_key).setValue(values);
+                    Toast.makeText(AuthorsStoriesListActivity.this, model.getTitle() + " added to library", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+    private void showDescription(String description, final String post_key, final Story model) {
+        DialogInterface.OnClickListener dialogClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int button) {
+                        if (button == DialogInterface.BUTTON_POSITIVE) {
+                            FireBaseUtils.addStoryView(model, post_key);
+                            FireBaseUtils.onStoryViewed(post_key);
+                            initializeChapters(post_key, model);
+                        } else {
+                            dialog.dismiss();
+                        }
+                    }
+                };
+        AlertDialog.Builder builder = new AlertDialog.Builder(AuthorsStoriesListActivity.this);
+        builder.setMessage(description)
+                .setPositiveButton("Start Reading", dialogClickListener)
+                .setNegativeButton("Back", dialogClickListener)
+                .show();
+    }
     @Override
     public void onBackPressed()
     {

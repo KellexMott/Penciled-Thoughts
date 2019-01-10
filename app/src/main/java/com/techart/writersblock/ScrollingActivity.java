@@ -52,4 +52,6 @@ public class ScrollingActivity extends AppCompatActivity {
             mShareActionProvider.setShareIntent(shareIntent);
         }
     }
+
+
 }

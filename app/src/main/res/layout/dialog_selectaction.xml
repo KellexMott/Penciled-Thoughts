@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="200dip"
-    tools:context="com.techart.writersblock.PostTypeDialog">
+    tools:context="com.techart.writersblock.stories.StoryDialogActivity">
 
     <ListView
         android:id="@+id/list"

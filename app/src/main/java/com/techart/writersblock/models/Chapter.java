@@ -8,6 +8,7 @@ package com.techart.writersblock.models;
 public class Chapter {
     private String chapterTitle;
     private String Content;
+    private Long numComments;
 
     public Chapter()
     {
@@ -28,5 +29,13 @@ public class Chapter {
 
     public void setChapterTitle(String chapterTitle) {
         this.chapterTitle = chapterTitle;
+    }
+
+    public Long getNumComments() {
+        return numComments;
+    }
+
+    public void setNumComments(Long numComments) {
+        this.numComments = numComments;
     }
 }

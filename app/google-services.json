@@ -1,35 +1,35 @@
 {
   "project_info": {
-    "project_number": "600663981663",
-    "firebase_url": "https://writers-block-89203.firebaseio.com",
-    "project_id": "writers-block-89203",
-    "storage_bucket": "writers-block-89203.appspot.com"
+    "project_number": "125463489444",
+    "firebase_url": "https://penciled-thoughts.firebaseio.com",
+    "project_id": "penciled-thoughts",
+    "storage_bucket": "penciled-thoughts.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:600663981663:android:c81da337a4a64406",
+        "mobilesdk_app_id": "1:125463489444:android:0514437395704eaa",
         "android_client_info": {
           "package_name": "com.techart.writersblock"
         }
       },
       "oauth_client": [
         {
-          "client_id": "600663981663-6rp8itiqhsvd6hq3tthrhlsv6n1dq4lh.apps.googleusercontent.com",
+          "client_id": "125463489444-kbgloeoinbet6nlbsmh403ad1jone6ki.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.techart.writersblock",
-            "certificate_hash": "c7dde1e0a0ccfb4f5b84f3324af6cdb0411fb5e8"
+            "certificate_hash": "7fe194d626ebf910e58821e4f7080042f183914f"
           }
         },
         {
-          "client_id": "600663981663-1vjh84lkff2dali5915a1lh11ta0stlh.apps.googleusercontent.com",
+          "client_id": "125463489444-gss145a3k0e6ecoq7fvsd9hgcgf3cfro.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCRlHpTYHUXBalWQgJh_6Yj9yC2dchWCr8"
+          "current_key": "AIzaSyBsPN4ImpqV98ThsJ6igq9EKqOCpCfYjzo"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "600663981663-1vjh84lkff2dali5915a1lh11ta0stlh.apps.googleusercontent.com",
+              "client_id": "125463489444-gss145a3k0e6ecoq7fvsd9hgcgf3cfro.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

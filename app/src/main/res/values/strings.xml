@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">Penciled Thoughts</string>
+    <!-- <string name="app_name">Penciled Thoughts</string> -->
+    <string name="app_name">P.T</string>
     <string name="poem_deleted">Poem deleted</string>
     <string name="poem_updated">Poem updated</string>
 
@@ -26,7 +27,6 @@
 
     <!--bottom menu -->
     <string name="item_home">Home</string>
-    <string name="item_create">Create</string>
     <string name="item_search">Search</string>
     <string name="item_library">Library</string>
     <string name="item_reading">Go to Reading List</string>
@@ -174,7 +174,6 @@
 
    </string>
     <string name="app_version">1.0.0</string>
-
     <string name="title_developer">Developer</string>
     <string name="summary_developer">Know more about the Developer</string>
     <string name="summary_writers">List of writers</string>
@@ -190,7 +189,6 @@
     <string name="title_readers">Readers</string>
     <string name="about">About</string>
     <string name="number_placeholder">#</string>
-    <string name="edit_name">Edit name</string>
     <string name="default_key">default</string>
     <string name="search_title">Search by %1$s title</string>
     <string name="remove">Remove</string>
@@ -206,4 +204,6 @@
     <string name="view">VIEW</string>
     <string name="set">SET</string>
     <string name="last_insert">Last insert ~</string>
+    <string name="chat" />
+    <string name="item_notifications">Notifications</string>
 </resources>

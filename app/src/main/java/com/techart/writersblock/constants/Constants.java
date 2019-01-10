@@ -9,6 +9,7 @@ package com.techart.writersblock.constants;
 public class Constants {
     public static final String POST_AUTHOR = "author";
     public static final String AUTHOR_URL = "authorUrl";
+    public static final String POST_URL = "postUrl";
     public static final String USER = "user";
     public static final String TIME_CREATED = "timeCreated";
     public static final String NUM_LIKES = "numLikes";
@@ -44,6 +45,7 @@ public class Constants {
 
     //Spiritual
     public static final String DEVOTION_KEY = "Devotions";
+    public static final String NOTIFICATION_KEY = "Notifications";
     public static final String COMMENT_TEXT = "commentText";
 
 
@@ -51,7 +53,11 @@ public class Constants {
 
     //Comments
     public static final String COMMENTS_KEY = "Comments";
+    public static final String CHAPTERS_COMMENTS_KEY = "ChaptersComments";
+    public static final String WRITERS_CHATS_KEY = "WritersChats";
+    public static final String GENERAL_CHATS_KEY = "GeneralChats";
     public static final String REPLIES_KEY = "Replies";
+    public static final String CHAPTER_REPLIES_KEY = "ChapterReplies";
 
     public static final String STORY_COMMENTS_KEY = "StoryComments";
     public static final String POEM_COMMENTS_KEY = "PoemComments";

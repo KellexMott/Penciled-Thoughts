@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -27,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.github.clans.fab.FloatingActionButton;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -40,13 +40,16 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.techart.writersblock.constants.FireBaseUtils;
+import com.techart.writersblock.devotion.DevotionEditorActivity;
 import com.techart.writersblock.devotion.MySpiritualsListActivity;
 import com.techart.writersblock.devotion.ProfileDevotionsListActivity;
 import com.techart.writersblock.models.Users;
 import com.techart.writersblock.poems.MyPoemsListActivity;
+import com.techart.writersblock.poems.PoemEditorActivity;
 import com.techart.writersblock.poems.ProfilePoemsListActivity;
 import com.techart.writersblock.stories.MyStoriesListActivity;
 import com.techart.writersblock.stories.ProfileStoriesListActivity;
+import com.techart.writersblock.stories.StoryPrologueActivity;
 import com.techart.writersblock.utils.ImageUtils;
 import com.techart.writersblock.utils.UploadUtils;
 
@@ -57,6 +60,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.techart.writersblock.utils.ImageUtils.hasPermissions;
+
 /**
  * Displays users private content. Such as
  * 1. Posted items
@@ -78,8 +82,9 @@ public class ProfileActivity extends AppCompatActivity {
     private int PERMISSION_ALL = 1;
     private String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private Uri uri;
-    FloatingActionButton fab;
-
+    FloatingActionButton fbPoems;
+    FloatingActionButton fbDevotion;
+    FloatingActionButton fbStories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +106,7 @@ public class ProfileActivity extends AppCompatActivity {
         RelativeLayout postedPoems = findViewById(R.id.rv_postedpoems);
         RelativeLayout postedSpirituals = findViewById(R.id.rv_postedspirituals);
         RelativeLayout postedStories = findViewById(R.id.rv_postedstories);
-        fab = findViewById(R.id.fab);
+        // fab = findViewById(R.id.fab);
 
 
         //Sets new DP buy first deleting existing one
@@ -169,11 +174,29 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        fab.setVisibility(View.VISIBLE);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fbPoems = findViewById(R.id.item_poem);
+        fbPoems.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent iInformation = new Intent(ProfileActivity.this,PostTypeDialog.class);
+                Intent iInformation = new Intent(ProfileActivity.this, PoemEditorActivity.class);
+                startActivity(iInformation);
+            }
+        });
+
+        fbDevotion = findViewById(R.id.item_devotion);
+        fbDevotion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent iInformation = new Intent(ProfileActivity.this, DevotionEditorActivity.class);
+                startActivity(iInformation);
+            }
+        });
+
+        fbStories = findViewById(R.id.item_story);
+        fbStories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent iInformation = new Intent(ProfileActivity.this, StoryPrologueActivity.class);
                 startActivity(iInformation);
             }
         });
@@ -216,8 +239,8 @@ public class ProfileActivity extends AppCompatActivity {
                     startActivityForResult(imageIntent, GALLERY_REQUEST);
                 }
                 break;
-            case R.id.action_edit_name:
-                Intent readIntent = new Intent(ProfileActivity.this, EditNameDialog.class);
+            case R.id.action_chat:
+                Intent readIntent = new Intent(ProfileActivity.this, WritersChatRoomActivity.class);
                 startActivity(readIntent);
                 break;
             case android.R.id.home:

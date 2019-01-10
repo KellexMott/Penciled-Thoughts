@@ -162,7 +162,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                         values.put(Constants.AUTHOR_URL,FireBaseUtils.getUiD());
                         values.put(Constants.POST_AUTHOR,FireBaseUtils.getAuthor());
                         values.put(Constants.COMMENT_TEXT,comment);
-                        values.put(Constants.REPLIES,0);
+                        //   values.put(Constants.REPLIES,0);
                         values.put(Constants.TIME_CREATED, ServerValue.TIMESTAMP);
                         newComment.setValue(values);
                         isSent = true;
