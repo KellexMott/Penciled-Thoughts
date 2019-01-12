@@ -6,8 +6,8 @@ android {
         applicationId "com.techart.writersblock"
         minSdkVersion 18
         targetSdkVersion 27
-        versionCode 14
-        versionName "2.0.3"
+        versionCode 15
+        versionName "2.0.4"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -55,7 +55,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
 
     //Others
-    implementation 'com.github.bumptech.glide:glide:3.5.2'
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
     implementation 'com.github.clans:fab:1.6.4'
     //Crashlytics
     implementation('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {

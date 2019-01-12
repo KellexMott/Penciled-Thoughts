@@ -3,7 +3,8 @@
     <string name="app_name">P.T</string>
     <string name="poem_deleted">Poem deleted</string>
     <string name="poem_updated">Poem updated</string>
-
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string-array name="categories">
         <item>@string/default_category</item>
@@ -19,7 +20,6 @@
         <item>Traditional</item>
     </string-array>
     <string name="default_category">Select Category</string>
-
 
     <!--activity login -->
     <string name="prompt_email">Email</string>
@@ -37,8 +37,6 @@
     <!--activity register -->
     <string name="repeat_password">Repeat Password</string>
     <string name="prompt_username">User Name</string>
-
-
     <string name="help"><![CDATA[<b>How to create a post</b>
         <ol>
             <li>Press the create button</li>
@@ -163,6 +161,10 @@
 
     <!--InformationActivity -->
     <string name="pref_header_about">About</string>
+    <string name="outdated">NEW UPDATE AVAILABLE</string>
+    <string name="urgent">They are major changes that require an instant update</string>
+    <string name="update_reason">Kindly press UPDATE to get newest specification</string>
+
 
 
     <string name="choose_email_client">Choose email client</string>
@@ -173,13 +175,19 @@
         have formed but to people who are not on their friend or contact lists as well.
 
    </string>
-    <string name="app_version">1.0.0</string>
+    <string name="privacy">Penciled Thoughts cares about your Privacy. Any personal information (name, phone number,
+        email and location) or any data that you choose to share with us, like uploading a picture on our app, will
+        securely be stored in the app server. This information may / will be used by Penciled Thoughts,
+        its affiliates, partners and selected third parties in order to provide you with the best service. By using this
+        Application, you agree to the terms and conditions of this Privacy Statement.</string>
+    <string name="app_version">Version %1$s</string>
     <string name="title_developer">Developer</string>
     <string name="summary_developer">Know more about the Developer</string>
     <string name="summary_writers">List of writers</string>
     <string name="summary_readers">List of Readers</string>
 
     <string name="url_developer">https://www.facebook.com/TechArtZambia/</string>
+    <string name="no_notices">There are no new notifications</string>
 
     <string name="title_version">Version</string>
     <string name="key_app_version">key_app_version</string>
@@ -206,4 +214,7 @@
     <string name="last_insert">Last insert ~</string>
     <string name="chat" />
     <string name="item_notifications">Notifications</string>
+    <string name="action_notifications">Notifications</string>
+    <string name="join_us">Join Us</string>
+    <string name="share_app">Share App</string>
 </resources>

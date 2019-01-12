@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.techart.writersblock">
+    package="com.techart.wb">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -12,14 +12,14 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:name=".WritersBlock"
+        android:name="com.techart.wb.WritersBlock"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.techart.wb.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -29,85 +29,90 @@
         </activity>
 
         <provider
-            android:name=".sqliteutils.WritersBlockProvider"
-            android:authorities="com.techart.writersblock.writersblockprovider" />
+            android:name="com.techart.wb.sqliteutils.WritersBlockProvider"
+            android:authorities="com.techart.wb.writersblockprovider" />
 
         <activity
-            android:name=".CommentActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name="com.techart.wb.CommentActivity"
+            android:parentActivityName="com.techart.wb.MainActivity" />
 
         <activity
-            android:name=".ChapterCommentsActivity"
-            android:parentActivityName=".ActivityRead" />
+            android:name="com.techart.wb.NotificationsActivity"
+            android:label="@string/action_notifications"
+            android:parentActivityName="com.techart.wb.MainActivity" />
 
         <activity
-            android:name=".ChaptersReplyActivity"
-            android:parentActivityName=".ChapterCommentsActivity" />
+            android:name="com.techart.wb.ChapterCommentsActivity"
+            android:parentActivityName="com.techart.wb.ActivityRead" />
 
         <activity
-            android:name=".ReplyActivity"
-            android:parentActivityName=".CommentActivity" />
+            android:name="com.techart.wb.ChaptersReplyActivity"
+            android:parentActivityName="com.techart.wb.ChapterCommentsActivity" />
+
+        <activity
+            android:name="com.techart.wb.ReplyActivity"
+            android:parentActivityName="com.techart.wb.CommentActivity" />
 
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.techart.writersblock.MainActivity" />
+            android:value="com.techart.wb.MainActivity" />
 
         <activity
-            android:name=".ViewsActivity"
+            android:name="com.techart.wb.ViewsActivity"
             android:excludeFromRecents="true"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName="com.techart.wb.MainActivity" />
 
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.techart.writersblock.MainActivity" />
+            android:value="com.techart.wb.MainActivity" />
 
         <activity
-            android:name=".devotion.DevotionEditorActivity"
+            android:name="com.techart.wb.devotion.DevotionEditorActivity"
             android:excludeFromRecents="true" />
         <activity
-            android:name=".setup.RegisterActivity"
+            android:name="com.techart.wb.setup.RegisterActivity"
             android:autoRemoveFromRecents="true"
             android:noHistory="true"
             android:theme="@style/FullScreen" />
 
         <activity
-            android:name=".setup.LoginActivity"
+            android:name="com.techart.wb.setup.LoginActivity"
             android:autoRemoveFromRecents="true"
             android:noHistory="true"
             android:theme="@style/FullScreen" />
 
         <activity
-            android:name=".stories.StoryDialogActivity"
+            android:name="com.techart.wb.stories.StoryDialogActivity"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/dialogTheme" />
         <activity
-            android:name=".stories.StoryTitleEditDialog"
-            android:excludeFromRecents="true"
-            android:noHistory="true"
-            android:theme="@style/dialogTheme" />
-
-        <activity
-            android:name=".utils.NumberRequestDialog"
+            android:name="com.techart.wb.stories.StoryTitleEditDialog"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/dialogTheme" />
 
         <activity
-            android:name=".setup.PasswordResetDialog"
+            android:name="com.techart.wb.utils.NumberRequestDialog"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/dialogTheme" />
 
         <activity
-            android:name=".stories.StoryDescriptionEditDialog"
+            android:name="com.techart.wb.setup.PasswordResetDialog"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/dialogTheme" />
 
         <activity
-            android:name=".OnStoryNotificationActivity"
-            android:parentActivityName=".MainActivity"
+            android:name="com.techart.wb.stories.StoryDescriptionEditDialog"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@style/dialogTheme" />
+
+        <activity
+            android:name="com.techart.wb.OnStoryNotificationActivity"
+            android:parentActivityName="com.techart.wb.MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="Story_Notice" />
@@ -116,8 +121,8 @@
         </activity>
 
         <activity
-            android:name=".ReadersActivity"
-            android:parentActivityName=".InformationActivity">
+            android:name="com.techart.wb.ReadersActivity"
+            android:parentActivityName="com.techart.wb.InformationActivity">
             <intent-filter>
                 <action android:name="com.techart.writersblock.ReadersActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -125,8 +130,8 @@
         </activity>
 
         <activity
-            android:name=".WritersActivity"
-            android:parentActivityName=".InformationActivity">
+            android:name="com.techart.wb.WritersActivity"
+            android:parentActivityName="com.techart.wb.InformationActivity">
             <intent-filter>
                 <action android:name="com.techart.writersblock.WritersActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -134,8 +139,8 @@
         </activity>
 
         <activity
-            android:name=".HelpActivity"
-            android:parentActivityName=".InformationActivity">
+            android:name="com.techart.wb.HelpActivity"
+            android:parentActivityName="com.techart.wb.InformationActivity">
             <intent-filter>
                 <action android:name="com.techart.writersblock.HelpActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -143,146 +148,146 @@
         </activity>
 
         <activity
-            android:name=".ProfileActivity"
+            android:name="com.techart.wb.ProfileActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop" />
 
         <activity
-            android:name=".LikesActivity"
+            android:name="com.techart.wb.LikesActivity"
             android:excludeFromRecents="true"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName="com.techart.wb.MainActivity" />
         <activity
-            android:name=".poems.MyPoemsListActivity"
-            android:parentActivityName=".ProfileActivity"
+            android:name="com.techart.wb.poems.MyPoemsListActivity"
+            android:parentActivityName="com.techart.wb.ProfileActivity"
             />
         <activity
-            android:name=".stories.StoryPrologueActivity"
+            android:name="com.techart.wb.stories.StoryPrologueActivity"
             android:excludeFromRecents="true"
             android:noHistory="true"
-            android:parentActivityName=".ProfileActivity"/>
+            android:parentActivityName="com.techart.wb.ProfileActivity"/>
         <activity
-            android:name=".chapters.ChapterEditorActivity"
+            android:name="com.techart.wb.chapters.ChapterEditorActivity"
             android:excludeFromRecents="true"
-            android:parentActivityName=".ProfileActivity"/>
+            android:parentActivityName="com.techart.wb.ProfileActivity"/>
         <activity
-            android:name=".chapters.ChapterEditorOnlineActivity"
+            android:name="com.techart.wb.chapters.ChapterEditorOnlineActivity"
             android:excludeFromRecents="true"
-            android:parentActivityName=".stories.ProfileStoriesListActivity"/>
+            android:parentActivityName="com.techart.wb.stories.ProfileStoriesListActivity"/>
         <activity
-            android:name=".devotion.DevotionEditorOnlineActivity"
+            android:name="com.techart.wb.devotion.DevotionEditorOnlineActivity"
             android:excludeFromRecents="true"
-            android:parentActivityName=".stories.ProfileStoriesListActivity"/>
+            android:parentActivityName="com.techart.wb.stories.ProfileStoriesListActivity"/>
         <activity
-            android:name=".poems.PoemEditorOnlineActivity"
+            android:name="com.techart.wb.poems.PoemEditorOnlineActivity"
             android:excludeFromRecents="true"
-            android:parentActivityName=".stories.ProfileStoriesListActivity"/>
+            android:parentActivityName="com.techart.wb.stories.ProfileStoriesListActivity"/>
         <activity
-            android:name=".chapters.OnlineChapterListActivity"
+            android:name="com.techart.wb.chapters.OnlineChapterListActivity"
             android:excludeFromRecents="true"
-            android:parentActivityName=".stories.ProfileStoriesListActivity"/>
+            android:parentActivityName="com.techart.wb.stories.ProfileStoriesListActivity"/>
 
         <activity
-            android:name=".AuthorsProfileActivity"
+            android:name="com.techart.wb.AuthorsProfileActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName="com.techart.wb.MainActivity"/>
         <activity
-            android:name=".chapters.AddChapterActivity"
-            android:parentActivityName=".chapters.MyChaptersListActivity"/>
+            android:name="com.techart.wb.chapters.AddChapterActivity"
+            android:parentActivityName="com.techart.wb.chapters.MyChaptersListActivity"/>
         <activity
-            android:name=".chapters.AddChapterOnlineActivity"
-            android:parentActivityName=".stories.ProfileStoriesListActivity"/>
+            android:name="com.techart.wb.chapters.AddChapterOnlineActivity"
+            android:parentActivityName="com.techart.wb.stories.ProfileStoriesListActivity"/>
 
         <activity
-            android:name=".chapters.MyChaptersListActivity"
-            android:parentActivityName=".ProfileActivity">
+            android:name="com.techart.wb.chapters.MyChaptersListActivity"
+            android:parentActivityName="com.techart.wb.ProfileActivity">
         </activity>
 
         <activity
-            android:name=".stories.MyStoriesListActivity"
-            android:parentActivityName=".ProfileActivity">
+            android:name="com.techart.wb.stories.MyStoriesListActivity"
+            android:parentActivityName="com.techart.wb.ProfileActivity">
         </activity>
 
         <activity
-            android:name=".poems.AuthorsPoemsListActivity"
-            android:parentActivityName=".AuthorsProfileActivity">
+            android:name="com.techart.wb.poems.AuthorsPoemsListActivity"
+            android:parentActivityName="com.techart.wb.AuthorsProfileActivity">
         </activity>
 
         <activity
-            android:name=".devotion.AuthorsDevotionsListActivity"
-            android:parentActivityName=".AuthorsProfileActivity">
+            android:name="com.techart.wb.devotion.AuthorsDevotionsListActivity"
+            android:parentActivityName="com.techart.wb.AuthorsProfileActivity">
         </activity>
 
         <activity
-            android:name=".stories.AuthorsStoriesListActivity"
-            android:parentActivityName=".AuthorsProfileActivity">
+            android:name="com.techart.wb.stories.AuthorsStoriesListActivity"
+            android:parentActivityName="com.techart.wb.AuthorsProfileActivity">
         </activity>
 
         <activity
-            android:name=".poems.ProfilePoemsListActivity"
-            android:parentActivityName=".AuthorsProfileActivity">
+            android:name="com.techart.wb.poems.ProfilePoemsListActivity"
+            android:parentActivityName="com.techart.wb.AuthorsProfileActivity">
         </activity>
 
         <activity
-            android:name=".devotion.ProfileDevotionsListActivity"
-            android:parentActivityName=".AuthorsProfileActivity">
+            android:name="com.techart.wb.devotion.ProfileDevotionsListActivity"
+            android:parentActivityName="com.techart.wb.AuthorsProfileActivity">
         </activity>
 
         <activity
-            android:name=".stories.ProfileStoriesListActivity"
-            android:parentActivityName=".AuthorsProfileActivity">
+            android:name="com.techart.wb.stories.ProfileStoriesListActivity"
+            android:parentActivityName="com.techart.wb.AuthorsProfileActivity">
         </activity>
 
         <activity
-            android:name=".stories.StoryEditorActivity"
+            android:name="com.techart.wb.stories.StoryEditorActivity"
             android:excludeFromRecents="true"
-            android:parentActivityName=".ProfileActivity" />
+            android:parentActivityName="com.techart.wb.ProfileActivity" />
 
 
         <activity
-            android:name=".ActivityRead"
+            android:name="com.techart.wb.ActivityRead"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName="com.techart.wb.MainActivity"></activity>
 
         <activity
-            android:name=".WritersChatRoomActivity"
-            android:parentActivityName=".ProfileActivity"></activity>
+            android:name="com.techart.wb.WritersChatRoomActivity"
+            android:parentActivityName="com.techart.wb.ProfileActivity"></activity>
 
         <activity
-            android:name=".GeneralChatRoomActivity"
-            android:parentActivityName=".LibraryActivity" />
+            android:name="com.techart.wb.GeneralChatRoomActivity"
+            android:parentActivityName="com.techart.wb.LibraryActivity" />
 
         <activity
-            android:name=".LibraryActivity"
+            android:name="com.techart.wb.LibraryActivity"
             android:excludeFromRecents="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".ProfileActivity">
+            android:parentActivityName="com.techart.wb.ProfileActivity">
         </activity>
 
         <activity
-            android:name=".devotion.MySpiritualsListActivity"
-            android:parentActivityName=".ProfileActivity">
+            android:name="com.techart.wb.devotion.MySpiritualsListActivity"
+            android:parentActivityName="com.techart.wb.ProfileActivity">
         </activity>
 
         <activity
-            android:name=".InformationActivity"
+            android:name="com.techart.wb.InformationActivity"
             android:label="@string/about"
-            android:parentActivityName=".ProfileActivity">
+            android:parentActivityName="com.techart.wb.ProfileActivity">
         </activity>
 
         <activity
-            android:name=".poems.PoemEditorActivity"
+            android:name="com.techart.wb.poems.PoemEditorActivity"
             android:excludeFromRecents="true"
-            android:parentActivityName=".ProfileActivity">
+            android:parentActivityName="com.techart.wb.ProfileActivity">
         </activity>
 
         <activity
-            android:name=".ScrollingActivity"
-            android:parentActivityName=".MainActivity">
+            android:name="com.techart.wb.ScrollingActivity"
+            android:parentActivityName="com.techart.wb.MainActivity">
         </activity>
 
 
         <activity
-            android:name=".SearchActivity"
+            android:name="com.techart.wb.SearchActivity"
             android:theme="@style/FullScreen">
             <intent-filter>
                 <action android:name="SearchActivity" />
@@ -292,7 +297,7 @@
 
         <!-- [START firebase_service] -->
         <service
-            android:name=".service.MyFirebaseMessagingService"
+            android:name="com.techart.wb.service.MyFirebaseMessagingService"
             android:enabled="true"
             android:exported="true"
             android:stopWithTask="false">

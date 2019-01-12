@@ -13,6 +13,13 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+
+    <style name="PrimaryFlatButton" parent="Theme.AppCompat.Light">
+        <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
+        <item name="android:textColor">#FDFDFE</item>
+        <item name="android:radius">5dp</item>
+    </style>
+
     <style name="FullScreen" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     </style>
