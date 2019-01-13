@@ -1,6 +1,6 @@
 <resources>
     <!-- <string name="app_name">Penciled Thoughts</string> -->
-    <string name="app_name">P.T</string>
+    <string name="app_name">Penciled Thoughts</string>
     <string name="poem_deleted">Poem deleted</string>
     <string name="poem_updated">Poem updated</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -143,7 +143,7 @@
     <string name="story_title">Story Title</string>
     <string name="background_image">background image</string>
     <string name="profile_picture">profile picture</string>
-    <string name="set_photo">Set Photo</string>
+    <string name="set_photo">Set DP</string>
     <string name="my_block">My Block</string>
     <string name="_poems">Poems</string>
     <string name="chevron">chevron</string>
@@ -217,4 +217,5 @@
     <string name="action_notifications">Notifications</string>
     <string name="join_us">Join Us</string>
     <string name="share_app">Share App</string>
+    <string name="biography">Bio</string>
 </resources>

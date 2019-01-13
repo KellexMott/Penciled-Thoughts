@@ -37,9 +37,7 @@ import java.util.Map;
 
 public class AuthorsStoriesListActivity extends AppCompatActivity {
     private RecyclerView mPoemList;
-
     private ArrayList<String> contents;
-    private ArrayList<String> chapterTitles;
     private int pageCount;
     private String author;
     private Long timeAccessed;
@@ -77,7 +75,7 @@ public class AuthorsStoriesListActivity extends AppCompatActivity {
                 viewHolder.tvTitle.setText(model.getTitle());
                 viewHolder.tvCategory.setText(getString(R.string.post_category,model.getCategory()));
                 viewHolder.tvStatus.setText(model.getStatus());
-                viewHolder.setIvImage(AuthorsStoriesListActivity.this, ImageUtils.getStoryUrl(model.getCategory().trim()));
+
                 viewHolder.tvAuthor.setText(getString(R.string.post_author,model.getAuthor()));
                 if (model.getNumLikes() != null)
                 {
@@ -95,6 +93,13 @@ public class AuthorsStoriesListActivity extends AppCompatActivity {
                     String time = TimeUtils.timeElapsed(TimeUtils.currentTime() - model.getTimeCreated());
                     viewHolder.tvTime.setText(time);
                 }
+
+                if (model.getImageUrl() != null) {
+                    viewHolder.setIvImage(AuthorsStoriesListActivity.this,model.getImageUrl());
+                } else {
+                    viewHolder.setIvImage(AuthorsStoriesListActivity.this, ImageUtils.getStoryUrl(model.getCategory().trim()));
+                }
+
 
                 viewHolder.tvAuthor.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -270,13 +275,12 @@ public class AuthorsStoriesListActivity extends AppCompatActivity {
                 };
         AlertDialog.Builder builder = new AlertDialog.Builder(AuthorsStoriesListActivity.this);
         builder.setMessage(description)
-                .setPositiveButton("Start Reading", dialogClickListener)
-                .setNegativeButton("Back", dialogClickListener)
-                .show();
+        .setPositiveButton("Start Reading", dialogClickListener)
+        .setNegativeButton("Back", dialogClickListener)
+        .show();
     }
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         setResult(RESULT_OK,getIntent());
         finish();
     }

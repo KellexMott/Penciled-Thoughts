@@ -19,6 +19,7 @@ public class Constants {
     public static final String VIEWS_KEY = "Views";
     public static final String LIBRARY = "Library";
     public static final String USERS = "Users";
+    public static final String BIOGRAPHY = "biography";
     public static final String STAMP_KEY = "Stamp";
     public static final String VERSION_KEY = "Version";
 

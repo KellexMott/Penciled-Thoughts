@@ -39,6 +39,19 @@
             android:text="@string/set_photo"
             android:textAllCaps="true" />
 
+        <TextView
+            android:id="@+id/tv_bio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_margin="7dp"
+            android:background="@drawable/oval"
+            android:elevation="7dp"
+            android:padding="7dp"
+            android:text="No biography yet"
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp" />
+
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"

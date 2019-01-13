@@ -61,7 +61,6 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
     private RecyclerView mPoemList;
     private DatabaseReference mDatabaseStory;
     private AlertDialog updateDialog;
-
     private static final int GALLERY_REQUEST = 1;
     private int PERMISSION_ALL = 1;
     private String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -83,7 +82,6 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
         mPoemList.setHasFixedSize(true);
         contents = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.categories)));
         categories = getResources().getStringArray(R.array.categories);
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ProfileStoriesListActivity.this);
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
@@ -92,8 +90,7 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_storylist,menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -159,7 +156,6 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         setPhoto(post_key,model.getImageUrl(), model.getTitle());
-                        //Toast.makeText(getApplicationContext(),"Not yet implemented",Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -178,7 +174,6 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         onToggleButtonClicked(v,post_key);
-                       // setStatus(model.getStatus());
                     }
                 });
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
@@ -191,7 +186,6 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                     deleteCaution(post_key);
-                     //FireBaseUtils.deleteFromViews(post_key);
                     }
                 });
 

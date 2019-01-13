@@ -3,6 +3,7 @@ package com.techart.wb;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -155,7 +156,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
             progressDialog.show();
             FireBaseUtils.mDatabaseComment.child(post_key).addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (!isSent)
                     {
                         DatabaseReference newComment = FireBaseUtils.mDatabaseComment.child(post_key).push();
@@ -166,7 +167,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                         //   values.put(Constants.REPLIES,0);
                         values.put(Constants.TIME_CREATED, ServerValue.TIMESTAMP);
                         newComment.setValue(values);
-                        FireBaseUtils.updateNotifications(postType,postName,"commented",post_key,comment, ImageUrl.getInstance().getImageUrl());
+                        FireBaseUtils.updateNotifications(postType,postName,"commented on ",post_key,comment, ImageUrl.getInstance().getImageUrl());
                         isSent = true;
                         progressDialog.dismiss();
                         onCommentSent();
@@ -174,7 +175,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                     }
                 }
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
             });

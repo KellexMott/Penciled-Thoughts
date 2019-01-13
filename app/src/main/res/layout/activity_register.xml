@@ -17,14 +17,6 @@
         android:contentDescription="@string/logo_content_desc"
         app:srcCompat="@drawable/logo" />
 
-    <TextView
-        android:id="@+id/tv_aim"
-        style="@style/editView_style"
-        android:textSize="16sp"
-        android:textAllCaps="true"
-        android:text="@string/aim" />
-
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

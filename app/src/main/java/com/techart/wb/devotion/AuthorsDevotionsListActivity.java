@@ -80,16 +80,15 @@ public class AuthorsDevotionsListActivity extends AppCompatActivity {
                     String time = TimeUtils.timeElapsed(TimeUtils.currentTime() - model.getTimeCreated());
                     viewHolder.timeTextView.setText(time);
                 }
+
                 viewHolder.setLikeBtn(post_key);
-                postTitle = model.getTitle();
-                postContent = model.getDevotionText();
 
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent readPoemIntent = new Intent(AuthorsDevotionsListActivity.this, ScrollingActivity.class);
-                        readPoemIntent.putExtra(Constants.POST_CONTENT, postContent);
-                        readPoemIntent.putExtra(Constants.POST_TITLE, postTitle);
+                        readPoemIntent.putExtra(Constants.POST_CONTENT, model.getDevotionText());
+                        readPoemIntent.putExtra(Constants.POST_TITLE, model.getTitle());
                         startActivity(readPoemIntent);
                     }
                 });

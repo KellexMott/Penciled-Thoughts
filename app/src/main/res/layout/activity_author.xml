@@ -7,4 +7,5 @@
     <include layout="@layout/content_image" />
     <include layout="@layout/content_user" />
 
+
 </android.support.design.widget.CoordinatorLayout>

@@ -30,7 +30,7 @@
 
         <provider
             android:name="com.techart.wb.sqliteutils.WritersBlockProvider"
-            android:authorities="com.techart.wb.writersblockprovider" />
+            android:authorities="com.techart.wb.wbprovider" />
 
         <activity
             android:name="com.techart.wb.CommentActivity"
@@ -93,6 +93,19 @@
             android:theme="@style/dialogTheme" />
 
         <activity
+            android:name="com.techart.wb.BiographyActivity"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@style/dialogTheme" />
+
+        <activity
+            android:name="com.techart.wb.AboutActivity"
+            android:label="@string/about"
+            android:launchMode="singleTop"
+            android:parentActivityName="com.techart.wb.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
             android:name="com.techart.wb.utils.NumberRequestDialog"
             android:excludeFromRecents="true"
             android:noHistory="true"
@@ -124,7 +137,7 @@
             android:name="com.techart.wb.ReadersActivity"
             android:parentActivityName="com.techart.wb.InformationActivity">
             <intent-filter>
-                <action android:name="com.techart.writersblock.ReadersActivity" />
+                <action android:name="com.techart.wb.ReadersActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -133,7 +146,7 @@
             android:name="com.techart.wb.WritersActivity"
             android:parentActivityName="com.techart.wb.InformationActivity">
             <intent-filter>
-                <action android:name="com.techart.writersblock.WritersActivity" />
+                <action android:name="com.techart.wb.WritersActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -142,7 +155,7 @@
             android:name="com.techart.wb.HelpActivity"
             android:parentActivityName="com.techart.wb.InformationActivity">
             <intent-filter>
-                <action android:name="com.techart.writersblock.HelpActivity" />
+                <action android:name="com.techart.wb.HelpActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -156,10 +169,11 @@
             android:name="com.techart.wb.LikesActivity"
             android:excludeFromRecents="true"
             android:parentActivityName="com.techart.wb.MainActivity" />
+
         <activity
             android:name="com.techart.wb.poems.MyPoemsListActivity"
-            android:parentActivityName="com.techart.wb.ProfileActivity"
-            />
+            android:parentActivityName="com.techart.wb.ProfileActivity" />
+
         <activity
             android:name="com.techart.wb.stories.StoryPrologueActivity"
             android:excludeFromRecents="true"

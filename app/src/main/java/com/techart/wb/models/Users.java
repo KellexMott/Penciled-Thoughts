@@ -8,6 +8,7 @@ package com.techart.wb.models;
 public class Users {
     private String name;
     private String imageUrl;
+    private String biography;
     private String signedAs;
     private Long timeCreated;
 
@@ -46,4 +47,11 @@ public class Users {
         this.timeCreated = timeCreated;
     }
 
+    public String getBiography() {
+        return biography;
+    }
+
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
 }

@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:125463489444:android:0514437395704eaa",
         "android_client_info": {
-          "package_name": "com.techart.writersblock"
+          "package_name": "com.techart.wb"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "125463489444-kbgloeoinbet6nlbsmh403ad1jone6ki.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.techart.writersblock",
+            "package_name": "com.techart.wb",
             "certificate_hash": "7fe194d626ebf910e58821e4f7080042f183914f"
           }
         },

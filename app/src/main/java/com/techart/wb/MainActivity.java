@@ -230,11 +230,9 @@ public class MainActivity extends AppCompatActivity
             TextView tvEmail = header.findViewById(R.id.tvEmail);
             tvUpload = header.findViewById(R.id.tv_upload);
             ibDp = header.findViewById(R.id.iv_change);
-           // ibCancel = header.findViewById(R.id.iv_remove);
+            ibCancel = header.findViewById(R.id.iv_remove);
             linearLayout = header.findViewById(R.id.ll_header_main);
 
-            // linearLayout.setBackground(getResources().getDrawable(R.drawable.placeholder));
-            //setIvImage(linearLayout,"https://firebasestorage.googleapis.com/v0/b/ats-agrochemicals-app.appspot.com/o/question%2FA2Q4%2F-LSiippIATRAyYeSYbtW?alt=media&token=7222f5d7-815e-45c2-a774-e089e15d5354");
             if (currentPhotoUrl != null && currentPhotoUrl.length() > 7) {
                 setIvImage(currentPhotoUrl);
             }
@@ -269,7 +267,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 }
             });
-/*
+
             ibCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -287,7 +285,7 @@ public class MainActivity extends AppCompatActivity
                                 }
                             });
                 }
-            });*/
+            });
 
             tvUpload.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -486,7 +484,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(editorDevotionIntent);
         }
         else if (id == R.id.nav_facebook) {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/ATS-Agrochemicals-Limited-435889980186767/"));
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/penciledthoughts/"));
             startActivity(browserIntent);
         }  else if (id == R.id.nav_help) {
             Intent editorDevotionIntent = new Intent(MainActivity.this, HelpActivity.class);
@@ -518,6 +516,8 @@ public class MainActivity extends AppCompatActivity
                     if (user != null){
                         switch (user.getSignedAs().trim()) {
                             case "Writer": {
+                                ImageUrl imageUrl = ImageUrl.getInstance();
+                                imageUrl.setStatus(user.getSignedAs());
                                 Intent accountIntent = new Intent(MainActivity.this, ProfileActivity.class);
                                 startActivity(accountIntent);
                                 break;

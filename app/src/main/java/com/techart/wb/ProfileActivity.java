@@ -69,6 +69,7 @@ import static com.techart.wb.utils.ImageUtils.hasPermissions;
  */
 public class ProfileActivity extends AppCompatActivity {
     private TextView tvSetPhoto;
+    private TextView tvBio;
     private ProgressDialog mProgress;
     private ImageView imProfilePicture;
     private String currentPhotoUrl;
@@ -106,6 +107,7 @@ public class ProfileActivity extends AppCompatActivity {
         RelativeLayout postedPoems = findViewById(R.id.rv_postedpoems);
         RelativeLayout postedSpirituals = findViewById(R.id.rv_postedspirituals);
         RelativeLayout postedStories = findViewById(R.id.rv_postedstories);
+        tvBio = findViewById(R.id.tv_bio);
         // fab = findViewById(R.id.fab);
 
 
@@ -114,6 +116,13 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setPhoto();
+            }
+        });
+        tvBio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent bioIntent = new Intent(ProfileActivity.this, BiographyActivity.class);
+                startActivity(bioIntent);
             }
         });
         tv_readingList.setOnClickListener(new View.OnClickListener() {
@@ -243,6 +252,10 @@ public class ProfileActivity extends AppCompatActivity {
                 Intent readIntent = new Intent(ProfileActivity.this, WritersChatRoomActivity.class);
                 startActivity(readIntent);
                 break;
+            case R.id.action_bio:
+                Intent bioIntent = new Intent(ProfileActivity.this, BiographyActivity.class);
+                startActivity(bioIntent);
+                break;
             case android.R.id.home:
                 finish();
                 return true;
@@ -308,6 +321,10 @@ public class ProfileActivity extends AppCompatActivity {
                     setPicture(currentPhotoUrl);
                 } else {
                     Toast.makeText(getBaseContext(),"No image found",Toast.LENGTH_LONG).show();
+                }
+
+                if (users.getBiography() != null){
+                    tvBio.setText(users.getBiography());
                 }
             }
             @Override

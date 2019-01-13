@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -32,6 +33,7 @@ public class AuthorsProfileActivity extends AppCompatActivity
     private boolean isAttached;
 
     private static final int EDITOR_REQUEST_CODE = 1001;
+    TextView tvBio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class AuthorsProfileActivity extends AppCompatActivity
         RelativeLayout postedPoems = findViewById(R.id.rv_postedpoems);
         RelativeLayout postedSpirituals = findViewById(R.id.rv_postedspirituals);
         RelativeLayout postedStories = findViewById(R.id.rv_postedstories);
+         tvBio = findViewById(R.id.tv_bio);
 
         // ibProfile = (ImageView)findViewById(R.id.ibProfile);
         postedPoems.setOnClickListener(new View.OnClickListener() {
@@ -104,6 +107,10 @@ public class AuthorsProfileActivity extends AppCompatActivity
                         setPicture(currentPhotoUrl);
                     } else {
                         Toast.makeText(getBaseContext(),"No image found",Toast.LENGTH_LONG).show();
+                    }
+
+                    if (users.getBiography() != null){
+                        tvBio.setText(users.getBiography());
                     }
                 }
                 @Override

@@ -56,12 +56,13 @@ public class LikesActivity extends AppCompatActivity
     {
         TextView tvUser;
         TextView tvTime;
+        View mView;
 
         public NoticeViewHolder(View itemView) {
             super(itemView);
             tvUser = itemView.findViewById(R.id.tv_user);
             tvTime = itemView.findViewById(R.id.tv_time);
-
+            this.mView = itemView;
         }
 
     }
