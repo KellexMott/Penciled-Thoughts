@@ -107,7 +107,7 @@ public class ProfileActivity extends AppCompatActivity {
         RelativeLayout postedPoems = findViewById(R.id.rv_postedpoems);
         RelativeLayout postedSpirituals = findViewById(R.id.rv_postedspirituals);
         RelativeLayout postedStories = findViewById(R.id.rv_postedstories);
-        tvBio = findViewById(R.id.tv_bio);
+        tvBio = findViewById(R.id.tv_biography);
         // fab = findViewById(R.id.fab);
 
 

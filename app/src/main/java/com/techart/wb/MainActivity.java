@@ -56,6 +56,7 @@ import com.google.firebase.storage.UploadTask;
 import com.techart.wb.constants.Constants;
 import com.techart.wb.constants.FireBaseUtils;
 import com.techart.wb.models.ImageUrl;
+import com.techart.wb.models.MainContext;
 import com.techart.wb.models.Stamp;
 import com.techart.wb.models.Users;
 import com.techart.wb.models.Version;
@@ -125,7 +126,6 @@ public class MainActivity extends AppCompatActivity
             }
         };
         //Tabs
-        //Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         //VIEWPAGER
@@ -137,8 +137,6 @@ public class MainActivity extends AppCompatActivity
         tabLayout.setupWithViewPager(vp);
         tabLayout.addOnTabSelectedListener(this);
 
-
-
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,7 +146,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
         mPref = getSharedPreferences(String.format("%s",getString(R.string.app_name)),MODE_PRIVATE);
-/*
+        /*
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
@@ -159,12 +157,9 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });*/
-
         haveNetworkConnection();
-
         setupDrawer(toolbar);
         loadProfilePicture();
-       // blink();
        // AppRater.app_launched(MainActivity.this);
         FirebaseMessaging.getInstance().subscribeToTopic("all");
     }
@@ -179,7 +174,6 @@ public class MainActivity extends AppCompatActivity
         vp.setAdapter(pagerAdapter);
     }
 
-
     public void onTabSelected(TabLayout.Tab tab) {
         vp.setCurrentItem(tab.getPosition());
     }
@@ -192,7 +186,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
     }
 
     @Override
@@ -205,12 +198,6 @@ public class MainActivity extends AppCompatActivity
     public void onPageScrollStateChanged(int state) {
 
     }
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }*/
 
     private void setupDrawer(Toolbar toolbar) {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -238,7 +225,6 @@ public class MainActivity extends AppCompatActivity
             }
             tvUser.setText(FireBaseUtils.getAuthor());
             tvEmail.setText(FireBaseUtils.getEmail());
-
 
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -447,13 +433,14 @@ public class MainActivity extends AppCompatActivity
                 });
     }
 
-
     @Override
     protected void onStart(){
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
        // getVersionCode();
        // checkVersion();
+        MainContext mainContext = MainContext.getInstance();
+        mainContext.setContext(MainActivity.this);
         mStamp = mPref.getInt(Constants.STAMP_KEY,0);
         stamp();
     }
@@ -505,8 +492,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-
-
     private void startLibraryActivity(){
         if (FirebaseAuth.getInstance().getCurrentUser()!= null ){
             FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).addValueEventListener(new ValueEventListener() {
@@ -544,7 +529,6 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
-
 
     @Nullable
     private String getAppVersion() {
@@ -722,7 +706,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
     private void outDatedVersionUrgent() {
         if (isAttached){
             DialogInterface.OnClickListener dialogClickListener =
@@ -768,15 +751,15 @@ public class MainActivity extends AppCompatActivity
         ibDp.setVisibility(View.GONE);
         ibCancel.setVisibility(View.VISIBLE);
         Glide.with(this)
-                .load(ivImage)
-                .into(new SimpleTarget<Drawable>() {
-                    @Override
-                    public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            linearLayout.setBackground(resource);
-                        }
+            .load(ivImage)
+            .into(new SimpleTarget<Drawable>() {
+                @Override
+                public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        linearLayout.setBackground(resource);
                     }
-                });
+                }
+            });
     }
 
     @Override
@@ -790,7 +773,6 @@ public class MainActivity extends AppCompatActivity
         super.onDetachedFromWindow();
         isAttached = false;
     }
-
 
     private void logOut() {
         DialogInterface.OnClickListener dialogClickListener =

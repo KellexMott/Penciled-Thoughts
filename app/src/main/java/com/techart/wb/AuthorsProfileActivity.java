@@ -2,6 +2,7 @@ package com.techart.wb;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -28,12 +29,16 @@ public class AuthorsProfileActivity extends AppCompatActivity
     private static String author;
     private static String authorUrl;
 
+    TextView tvOverlayBiography;
+    TextView tvIndependentBiography;
+
     private ImageView imProfilePicture;
     private String currentPhotoUrl;
     private boolean isAttached;
 
     private static final int EDITOR_REQUEST_CODE = 1001;
-    TextView tvBio;
+    private TextView tvFaceBook;
+    private TextView tvLinkedIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +56,10 @@ public class AuthorsProfileActivity extends AppCompatActivity
         RelativeLayout postedPoems = findViewById(R.id.rv_postedpoems);
         RelativeLayout postedSpirituals = findViewById(R.id.rv_postedspirituals);
         RelativeLayout postedStories = findViewById(R.id.rv_postedstories);
-         tvBio = findViewById(R.id.tv_bio);
+        tvFaceBook = findViewById(R.id.tv_facebook);
+        tvLinkedIn = findViewById(R.id.tv_linked);
+        tvOverlayBiography = findViewById(R.id.tv_biography);
+        tvIndependentBiography = findViewById(R.id.tv_bio);
 
         // ibProfile = (ImageView)findViewById(R.id.ibProfile);
         postedPoems.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +89,30 @@ public class AuthorsProfileActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+        tvFaceBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(AuthorsProfileActivity.this,"redirects to writers page",Toast.LENGTH_LONG).show();
+               /* Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "https://web.facebook.com/TechArtZambia/");
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);*/
+            }
+        });
+
+        tvLinkedIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(AuthorsProfileActivity.this,"redirects to writers page",Toast.LENGTH_LONG).show();
+               /* Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "https://www.linkedin.com/in/kelvin-chiwele-b36224167");
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);*/
+            }
+        });
     }
 
 
@@ -100,7 +132,7 @@ public class AuthorsProfileActivity extends AppCompatActivity
         if (authorUrl != null){
             FireBaseUtils.mDatabaseUsers.child(authorUrl).addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Users users = dataSnapshot.getValue(Users.class);
                     if (users != null && users.getImageUrl() != null && users.getImageUrl().length() > 7) {
                         currentPhotoUrl = users.getImageUrl();
@@ -108,13 +140,13 @@ public class AuthorsProfileActivity extends AppCompatActivity
                     } else {
                         Toast.makeText(getBaseContext(),"No image found",Toast.LENGTH_LONG).show();
                     }
-
+                    tvOverlayBiography.setVisibility(View.GONE);
                     if (users.getBiography() != null){
-                        tvBio.setText(users.getBiography());
+                        tvIndependentBiography.setText(users.getBiography());
                     }
                 }
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
+                public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
             });
         } else {
