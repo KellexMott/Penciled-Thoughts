@@ -4,6 +4,7 @@ public class ImageUrl {
     private static ImageUrl instance;
     private String imageUrl;
     private String status;
+    private String signedAs;
 
     public static synchronized ImageUrl getInstance() {
         if (instance == null) {
@@ -26,5 +27,13 @@ public class ImageUrl {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getSignedAs() {
+        return signedAs;
+    }
+
+    public void setSignedAs(String signedAs) {
+        this.signedAs = signedAs;
     }
 }

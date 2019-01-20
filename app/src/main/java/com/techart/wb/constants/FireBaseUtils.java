@@ -71,12 +71,13 @@ public final class FireBaseUtils {
     }
 
 
-    public static void updateNotifications(String category,String title, String action, String postUrl, String message, String imageUrl) {
+    public static void updateNotifications(String category,String title, String signedAs, String action, String postUrl, String message, String imageUrl) {
         String url = mDatabaseNotifications.push().getKey();
         Map<String,Object> values = new HashMap<>();
         values.put(Constants.MESSAGE,message);
         values.put(Constants.ACTION,action);
         values.put(Constants.POST_TITLE,title);
+        values.put(Constants.SIGNED_IN_AS,signedAs);
         values.put(Constants.AUTHOR_URL,getUiD());
         values.put(Constants.IMAGE_URL,imageUrl);
         values.put(Constants.POST_TYPE,category);

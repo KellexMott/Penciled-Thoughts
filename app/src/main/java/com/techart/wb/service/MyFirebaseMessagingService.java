@@ -3,14 +3,12 @@ package com.techart.wb.service;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.techart.wb.NotificationsActivity;
 import com.techart.wb.R;
 import com.techart.wb.constants.Constants;
 
@@ -32,23 +30,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void showNotifications(Map<String,String> payload){
-        Intent intent;
-        /*if (payload.get("click_action") != null && payload.get("click_action").equals("Story_Notice")){
-            intent = new Intent(this, OnStoryNotificationActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra("title",payload.get("title"));
-        }else  {*/
-        /*
-        Map<String,Object> values = new HashMap<>();
-        values.put(Constants.POST_AUTHOR,FireBaseUtils.getAuthor());
-        values.put(Constants.AUTHOR_URL,FireBaseUtils.getAuthor());
-        values.put(Constants.POST_URL,FireBaseUtils.getAuthor());
-        values.put(Constants.POST_TITLE,payload.get("title"));
-        values.put(Constants.POST_TYPE,FireBaseUtils.getAuthor());
-        values.put(Constants.TIME_CREATED, ServerValue.TIMESTAMP);
-        FireBaseUtils.mDatabaseNotifications.child(FireBaseUtils.getUiD()).push().setValue(values);*/
+      /*  Intent intent;
 
-        intent = new Intent(this, NotificationsActivity.class);
+
+        intent = new Intent("com.techart.wb.NotificationsActivity");
         TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
         taskStackBuilder.addNextIntent(intent);
         PendingIntent pendingIntent  = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -60,6 +45,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         .setAutoCancel(true) //dismisses the notification on click
                 .setColor(getResources().getColor(R.color.colorPrimary))
         .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(0, notificationBuilder.build());*/
+
+        Intent intent=new Intent("com.techart.wb.NotificationsActivity");
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent=PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT);
+        NotificationCompat.Builder notificationBuilder = new   NotificationCompat.Builder(this, Constants.CHANNEL_ID)
+        .setContentTitle(payload.get("title")) //the "title" value you sent in your notification
+        .setContentText(payload.get("body"))
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setAutoCancel(true) //dismisses the notification on click
+                .setColor(getResources().getColor(R.color.colorPrimary))
+                .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

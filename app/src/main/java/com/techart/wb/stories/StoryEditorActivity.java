@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.techart.wb.constants.Constants.AUTHORITY;
+
 /**
  * Provides the ability to write a Story, Store in a local db and/or post
  * to Server. Only called once per Story.
@@ -119,7 +121,7 @@ public class StoryEditorActivity extends AppCompatActivity {
         );
         try {
             getContentResolver().
-                    applyBatch(WritersBlockContract.AUTHORITY,newStory);
+                    applyBatch(AUTHORITY,newStory);
             Toast.makeText(getApplicationContext(),"Saved", Toast.LENGTH_LONG).show();
             setResult(RESULT_OK);
         } catch (RemoteException e) {

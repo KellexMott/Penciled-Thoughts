@@ -1,7 +1,10 @@
 package com.techart.wb;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +19,37 @@ public class AboutActivity extends AppCompatActivity {
     private TextView tvAppVersion;
     private TextView tvFaceBook;
     private TextView tvLinkedIn;
+
+    /**
+     * Email client intent to send support mail
+     * Appends the necessary device information to email body
+     * useful when providing support
+     */
+    public static void sendFeedback(Context context) {
+        String body = null;
+        try {
+            body = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+            body = "\n\n-----------------------------\nPlease don't remove this information\n Device OS: Android \n Device OS version: " +
+                    Build.VERSION.RELEASE + "\n App Version: " + body + "\n Device Brand: " + Build.BRAND +
+                    "\n Device Model: " + Build.MODEL + "\n Device Manufacturer: " + Build.MANUFACTURER;
+        } catch (PackageManager.NameNotFoundException e) {
+        }
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("message/rfc822");
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"contact@androidhive.info"});
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Query from android app");
+        intent.putExtra(Intent.EXTRA_TEXT, body);
+        context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose_email_client)));
+    }
+
+    private void getAppVersion() {
+        try {
+            String version = this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;
+            tvAppVersion.setText(getResources().getString(R.string.app_version,version));
+        } catch (PackageManager.NameNotFoundException e) {
+            Toast.makeText(this, "Could not read app version", Toast.LENGTH_LONG).show();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,32 +66,15 @@ public class AboutActivity extends AppCompatActivity {
         tvFaceBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "https://web.facebook.com/TechArtZambia/");
-                sendIntent.setType("text/plain");
-                startActivity(sendIntent);
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://web.facebook.com/TechArtZambia/")));
             }
         });
 
         tvLinkedIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "https://www.linkedin.com/in/kelvin-chiwele-b36224167");
-                sendIntent.setType("text/plain");
-                startActivity(sendIntent);
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.linkedin.com/in/kelvin-chiwele-b36224167")));
             }
         });
-    }
-
-    private void getAppVersion() {
-        try {
-            String version = this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;
-            tvAppVersion.setText(getResources().getString(R.string.app_version,version));
-        } catch (PackageManager.NameNotFoundException e) {
-            Toast.makeText(this, "Could not read app version", Toast.LENGTH_LONG).show();
-        }
     }
 }

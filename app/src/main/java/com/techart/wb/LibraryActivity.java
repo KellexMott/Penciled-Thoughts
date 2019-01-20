@@ -90,6 +90,8 @@ public class LibraryActivity extends AppCompatActivity {
 
         tvSetPhoto = findViewById(R.id.tv_setPhoto);
         imProfilePicture = findViewById(R.id.ib_profile);
+        TextView tvBio = findViewById(R.id.tv_biography);
+        tvBio.setVisibility(View.GONE);
 
         FireBaseUtils.mDatabaseLibrary.child(FireBaseUtils.getUiD()).keepSynced(true);
         rvReadingList = findViewById(R.id.rv_libraryBook);

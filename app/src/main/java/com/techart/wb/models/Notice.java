@@ -8,8 +8,9 @@ package com.techart.wb.models;
 public class Notice {
     private String postType;
     private String user;
-    private  String action;
-    private  String postTitle;
+    private String signedAs;
+    private String action;
+    private String postTitle;
     private String message;
     private String postKey;
     private String imageUrl;
@@ -112,4 +113,11 @@ public class Notice {
         this.email = email;
     }
 
+    public String getSignedAs() {
+        return signedAs;
+    }
+
+    public void setSignedAs(String signedAs) {
+        this.signedAs = signedAs;
+    }
 }

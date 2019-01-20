@@ -98,7 +98,7 @@ public class NotificationsActivity extends AppCompatActivity {
 
     private void readersView(){
         FirebaseRecyclerAdapter<Notice,NoticeViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Notice, NoticeViewHolder>(
-                Notice.class,R.layout.item_notifications,NoticeViewHolder.class, FireBaseUtils.mDatabaseNotifications){
+                Notice.class,R.layout.item_notifications,NoticeViewHolder.class, FireBaseUtils.mDatabaseNotifications.orderByChild(Constants.SIGNED_IN_AS).equalTo("Reader")){
             @Override
             protected void populateViewHolder(NoticeViewHolder viewHolder, final Notice model, int position) {
                 viewHolder.makePortionBold(model.getUser() + " " + model.getAction() + model.getPostTitle(), model.getUser());

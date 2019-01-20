@@ -39,6 +39,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.techart.wb.constants.Constants;
 import com.techart.wb.constants.FireBaseUtils;
 import com.techart.wb.devotion.DevotionEditorActivity;
 import com.techart.wb.devotion.MySpiritualsListActivity;
@@ -73,6 +74,8 @@ public class ProfileActivity extends AppCompatActivity {
     private ProgressDialog mProgress;
     private ImageView imProfilePicture;
     private String currentPhotoUrl;
+    private String currentFacebookUrl;
+    private String currentBiographyUrl;
     private boolean isAttached;
 
 
@@ -86,6 +89,7 @@ public class ProfileActivity extends AppCompatActivity {
     FloatingActionButton fbPoems;
     FloatingActionButton fbDevotion;
     FloatingActionButton fbStories;
+    private TextView tvFaceBook;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +112,7 @@ public class ProfileActivity extends AppCompatActivity {
         RelativeLayout postedSpirituals = findViewById(R.id.rv_postedspirituals);
         RelativeLayout postedStories = findViewById(R.id.rv_postedstories);
         tvBio = findViewById(R.id.tv_biography);
+        tvFaceBook = findViewById(R.id.tv_facebook);
         // fab = findViewById(R.id.fab);
 
 
@@ -122,6 +127,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent bioIntent = new Intent(ProfileActivity.this, BiographyActivity.class);
+                bioIntent.putExtra(Constants.FACEBOOK,currentBiographyUrl);
                 startActivity(bioIntent);
             }
         });
@@ -207,6 +213,15 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent iInformation = new Intent(ProfileActivity.this, StoryPrologueActivity.class);
                 startActivity(iInformation);
+            }
+        });
+
+        tvFaceBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent bioIntent = new Intent(ProfileActivity.this, FacebookActivity.class);
+                bioIntent.putExtra(Constants.FACEBOOK,currentFacebookUrl);
+                startActivity(bioIntent);
             }
         });
 
@@ -325,6 +340,11 @@ public class ProfileActivity extends AppCompatActivity {
 
                 if (users.getBiography() != null){
                     tvBio.setText(users.getBiography());
+                    currentBiographyUrl = users.getFacebook();
+                }
+
+                if (users.getFacebook() != null){
+                    currentFacebookUrl = users.getFacebook();
                 }
             }
             @Override

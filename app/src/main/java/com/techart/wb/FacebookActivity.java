@@ -1,6 +1,8 @@
 package com.techart.wb;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -22,8 +24,9 @@ import java.util.Map;
  * Created by Kelvin on 30/07/2017.
  */
 
-public class BiographyActivity extends AppCompatActivity {
+public class FacebookActivity extends AppCompatActivity {
 
+    String newText;
     private EditText etDialogEditor;
     private String storyUrl;
 
@@ -31,19 +34,19 @@ public class BiographyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_biography);
+        setContentView(R.layout.dialog_storyedit);
         etDialogEditor = findViewById(R.id.et_dialog_editor);
+        TextView tvTitle = findViewById(R.id.tv_title);
         TextView tvUpdate = findViewById(R.id.tv_update);
         TextView tvCancel = findViewById(R.id.tv_cancel);
 
-        String oldText = getIntent().getStringExtra(Constants.BIOGRAPHY);
-        etDialogEditor.setText(oldText);
-
+        tvTitle.setText("Enter your Facebook page link");
         tvUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 update();
                 Toast.makeText(getApplication(),"Update Successful...!",Toast.LENGTH_LONG).show();
+                testFacebook();
             }
         });
 
@@ -57,30 +60,50 @@ public class BiographyActivity extends AppCompatActivity {
     }
 
     private void update() {
-        String newText = etDialogEditor.getText().toString().trim();
+        newText = etDialogEditor.getText().toString().trim();
         Map<String,Object> values = new HashMap<>();
-        values.put(Constants.BIOGRAPHY, newText);
+        values.put(Constants.FACEBOOK, newText);
         FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).updateChildren(values);
         finish();
     }
 
-    @Override
-    public void onBackPressed()
-    {
+    private void testFacebook(){
         DialogInterface.OnClickListener dialogClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int button) {
-                        if (button == DialogInterface.BUTTON_POSITIVE)
-                        {
-                            finish();
-                        }
-                        if (button == DialogInterface.BUTTON_NEGATIVE)
-                        {
-                            dialog.dismiss();
-                        }
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int button) {
+                    if (button == DialogInterface.BUTTON_POSITIVE) {
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(newText));
+                        startActivity(i);
                     }
-                };
+                    if (button == DialogInterface.BUTTON_NEGATIVE) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                }
+            };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Do you want to test if the link works?")
+                .setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener)
+                .show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        DialogInterface.OnClickListener dialogClickListener =
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int button) {
+                    if (button == DialogInterface.BUTTON_POSITIVE) {
+                        finish();
+                    }
+                    if (button == DialogInterface.BUTTON_NEGATIVE) {
+                        dialog.dismiss();
+                    }
+                }
+            };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Changes will not be saved...!")
                 .setPositiveButton("Exit", dialogClickListener)

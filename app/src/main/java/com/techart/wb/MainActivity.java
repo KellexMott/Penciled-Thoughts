@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -74,10 +75,6 @@ import java.io.IOException;
 import static android.widget.Toast.LENGTH_LONG;
 import static com.techart.wb.utils.ImageUtils.hasPermissions;
 
-//import com.techart.wb.models.ImageUrl;
-//import com.techart.wb.models.Stamp;
-//import com.techart.wb.models.Version;
-//import com.techart.wb.others.AppRater;
 
 
 public class MainActivity extends AppCompatActivity
@@ -136,6 +133,7 @@ public class MainActivity extends AppCompatActivity
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setupWithViewPager(vp);
         tabLayout.addOnTabSelectedListener(this);
+        CoordinatorLayout coordinatorLayout = findViewById(R.id.app_bar_main);
 
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -146,17 +144,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
         mPref = getSharedPreferences(String.format("%s",getString(R.string.app_name)),MODE_PRIVATE);
-        /*
-        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (scrollY > oldScrollY) {
-                    fab.hide();
-                } else {
-                    fab.show();
-                }
-            }
-        });*/
+
         haveNetworkConnection();
         setupDrawer(toolbar);
         loadProfilePicture();
@@ -341,11 +329,16 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Users users = dataSnapshot.getValue(Users.class);
+                    ImageUrl imageUrl = ImageUrl.getInstance();
                     if (users.getImageUrl() != null && users.getImageUrl().length() > 7) {
                         currentPhotoUrl = users.getImageUrl();
                         setIvImage(users.getImageUrl());
-                        ImageUrl imageUrl = ImageUrl.getInstance();
+
                         imageUrl.setImageUrl(currentPhotoUrl);
+                    }
+
+                    if (users.getSignedAs() != null){
+                        imageUrl.setSignedAs(users.getSignedAs());
                     }
                 }
 

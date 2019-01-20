@@ -39,7 +39,12 @@
         <activity
             android:name="com.techart.wb.NotificationsActivity"
             android:label="@string/action_notifications"
-            android:parentActivityName="com.techart.wb.MainActivity" />
+            android:parentActivityName="com.techart.wb.MainActivity">
+            <intent-filter>
+                <action android:name="com.techart.wb.NotificationsActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name="com.techart.wb.ChapterCommentsActivity"
@@ -124,6 +129,12 @@
             android:theme="@style/dialogTheme" />
 
         <activity
+            android:name="com.techart.wb.FacebookActivity"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@style/dialogTheme" />
+
+        <activity
             android:name="com.techart.wb.OnStoryNotificationActivity"
             android:parentActivityName="com.techart.wb.MainActivity"
             android:launchMode="singleTop">
@@ -135,7 +146,7 @@
 
         <activity
             android:name="com.techart.wb.ReadersActivity"
-            android:parentActivityName="com.techart.wb.InformationActivity">
+            android:parentActivityName="com.techart.wb.MainActivity">
             <intent-filter>
                 <action android:name="com.techart.wb.ReadersActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -144,7 +155,7 @@
 
         <activity
             android:name="com.techart.wb.WritersActivity"
-            android:parentActivityName="com.techart.wb.InformationActivity">
+            android:parentActivityName="com.techart.wb.MainActivity">
             <intent-filter>
                 <action android:name="com.techart.wb.WritersActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -153,7 +164,7 @@
 
         <activity
             android:name="com.techart.wb.HelpActivity"
-            android:parentActivityName="com.techart.wb.InformationActivity">
+            android:parentActivityName="com.techart.wb.MainActivity">
             <intent-filter>
                 <action android:name="com.techart.wb.HelpActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -260,11 +271,11 @@
         <activity
             android:name="com.techart.wb.ActivityRead"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName="com.techart.wb.MainActivity"></activity>
+            android:parentActivityName="com.techart.wb.MainActivity"/>
 
         <activity
             android:name="com.techart.wb.WritersChatRoomActivity"
-            android:parentActivityName="com.techart.wb.ProfileActivity"></activity>
+            android:parentActivityName="com.techart.wb.ProfileActivity"/>
 
         <activity
             android:name="com.techart.wb.GeneralChatRoomActivity"
@@ -279,12 +290,6 @@
 
         <activity
             android:name="com.techart.wb.devotion.MySpiritualsListActivity"
-            android:parentActivityName="com.techart.wb.ProfileActivity">
-        </activity>
-
-        <activity
-            android:name="com.techart.wb.InformationActivity"
-            android:label="@string/about"
             android:parentActivityName="com.techart.wb.ProfileActivity">
         </activity>
 

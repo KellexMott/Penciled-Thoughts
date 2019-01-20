@@ -45,27 +45,27 @@ public class MyChaptersListActivity extends AppCompatActivity
         if (uri == null){
             Toast.makeText(this,"kindly reload the chapter",Toast.LENGTH_LONG).show();
             finish();
+        } else {
+            uriLastPathSegmentSegment = uri.getLastPathSegment();
+            chapterFilter = WritersBlockContract.ChapterEntry.CHAPTER_STORY_ID + "=" + uriLastPathSegmentSegment;
+            cursorAdapter = new ChaptersCursorAdapter(this, null, 0);
+
+            ListView list = findViewById(R.id.lvItems);
+            list.setAdapter(cursorAdapter);
+
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(MyChaptersListActivity.this, ChapterEditorActivity.class);
+                    Uri uri = Uri.parse(WritersBlockContract.ChapterEntry.CONTENT_URI + "/" + id);
+                    intent.putExtra(WritersBlockContract.ChapterEntry.CONTENT_ITEM_TYPE, uri);
+                    intent.putExtra("id", id);
+                    startActivityForResult(intent,EDITOR_REQUEST_CODE);
+                }
+            });
+
+            getLoaderManager().initLoader(0, null, this);
         }
-        uriLastPathSegmentSegment = uri.getLastPathSegment();
-
-        chapterFilter = WritersBlockContract.ChapterEntry.CHAPTER_STORY_ID + "=" + uriLastPathSegmentSegment;
-        cursorAdapter = new ChaptersCursorAdapter(this, null, 0);
-
-        ListView list = findViewById(R.id.lvItems);
-        list.setAdapter(cursorAdapter);
-
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MyChaptersListActivity.this, ChapterEditorActivity.class);
-                Uri uri = Uri.parse(WritersBlockContract.ChapterEntry.CONTENT_URI + "/" + id);
-                intent.putExtra(WritersBlockContract.ChapterEntry.CONTENT_ITEM_TYPE, uri);
-                intent.putExtra("id", id);
-                startActivityForResult(intent,EDITOR_REQUEST_CODE);
-            }
-        });
-
-        getLoaderManager().initLoader(0, null, this);
     }
 
     @Override

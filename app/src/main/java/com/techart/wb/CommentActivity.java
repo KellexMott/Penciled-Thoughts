@@ -167,7 +167,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                         //   values.put(Constants.REPLIES,0);
                         values.put(Constants.TIME_CREATED, ServerValue.TIMESTAMP);
                         newComment.setValue(values);
-                        FireBaseUtils.updateNotifications(postType,postName,"commented on ",post_key,comment, ImageUrl.getInstance().getImageUrl());
+                        FireBaseUtils.updateNotifications(postType,postName,"Reader","commented on ",post_key,comment, ImageUrl.getInstance().getImageUrl());
                         isSent = true;
                         progressDialog.dismiss();
                         onCommentSent();

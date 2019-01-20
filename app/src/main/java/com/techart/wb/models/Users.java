@@ -9,6 +9,7 @@ public class Users {
     private String name;
     private String imageUrl;
     private String biography;
+    private String facebook;
     private String signedAs;
     private Long timeCreated;
 
@@ -53,5 +54,13 @@ public class Users {
 
     public void setBiography(String biography) {
         this.biography = biography;
+    }
+
+    public String getFacebook() {
+        return facebook;
+    }
+
+    public void setFacebook(String facebook) {
+        this.facebook = facebook;
     }
 }

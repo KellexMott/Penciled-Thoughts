@@ -8,6 +8,10 @@ package com.techart.wb.constants;
 
 public class Constants {
     public static final String POST_AUTHOR = "author";
+
+
+    public static final String AUTHORITY = "com.techart.wb.wbprovider";
+
     public static final String AUTHOR_URL = "authorUrl";
     public static final String POST_URL = "postUrl";
     public static final String USER = "user";
@@ -20,6 +24,7 @@ public class Constants {
     public static final String LIBRARY = "Library";
     public static final String USERS = "Users";
     public static final String BIOGRAPHY = "biography";
+    public static final String FACEBOOK = "facebook";
     public static final String STAMP_KEY = "Stamp";
     public static final String VERSION_KEY = "Version";
 

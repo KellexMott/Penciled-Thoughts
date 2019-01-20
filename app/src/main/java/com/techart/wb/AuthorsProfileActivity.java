@@ -1,6 +1,7 @@
 package com.techart.wb;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -28,6 +29,7 @@ public class AuthorsProfileActivity extends AppCompatActivity
 {
     private static String author;
     private static String authorUrl;
+    private static String facebook;
 
     TextView tvOverlayBiography;
     TextView tvIndependentBiography;
@@ -38,13 +40,15 @@ public class AuthorsProfileActivity extends AppCompatActivity
 
     private static final int EDITOR_REQUEST_CODE = 1001;
     private TextView tvFaceBook;
-    private TextView tvLinkedIn;
+    private String biography;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         author = getIntent().getStringExtra(Constants.POST_AUTHOR);
         authorUrl = getIntent().getStringExtra(Constants.AUTHOR_URL);
+        facebook = getIntent().getStringExtra(Constants.FACEBOOK);
+        biography = getIntent().getStringExtra(Constants.BIOGRAPHY);
         setTitle(author);
         setContentView(R.layout.activity_author);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -57,7 +61,6 @@ public class AuthorsProfileActivity extends AppCompatActivity
         RelativeLayout postedSpirituals = findViewById(R.id.rv_postedspirituals);
         RelativeLayout postedStories = findViewById(R.id.rv_postedstories);
         tvFaceBook = findViewById(R.id.tv_facebook);
-        tvLinkedIn = findViewById(R.id.tv_linked);
         tvOverlayBiography = findViewById(R.id.tv_biography);
         tvIndependentBiography = findViewById(R.id.tv_bio);
 
@@ -90,27 +93,25 @@ public class AuthorsProfileActivity extends AppCompatActivity
             }
         });
 
-        tvFaceBook.setOnClickListener(new View.OnClickListener() {
+        tvIndependentBiography.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(AuthorsProfileActivity.this,"redirects to writers page",Toast.LENGTH_LONG).show();
-               /* Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "https://web.facebook.com/TechArtZambia/");
-                sendIntent.setType("text/plain");
-                startActivity(sendIntent);*/
+                Intent bioIntent = new Intent(AuthorsProfileActivity.this, FacebookActivity.class);
+                bioIntent.putExtra(Constants.BIOGRAPHY,biography);
+                startActivity(bioIntent);
             }
         });
 
-        tvLinkedIn.setOnClickListener(new View.OnClickListener() {
+        tvFaceBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(AuthorsProfileActivity.this,"redirects to writers page",Toast.LENGTH_LONG).show();
-               /* Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "https://www.linkedin.com/in/kelvin-chiwele-b36224167");
-                sendIntent.setType("text/plain");
-                startActivity(sendIntent);*/
+                if (facebook != null){
+                    startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse(facebook)));
+                } else {
+                    Intent bioIntent = new Intent(AuthorsProfileActivity.this, FacebookActivity.class);
+                    startActivity(bioIntent);
+                }
+
             }
         });
     }
@@ -141,8 +142,20 @@ public class AuthorsProfileActivity extends AppCompatActivity
                         Toast.makeText(getBaseContext(),"No image found",Toast.LENGTH_LONG).show();
                     }
                     tvOverlayBiography.setVisibility(View.GONE);
-                    if (users.getBiography() != null){
+
+
+                    if (users.getFacebook() == null && FireBaseUtils.getUiD().equals(authorUrl)) {
+                        tvFaceBook.setText(R.string.add_facebook_url);
+                    } else if (users.getFacebook() == null){
+                        tvFaceBook.setVisibility(View.GONE);
+                    }
+
+                    if (users.getBiography() == null && FireBaseUtils.getUiD().equals(authorUrl)) {
+                        tvIndependentBiography.setText(R.string.add_biography);
+                    } else if (users.getBiography() != null){
                         tvIndependentBiography.setText(users.getBiography());
+                    } else {
+                        tvIndependentBiography.setVisibility(View.GONE);
                     }
                 }
                 @Override

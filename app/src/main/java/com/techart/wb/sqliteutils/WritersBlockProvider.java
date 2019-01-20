@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
+import static com.techart.wb.constants.Constants.AUTHORITY;
+
 /**
  * Provides a UI that manages access access to the central repository of data (Local DB)
  * through a contentResolver, which is accessed using a CursorLoader to run an asynchronous
@@ -38,7 +40,7 @@ public class WritersBlockProvider extends ContentProvider {
     public static UriMatcher buildUriMatcher() {
 
        UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-       String content = WritersBlockContract.AUTHORITY;
+       String content = AUTHORITY;
 
         //All paths to the UriMatcher have a corresponding code to return
         //when a match is found (the ints above).
