@@ -65,22 +65,19 @@ public class BiographyActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         DialogInterface.OnClickListener dialogClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int button) {
-                        if (button == DialogInterface.BUTTON_POSITIVE)
-                        {
-                            finish();
-                        }
-                        if (button == DialogInterface.BUTTON_NEGATIVE)
-                        {
-                            dialog.dismiss();
-                        }
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int button) {
+                    if (button == DialogInterface.BUTTON_POSITIVE) {
+                        finish();
                     }
-                };
+                    if (button == DialogInterface.BUTTON_NEGATIVE) {
+                        dialog.dismiss();
+                    }
+                }
+            };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Changes will not be saved...!")
                 .setPositiveButton("Exit", dialogClickListener)

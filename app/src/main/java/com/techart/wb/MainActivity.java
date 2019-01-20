@@ -306,14 +306,17 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
-                    mProgress.dismiss();
                     updateProfile(task);
+                    mProgress.dismiss();
                     UploadUtils.makeNotification("Image upload complete", MainActivity.this);
                 } else {
                     // Handle failures
                     UploadUtils.makeNotification("Image upload failed", MainActivity.this);
+
                 }
                 ibDp.setVisibility(View.VISIBLE);
+                tvUpload.setVisibility(View.GONE);
+                ibCancel.setVisibility(View.GONE);
             }
         });
     }
@@ -327,13 +330,12 @@ public class MainActivity extends AppCompatActivity
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Users users = dataSnapshot.getValue(Users.class);
                     ImageUrl imageUrl = ImageUrl.getInstance();
                     if (users.getImageUrl() != null && users.getImageUrl().length() > 7) {
                         currentPhotoUrl = users.getImageUrl();
                         setIvImage(users.getImageUrl());
-
                         imageUrl.setImageUrl(currentPhotoUrl);
                     }
 
@@ -343,7 +345,7 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
+                public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
             });
         }

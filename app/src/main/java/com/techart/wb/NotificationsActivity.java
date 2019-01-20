@@ -161,10 +161,10 @@ public class NotificationsActivity extends AppCompatActivity {
      */
     private void selectIntent(Notice notice) {
         Intent readPoemIntent;
-        if (notice.getAction().equals("commented")) {
+        if (notice.getPostType().equals("story") || notice.getPostType().equals("poem") || notice.getPostType().equals("devotion")) {
             readPoemIntent = new Intent(NotificationsActivity.this, CommentActivity.class);
             readPoemIntent.putExtra(Constants.POST_KEY, notice.getPostKey());
-            readPoemIntent.putExtra(Constants.POST_TITLE, notice.getPostKey());
+            readPoemIntent.putExtra(Constants.POST_TITLE, notice.getPostTitle());
             readPoemIntent.putExtra(Constants.POST_TYPE, notice.getPostType());
             startActivity(readPoemIntent);
         } else  if (notice.getPostType().equals("writersInbox")) {

@@ -47,8 +47,6 @@ public class AuthorsProfileActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         author = getIntent().getStringExtra(Constants.POST_AUTHOR);
         authorUrl = getIntent().getStringExtra(Constants.AUTHOR_URL);
-        facebook = getIntent().getStringExtra(Constants.FACEBOOK);
-        biography = getIntent().getStringExtra(Constants.BIOGRAPHY);
         setTitle(author);
         setContentView(R.layout.activity_author);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -93,25 +91,10 @@ public class AuthorsProfileActivity extends AppCompatActivity
             }
         });
 
-        tvIndependentBiography.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent bioIntent = new Intent(AuthorsProfileActivity.this, FacebookActivity.class);
-                bioIntent.putExtra(Constants.BIOGRAPHY,biography);
-                startActivity(bioIntent);
-            }
-        });
-
         tvFaceBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (facebook != null){
-                    startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse(facebook)));
-                } else {
-                    Intent bioIntent = new Intent(AuthorsProfileActivity.this, FacebookActivity.class);
-                    startActivity(bioIntent);
-                }
-
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse(facebook)));
             }
         });
     }
@@ -148,15 +131,19 @@ public class AuthorsProfileActivity extends AppCompatActivity
                         tvFaceBook.setText(R.string.add_facebook_url);
                     } else if (users.getFacebook() == null){
                         tvFaceBook.setVisibility(View.GONE);
+                    } else {
+                        facebook = users.getFacebook();
                     }
 
                     if (users.getBiography() == null && FireBaseUtils.getUiD().equals(authorUrl)) {
                         tvIndependentBiography.setText(R.string.add_biography);
+                        biography = users.getBiography();
                     } else if (users.getBiography() != null){
                         tvIndependentBiography.setText(users.getBiography());
                     } else {
                         tvIndependentBiography.setVisibility(View.GONE);
                     }
+
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {

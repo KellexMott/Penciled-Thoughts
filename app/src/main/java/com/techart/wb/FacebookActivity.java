@@ -28,7 +28,6 @@ public class FacebookActivity extends AppCompatActivity {
 
     String newText;
     private EditText etDialogEditor;
-    private String storyUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +44,6 @@ public class FacebookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 update();
-                Toast.makeText(getApplication(),"Update Successful...!",Toast.LENGTH_LONG).show();
-                testFacebook();
             }
         });
 
@@ -64,7 +61,8 @@ public class FacebookActivity extends AppCompatActivity {
         Map<String,Object> values = new HashMap<>();
         values.put(Constants.FACEBOOK, newText);
         FireBaseUtils.mDatabaseUsers.child(FireBaseUtils.getUiD()).updateChildren(values);
-        finish();
+        Toast.makeText(getApplication(),"Update Successful...!",Toast.LENGTH_LONG).show();
+        testFacebook();
     }
 
     private void testFacebook(){
@@ -87,6 +85,7 @@ public class FacebookActivity extends AppCompatActivity {
         builder.setMessage("Do you want to test if the link works?")
                 .setPositiveButton("Yes", dialogClickListener)
                 .setNegativeButton("No", dialogClickListener)
+                .setCancelable(false)
                 .show();
     }
 
