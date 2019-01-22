@@ -12,12 +12,13 @@
         <item>Comedy</item>
         <item>Drama</item>
         <item>Fiction</item>
+        <item>Folklore</item>
         <item>Horror</item>
         <item>Romance</item>
         <item>Romantic Comedy</item>
         <item>Sci-Fi</item>
         <item>Thriller</item>
-        <item>Traditional</item>
+        <item>Zambian</item>
     </string-array>
     <string name="default_category">Select Category</string>
 
@@ -132,6 +133,7 @@
     <string name="tap_to_write">Tap to start writing</string>
     <string name="delete_icon">Delete Icon</string>
     <string name="edit_devotion">Edit Devotion</string>
+    <string name="edit_poem">Edit Poem</string>
     <string name="like_button">Like button</string>
     <string name="initial_count">0</string>
     <string name="comment_icon">Comment icon</string>
@@ -222,4 +224,7 @@
     <string name="facebook">Facebook</string>
     <string name="add_biography">Tap to add biography</string>
     <string name="add_facebook_url">Tap to add link to facebook page</string>
+    <string name="type_in_the_email">Type in the email</string>
+    <string name="type_email_you_registered_with">Type email you registered with</string>
+    <string name="send_mail">Send Mail</string>
 </resources>

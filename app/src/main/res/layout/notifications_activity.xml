@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.techart.wb.NotificationsActivity">
+    tools:context="com.techart.writersblock.NotificationsActivity">
 
 
     <android.support.v7.widget.RecyclerView

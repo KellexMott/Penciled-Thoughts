@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_margin="10dp"
-    tools:context="com.techart.wb.poems.PoemEditorActivity">
+    tools:context="com.techart.writersblock.poems.PoemEditorActivity">
 
     <LinearLayout
         android:id="@+id/layout"
