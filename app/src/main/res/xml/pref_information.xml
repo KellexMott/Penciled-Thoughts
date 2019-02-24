@@ -26,7 +26,7 @@
         <Preference
             android:title="@string/title_help"
             android:summary="@string/summary_help">
-            <intent android:action="com.techart.writersblock.HelpActivity" />
+            <intent android:action="com.techart.wb.HelpActivity" />
         </Preference>
 
         <!-- Writers -->
@@ -34,14 +34,14 @@
         <Preference
             android:title="@string/title_writers"
             android:summary="@string/summary_writers">
-            <intent android:action="com.techart.writersblock.WritersActivity" />
+            <intent android:action="com.techart.wb.WritersActivity" />
         </Preference>
 
         <!-- Poem -->
         <Preference
             android:title="@string/title_readers"
             android:summary="@string/summary_readers">
-            <intent android:action="com.techart.writersblock.ReadersActivity" />
+            <intent android:action="com.techart.wb.ReadersActivity" />
         </Preference>
 
 
