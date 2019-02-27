@@ -9,15 +9,18 @@
     <string-array name="categories">
         <item>@string/default_category</item>
         <item>Action</item>
+        <item>Adventure</item>
         <item>Comedy</item>
         <item>Drama</item>
         <item>Fiction</item>
         <item>Folklore</item>
         <item>Horror</item>
+        <item>Mystery</item>
         <item>Romance</item>
         <item>Romantic Comedy</item>
         <item>Sci-Fi</item>
         <item>Thriller</item>
+        <item>Tragedy</item>
         <item>Zambian</item>
     </string-array>
     <string name="default_category">Select Category</string>
