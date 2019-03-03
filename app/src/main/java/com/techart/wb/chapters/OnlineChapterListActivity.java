@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -14,34 +14,38 @@ import com.techart.wb.R;
 import com.techart.wb.constants.Constants;
 import com.techart.wb.constants.FireBaseUtils;
 import com.techart.wb.models.Chapter;
+import com.techart.wb.viewholders.ChapterViewHolder;
 
 
 public class OnlineChapterListActivity extends AppCompatActivity {
     private RecyclerView mPoemList;
     private String storyUrl;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tabrecyclerviewer);
-
         storyUrl = getIntent().getStringExtra(Constants.STORY_REFID);
         setTitle("Chapters");
-
         mPoemList = findViewById(R.id.poem_list);
+        progressBar = findViewById(R.id.pb_loading);
         mPoemList.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(OnlineChapterListActivity.this);
+        LinearLayoutManager linearLayoutManager =
+                new LinearLayoutManager(OnlineChapterListActivity.this);
         mPoemList.setLayoutManager(linearLayoutManager);
         bindView();
     }
 
     private void bindView() {
         if(storyUrl != null){
-            FirebaseRecyclerAdapter<Chapter,ChapterViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Chapter, ChapterViewHolder>(
+            FirebaseRecyclerAdapter<Chapter, ChapterViewHolder> firebaseRecyclerAdapter =
+                    new FirebaseRecyclerAdapter<Chapter, ChapterViewHolder>(
                     Chapter.class,R.layout.item_chapter,ChapterViewHolder.class, FireBaseUtils.mDatabaseChapters.child(storyUrl)) {
                 @Override
                 protected void populateViewHolder(ChapterViewHolder viewHolder, final Chapter model, int position) {
                     final String post_key = getRef(position).getKey();
+                    progressBar.setVisibility(View.GONE);
                     viewHolder.tvTitle.setText(model.getChapterTitle());
                     viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -54,7 +58,6 @@ public class OnlineChapterListActivity extends AppCompatActivity {
                             startActivity(readIntent);
                         }
                     });
-
                 }
             };
             mPoemList.setAdapter(firebaseRecyclerAdapter);
@@ -62,7 +65,6 @@ public class OnlineChapterListActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this,"Kindly reload",Toast.LENGTH_LONG).show();
         }
-
     }
 
     @Override
@@ -70,20 +72,5 @@ public class OnlineChapterListActivity extends AppCompatActivity {
         setResult(RESULT_OK,getIntent());
         finish();
     }
-
-    public static class ChapterViewHolder extends RecyclerView.ViewHolder
-    {
-        public TextView tvTitle;
-        public TextView tvTime;
-        public View mView;
-
-        public ChapterViewHolder(View itemView) {
-            super(itemView);
-            tvTitle = itemView.findViewById(R.id.tvTitle);
-            tvTime = itemView.findViewById(R.id.tv_timeCreated);
-            this.mView = itemView;
-       }
-    }
-
 }
 

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +32,7 @@ public class ProfileDevotionsListActivity extends AppCompatActivity {
     private String author;
     private boolean mProcessLike = false;
     private static final int EDITOR_REQUEST_CODE = 1001;
+    ProgressBar progressBar;
 
 
 
@@ -45,6 +47,7 @@ public class ProfileDevotionsListActivity extends AppCompatActivity {
 
         mPoemList = findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
+        progressBar = findViewById(R.id.pb_loading);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ProfileDevotionsListActivity.this);
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
@@ -82,6 +85,7 @@ public class ProfileDevotionsListActivity extends AppCompatActivity {
                 final String post_key = getRef(position).getKey();
                 postTitle = model.getTitle();
                 postContent = model.getDevotionText();
+                progressBar.setVisibility(View.GONE);
                 viewHolder.post_title.setText(model.getTitle());
                 if (model.getNumLikes() != null) {
                     viewHolder.numLikes.setText(model.getNumLikes().toString());

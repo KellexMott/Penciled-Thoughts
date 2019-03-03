@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -68,6 +69,7 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
     private Uri uri;
     private ArrayList<String> contents;
     private String[] categories;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +82,7 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
         mDatabaseStory.keepSynced(true);
         mPoemList = findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
+        progressBar = findViewById(R.id.pb_loading);
         contents = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.categories)));
         categories = getResources().getStringArray(R.array.categories);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ProfileStoriesListActivity.this);
@@ -120,6 +123,7 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
             @Override
             protected void populateViewHolder(final StoryViewHolder viewHolder, final Story model, int position) {
                 final String post_key = getRef(position).getKey();
+                progressBar.setVisibility(View.GONE);
                 viewHolder.tvTitle.setText(model.getTitle());
                 viewHolder.tvCategory.setText(model.getCategory());
                 viewHolder.tbStatus.setChecked(model.getStatus().equals("Complete"));
@@ -194,6 +198,7 @@ public class ProfileStoriesListActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         Intent likedPostsIntent = new Intent(ProfileStoriesListActivity.this,StoryDialogActivity.class);
                         likedPostsIntent.putExtra(Constants.POST_KEY,post_key);
+                        likedPostsIntent.putExtra(Constants.CHAPTER_TITLE, model.getChapters());
                         likedPostsIntent.putExtra(Constants.STORY_CHAPTERCOUNT,model.getChapters().toString());
                         startActivity(likedPostsIntent);
                     }

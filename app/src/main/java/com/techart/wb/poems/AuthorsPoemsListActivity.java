@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +38,7 @@ public class AuthorsPoemsListActivity extends AppCompatActivity {
     private String postContent;
 
     private boolean mProcessLike = false;
+    ProgressBar progressBar;
 
 
     @Override
@@ -50,7 +52,7 @@ public class AuthorsPoemsListActivity extends AppCompatActivity {
         mDatabaseLike = FireBaseUtils.mDatabaseLike;
         mDatabaseLike.keepSynced(true);
         mDatabasePoems.keepSynced(true);
-
+        progressBar = findViewById(R.id.pb_loading);
         mPoemList = findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(AuthorsPoemsListActivity.this);
@@ -70,7 +72,7 @@ public class AuthorsPoemsListActivity extends AppCompatActivity {
             protected void populateViewHolder(ArticleViewHolder viewHolder, final Poem model, int position) {
                 final String post_key = getRef(position).getKey();
                 viewHolder.post_title.setText(model.getTitle());
-
+                progressBar.setVisibility(View.GONE);
                 viewHolder.post_author.setText(getString(R.string.article_author,model.getAuthor()));
                 viewHolder.setIvImage(AuthorsPoemsListActivity.this, ImageUtils.getPoemUrl());
                 if (model.getNumLikes() != null)

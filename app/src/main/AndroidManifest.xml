@@ -321,6 +321,11 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".chapters.DeleteOnlineChapterActivity"
+            android:parentActivityName="com.techart.wb.stories.ProfileStoriesListActivity"></activity>
+
+
         <!-- [START firebase_service] -->
         <service
             android:name="com.techart.wb.service.MyFirebaseMessagingService"

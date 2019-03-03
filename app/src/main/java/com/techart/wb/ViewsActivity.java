@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.Query;
@@ -21,6 +22,8 @@ public class ViewsActivity extends AppCompatActivity {
     private String postKey;
     private RecyclerView mPoemList;
     private ProgressBar progressBar;
+    private TextView tvEmpty;
+    int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,16 +31,23 @@ public class ViewsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_like);
         postKey = getIntent().getStringExtra(Constants.POST_KEY);
+        count = getIntent().getIntExtra(Constants.NUM_VIEWS, 0);
         setTitle("Viewers");
         FireBaseUtils.mDatabaseViews.child(postKey).keepSynced(true);
         mPoemList = findViewById(R.id.lv_notice);
         progressBar = findViewById(R.id.pb_loading);
-
+        tvEmpty = findViewById(R.id.tv_empty);
+        tvEmpty.setText("No views yet, be the first to start reading");
         mPoemList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ViewsActivity.this);
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
         mPoemList.setLayoutManager(linearLayoutManager);
+        if (count == 0) {
+            progressBar.setVisibility(View.GONE);
+        } else {
+            tvEmpty.setVisibility(View.GONE);
+        }
         bindView();
     }
 
@@ -52,7 +62,11 @@ public class ViewsActivity extends AppCompatActivity {
         {
             @Override
             protected void populateViewHolder(LikesActivity.NoticeViewHolder viewHolder, final Notice model, int position) {
-                progressBar.setVisibility(View.GONE);
+                if (count != 0) {
+                    progressBar.setVisibility(View.GONE);
+                } else {
+                    tvEmpty.setVisibility(View.GONE);
+                }
                 String time = TimeUtils.timeElapsed(model.getTimeCreated());
                 viewHolder.tvUser.setText(model.getUser());
                 viewHolder.tvTime.setText(time);

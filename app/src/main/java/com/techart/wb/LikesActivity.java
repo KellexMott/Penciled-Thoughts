@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -19,12 +20,17 @@ public class LikesActivity extends AppCompatActivity
 {
     private String postKey;
     private RecyclerView mLikeList;
+    private ProgressBar progressBar;
+    private TextView tvEmpty;
+    int count;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_like);
+        setTitle("Likes");
         postKey = getIntent().getStringExtra(Constants.POST_KEY);
+        count = getIntent().getIntExtra(Constants.NUM_VIEWS, 0);
         FireBaseUtils.mDatabaseLike.child(postKey).keepSynced(true);
         mLikeList = findViewById(R.id.lv_notice);
         mLikeList.setHasFixedSize(true);
@@ -32,6 +38,14 @@ public class LikesActivity extends AppCompatActivity
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
         mLikeList.setLayoutManager(linearLayoutManager);
+        progressBar = findViewById(R.id.pb_loading);
+        tvEmpty = findViewById(R.id.tv_empty);
+        tvEmpty.setText("No likes yet, be the first to like");
+        if (count == 0) {
+            progressBar.setVisibility(View.GONE);
+        } else {
+            tvEmpty.setVisibility(View.GONE);
+        }
         bindView();
     }
     private void bindView()
@@ -43,6 +57,11 @@ public class LikesActivity extends AppCompatActivity
         {
             @Override
             protected void populateViewHolder(LikesActivity.NoticeViewHolder viewHolder, final Notice model, int position) {
+                if (count != 0) {
+                    progressBar.setVisibility(View.GONE);
+                } else {
+                    tvEmpty.setVisibility(View.GONE);
+                }
                 String time = TimeUtils.timeElapsed(model.getTimeCreated());
                 viewHolder.tvUser.setText(getString(R.string.liked,model.getUser(),model.getPostTitle()));
                 viewHolder.tvTime.setText(time);

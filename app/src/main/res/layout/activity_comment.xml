@@ -15,13 +15,13 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="52dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_empty"
-            android:textColor="@color/colorText"
-            android:text="@string/no_comments"
-            android:layout_gravity="center"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_empty"
+        android:textColor="@color/colorText"
+        android:text="@string/no_comments"
+        android:layout_gravity="center" />
 
     <ProgressBar
         android:layout_width="wrap_content"

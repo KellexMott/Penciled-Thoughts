@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.techart.wb.R;
 import com.techart.wb.chapters.AddChapterOnlineActivity;
+import com.techart.wb.chapters.DeleteOnlineChapterActivity;
 import com.techart.wb.chapters.OnlineChapterListActivity;
 import com.techart.wb.constants.Constants;
 import com.techart.wb.constants.FireBaseUtils;
@@ -35,7 +36,7 @@ public class StoryDialogActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_selectaction);
         ListView list = findViewById(R.id.list);
-        final String[] options = new String[] { "Add Chapter", "Edit Chapter", "Edit Description", "Edit Title" };
+        final String[] options = new String[]{"Add Chapter", "Delete Chapter", "Edit Chapter", "Edit Description", "Edit Title"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, options);
         list.setAdapter(adapter);
@@ -43,13 +44,19 @@ public class StoryDialogActivity extends AppCompatActivity {
         postKey = getIntent().getStringExtra(Constants.POST_KEY);
         chapters = getIntent().getStringExtra(Constants.STORY_CHAPTERCOUNT);
 
-
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent editorDevotionIntent;
                 switch (options[position]) {
                     case "Add Chapter" :
-                        Intent editorDevotionIntent = new Intent(StoryDialogActivity.this, AddChapterOnlineActivity.class);
+                        editorDevotionIntent = new Intent(StoryDialogActivity.this, AddChapterOnlineActivity.class);
+                        editorDevotionIntent.putExtra(Constants.STORY_REFID, postKey);
+                        editorDevotionIntent.putExtra(Constants.STORY_CHAPTERCOUNT, chapters);
+                        startActivity(editorDevotionIntent);
+                        break;
+                    case "Delete Chapter":
+                        editorDevotionIntent = new Intent(StoryDialogActivity.this, DeleteOnlineChapterActivity.class);
                         editorDevotionIntent.putExtra(Constants.STORY_REFID,postKey);
                         editorDevotionIntent.putExtra(Constants.STORY_CHAPTERCOUNT,chapters);
                         startActivity(editorDevotionIntent);

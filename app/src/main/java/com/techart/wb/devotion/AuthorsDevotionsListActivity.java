@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +32,7 @@ public class AuthorsDevotionsListActivity extends AppCompatActivity {
     private String postContent;
     private String author;
     private boolean mProcessLike = false;
+    ProgressBar progressBar;
 
 
     @Override
@@ -42,7 +44,7 @@ public class AuthorsDevotionsListActivity extends AppCompatActivity {
         setTitle(author + "'s devotions");
         FireBaseUtils.mDatabaseLike.keepSynced(true);
         FireBaseUtils.mDatabaseDevotions.keepSynced(true);
-
+        progressBar = findViewById(R.id.pb_loading);
         mPoemList = findViewById(R.id.poem_list);
         mPoemList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(AuthorsDevotionsListActivity.this);
@@ -61,6 +63,7 @@ public class AuthorsDevotionsListActivity extends AppCompatActivity {
             protected void populateViewHolder(ArticleViewHolder viewHolder, final Devotion model, int position) {
                 final String post_key = getRef(position).getKey();
                 viewHolder.post_title.setText(model.getTitle());
+                progressBar.setVisibility(View.GONE);
                 viewHolder.post_author.setText(getString(R.string.article_author, model.getAuthor()));
                 viewHolder.setIvImage(AuthorsDevotionsListActivity.this, ImageUtils.getDevotionUrl());
 

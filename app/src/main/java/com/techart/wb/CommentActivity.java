@@ -80,6 +80,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
     private final static int NEW = 4;
 
     private int menuAction;
+    int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,14 +94,21 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         postKey = getIntent().getStringExtra(Constants.POST_KEY);
         postName = getIntent().getStringExtra(Constants.POST_TITLE);
         postType = getIntent().getStringExtra(Constants.POST_TYPE);
+        count = getIntent().getIntExtra(Constants.NUM_COMMENTS, 0);
         setTitle("Comments on "+ postName);
         progressBar = findViewById(R.id.pb_loading);
+        tvEmpty = findViewById(R.id.tv_empty);
         mCommentList = findViewById(R.id.comment_recyclerview);
         mCommentList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(CommentActivity.this);
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
         mCommentList.setLayoutManager(linearLayoutManager);
+        if (count == 0) {
+            progressBar.setVisibility(View.GONE);
+        } else {
+            tvEmpty.setVisibility(View.GONE);
+        }
         init();
         initCommentSection();
     }
@@ -113,7 +121,11 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             protected void populateViewHolder(final CommentHolder viewHolder, final Comment model, int position) {
                 final String comment_key = getRef(position).getKey();
-                progressBar.setVisibility(View.GONE);
+                if (count != 0) {
+                    progressBar.setVisibility(View.GONE);
+                } else {
+                    tvEmpty.setVisibility(View.GONE);
+                }
                 final String current_message = model.getCommentText();
                 if (model.getAuthorUrl() != null){
                     setVisibility(model.getAuthorUrl(),viewHolder);
